@@ -12,11 +12,14 @@ function App() {
   return (
     <>
     <BrowserRouter>
-    <GuestLayout />
+    <GuestLayout/>
     <Routes>
       <Route path='/' element={<HomePage />}  />
-      <Route path='/productDetails/:id' element={<ProductPage />} />
+      <Route path='/productDetails/:slug' element={<ProductPage />} />
     </Routes>
+
+   
+
     
     
     

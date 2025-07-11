@@ -10,6 +10,7 @@ a {
     width: 100%;
     height: 150px;
     border-bottom : 1px solid white;
+    z-index: 9999;
 }
 
 .left-col, .right-col {
@@ -37,4 +38,30 @@ a {
 
 .hero-section img {
     width: 100%;
+}
+
+
+
+/* Modifiche pagina dettagli (Geani) */
+.no-promo{
+    text-decoration: line-through;
+    color: red;
+    font-weight: bold;   
+}
+
+.promo{
+    color: green;
+    font-weight: bold;
+}
+
+.margin-top{
+    margin-top: 150px;
+}
+
+main{
+    background-color: #fff;
+}
+
+.body{
+    background-color: black;
 }
