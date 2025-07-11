@@ -7,6 +7,7 @@ export default function HomePage() {
                 </div>
 
                 <h2 className="text-center my-5">JW FOR ...</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis odit sed earum, qui ad perferendis quia tempore voluptas, necessitatibus atque facilis magni omnis eaque molestias consequuntur cum ipsa porro aspernatur.</p>
 
                 <div className="container">
                     <div className="row row-cols-1">
