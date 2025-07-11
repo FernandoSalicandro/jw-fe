@@ -9,6 +9,7 @@ a {
     left: 0;
     width: 100%;
     height: 150px;
+    border-bottom : 1px solid white;
 }
 
 .left-col, .right-col {
@@ -23,6 +24,7 @@ a {
 }
 
 .brand-col {
+    letter-spacing : 0.5rem;
     width: 40%;
 }
 
