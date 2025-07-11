@@ -27,7 +27,7 @@ export default function ProductPage() {
     return (
         <> {gioiello ?
             <body className="body">
-                <main>
+                <main className="main">
                     <div className="container">
                         <div className="card margin-top">
                             <img src={gioiello.image_url} className="card-img-top" alt={gioiello.name} />
