@@ -14,7 +14,7 @@ function App() {
     <GuestLayout />
     <Routes>
       <Route path='/' element={<HomePage />}  />
-      <Route path='/productDetails' element={<ProductPage />} />
+      <Route path='/productDetails/:id' element={<ProductPage />} />
     </Routes>
     
     
