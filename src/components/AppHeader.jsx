@@ -13,14 +13,14 @@ const AppHeader = () => {
         backgroundColor: '#ffffff',
         borderBottom: '1px solid #cccccc',
         color: '#000000',
-        transition: {  duration: 1 }
+        transition: {  duration: 0.4 }
       });
     } else {
       controls.start({
         backgroundColor: 'transparent',
         borderBottom: '1px solid #ffffff',
         color: '#ffffff',
-        transition: {duration: 1 }
+        transition: {duration: 0.4 }
       });
     }
   });
