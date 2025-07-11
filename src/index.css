@@ -258,6 +258,44 @@ a {
 
 }
 
+.footer{
+    background-color: black;
+    display: flex;
+    gap:1rem;
+
+}
+
+.footer ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.footer ul li {
+    margin: 0.5rem 0;
+    padding: 0;
+    width: 100%;
+    display: block;
+}
+
+
+.footer li a{
+    text-decoration: none;
+    color: white;
+}
+
+
+.footer.column{
+    margin: 1rem;
+    color: white;
+}
+
+.footer p{
+    font-style: italic;
+
+}
+
 
 
 /* Modifiche pagina dettagli (Geani) */
@@ -284,5 +322,6 @@ a {
     background-color: black;
 
     height: auto;
+
 
 }

@@ -1,4 +1,4 @@
-import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import HomePage from './Pages/Homepage.jsx'
@@ -11,19 +11,26 @@ function App() {
 
   return (
     <>
-    <BrowserRouter>
-    <GuestLayout/>
-    <Routes>
-      <Route path='/' element={<HomePage />}  />
-      <Route path='/productDetails/:slug' element={<ProductPage />} />
-    </Routes>
+
+      <BrowserRouter>
+        <Routes>
+          <Route element={<GuestLayout />}>
+            <Route path='/' element={<HomePage />} />
+            <Route path='/productDetails/:slug' element={<ProductPage />} />
+          </Route>
+        </Routes>
+
+
+
+      </BrowserRouter>
+
 
    
 
     
     
     
-    </BrowserRouter>
+
 
     </>
   )
