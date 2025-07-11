@@ -38,3 +38,40 @@ a {
 .hero-section img {
     width: 100%;
 }
+
+.footer{
+    background-color: black;
+    display: flex;
+    gap:1rem;
+
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+ul li {
+    margin: 0.5rem 0;
+    padding: 0;
+    width: 100%;
+    display: block;
+}
+
+
+ li a{
+    text-decoration: none;
+    color: white;
+}
+
+
+.column{
+    margin: 1rem;
+    color: white;
+}
+
+p{
+    font-style: italic;
+}
