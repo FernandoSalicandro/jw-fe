@@ -449,7 +449,12 @@ main {
     display: none;
 }
 
+.image-price img:hover {
+    cursor: pointer;
+}
+
 .image-price:hover .prezzo{
+    cursor: pointer;
     display: block;
     text-align: center;
     font-size: smaller;
