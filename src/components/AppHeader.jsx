@@ -6,52 +6,55 @@ const AppHeader = ({ isHomePage }) => {
     const { scrollY } = useScroll();
     const controls = useAnimation();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const [searchValue, setSearchValue] = useState('');
 
     useEffect(() => {
-        const unsubscribe = scrollY.on("change", (y) => {
+        const handleScroll = (y) => {
+            setIsScrolled(y > 50);
+
+            const baseStyle = {
+                transition: { duration: 0.4 }
+            };
+
             if (isHomePage) {
-                // Comportamento per la homepage
                 if (y > 50) {
                     controls.start({
                         backgroundColor: '#ffffff',
                         borderBottom: '1px solid #cccccc',
-                        color: '#000000',
-                        transition: { duration: 0.4 }
+                        ...baseStyle
                     });
                 } else {
                     controls.start({
                         backgroundColor: 'transparent',
                         borderBottom: '1px solid #ffffff',
-                        color: '#ffffff',
-                        transition: { duration: 0.4 }
+                        ...baseStyle
                     });
                 }
             } else {
-                // Comportamento per le altre pagine
                 if (y > 50) {
                     controls.start({
                         backgroundColor: '#ffffff',
                         borderBottom: '1px solid #cccccc',
-                        color: '#000000',
-                        transition: { duration: 0.4 }
+                        ...baseStyle
                     });
                 } else {
                     controls.start({
                         backgroundColor: '#000000',
                         borderBottom: '1px solid #ffffff',
-                        color: '#ffffff',
-                        transition: { duration: 0.4 }
+                        ...baseStyle
                     });
                 }
             }
-        });
+        };
 
-        // Imposta lo stato iniziale per le pagine non-homepage
+        const unsubscribe = scrollY.on("change", handleScroll);
+
         if (!isHomePage) {
             controls.start({
                 backgroundColor: '#000000',
                 borderBottom: '1px solid #ffffff',
-                color: '#ffffff',
                 transition: { duration: 0.4 }
             });
         }
@@ -69,80 +72,133 @@ const AppHeader = ({ isHomePage }) => {
         document.body.style.overflow = 'auto';
     };
 
+    const textClass = isMenuOpen ? 'text-white' : isScrolled ? 'text-black' : 'text-white';
+    const brandTextClass = (() => {
+        if (isMenuOpen) {
+            return isHomePage ? 'text-white' : 'text-black'; // ← menu aperto
+        } else if (isScrolled) {
+            return 'text-black'; // ← scroll attivo
+        } else {
+            return isHomePage ? 'text-white' : 'text-white'; // ← in alto
+        }
+    })();
+
+
+
     return (
-        <motion.header className='header' animate={controls}>
+        <motion.header
+            className='header'
+            animate={controls}
+            initial={isHomePage ? {
+                backgroundColor: 'transparent'
+            } : {
+                backgroundColor: '#000000'
+            }}
+        >
             <div className="nav-bar d-flex justify-content-between align-items-center p-3">
-                {/* Hamburger menu (mobile only) */}
-                <button 
-                    className={`hamburger-menu d-lg-none ${isMenuOpen ? 'active' : ''}`}
+                {/* Hamburger Menu */}
+                <button
+                    className={`hamburger-menu d-lg-none ${isMenuOpen ? 'active' : ''} ${isScrolled ? 'scrolled' : ''}`}
                     onClick={toggleMenu}
-                    aria-label="Toggle menu"
+                    aria-label="Toggle navigation menu"
                 >
                     <span></span>
                     <span></span>
                     <span></span>
                 </button>
 
-                {/* Navigation links */}
-                <motion.div 
+                {/* Navigation Links */}
+                <motion.div
                     className={`left-col ${isMenuOpen ? 'show' : ''}`}
                     initial={false}
                     animate={{
-                        opacity: isMenuOpen ? 1 : 1,
-                        y: isMenuOpen ? 0 : 0
+                        opacity: 1,
+                        y: 0
                     }}
                     transition={{
                         duration: 0.3,
                         ease: "easeInOut"
                     }}
                 >
-                    <NavLink 
-                        to='/' 
-                        className="nav-link" 
+                    <NavLink
+                        to='/'
+                        className={`nav-link ${textClass}`}
                         onClick={closeMenu}
                     >
                         Home
                     </NavLink>
-                    <NavLink 
-                        to='/categories' 
-                        className="nav-link" 
+                    <NavLink
+                        to='/categories'
+                        className={`nav-link ${textClass}`}
                         onClick={closeMenu}
                     >
                         Categorie
                     </NavLink>
                 </motion.div>
 
-                {/* Brand logo */}
-                <motion.div 
+                {/* Brand Logo */}
+                <motion.div
                     className="brand-col"
                     animate={{
                         scale: isMenuOpen ? 0.95 : 1
                     }}
-                    transition={{ duration: 0.3 }}
+                    transition={{
+                        duration: 0.3,
+                        ease: "easeOut"
+                    }}
                 >
-                    <p className='text-center m-0'>
-                        JW <span><img src="/img/jw_logo.png" alt="Brand Logo Image" /></span> LUX
+                    <p className={`text-center m-0 ${brandTextClass}`}>
+
+
+                        JW <span><img src="/img/jw_logo.png" alt="JW LUX Logo" /></span> LUX
                     </p>
                 </motion.div>
 
-                {/* Right actions */}
+                {/* Action Icons */}
                 <div className="right-col d-flex justify-content-end gap-3">
-                    <motion.p 
-                        className='m-0'
+                    <motion.p
+                        className={`m-0 ${textClass}`}
                         whileHover={{ scale: 1.1 }}
                         transition={{ duration: 0.2 }}
                     >
-                        <i className="fa-solid fa-magnifying-glass"></i>
+                        <i type="button" onClick={() => setIsSearchOpen(!isSearchOpen)} className="fa-solid fa-magnifying-glass" aria-label="Search"></i>
                     </motion.p>
-                    <motion.p 
-                        className='m-0'
+                    <motion.p
+                        className={`m-0 ${textClass}`}
                         whileHover={{ scale: 1.1 }}
                         transition={{ duration: 0.2 }}
                     >
-                        <i className="fa-solid fa-bag-shopping"></i>
+                        <i className="fa-solid fa-bag-shopping" aria-label="Shopping cart"></i>
                     </motion.p>
                 </div>
             </div>
+            {isSearchOpen && (
+                <>
+                    <div className={`nav-search-cont container-fluid bg-white text-black py-3 d-flex justify-content-center align-items-center gap-1 ${isSearchOpen ? 'open' : ''}`}>
+                        <i className="fa-solid fa-magnifying-glass" aria-label="Search"></i>
+                        <div action='submit' className="nav-search container-fluid form d-flex justify-content-center align-items-center gap-1">
+                            <input
+                                type="text"
+                                placeholder="Search..."
+                                className="form-control p-3"
+                                aria-label="Search"
+                                value={searchValue}
+                                onChange={(e) => setSearchValue(e.target.value)}
+                            />
+                            <i
+                                role="button"
+                                onClick={() => setIsSearchOpen(false)}
+                                className="fa-solid fa-xmark"
+                                aria-label="Close search"
+                            ></i>
+
+                        </div>
+
+                    </div>
+                </>
+
+            )}
+
         </motion.header>
     );
 };

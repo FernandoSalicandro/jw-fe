@@ -1,9 +1,13 @@
 import { useContext, useRef } from 'react';
+import { useParams, useNavigate }  from 'react-router-dom';
 import { ProductContext } from '../Context/ProductContext.jsx';
 
 export default function HomePage() {
     const { products } = useContext(ProductContext);
     const carouselRef = useRef(null);
+    const {slug} = useParams();
+    const navigate = useNavigate();
+
 
     const handleScroll = (direction) => {
         if (carouselRef.current) {
@@ -45,22 +49,26 @@ export default function HomePage() {
                     {/* Carousel Container */}
                     <div
                         ref={carouselRef}
-                        className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-2 carousel-container"
+                        className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-3 carousel-container"
                     >
                         {products && products.map(curProduct => (
-                            <div className="col" key={curProduct.id}>
-                                <div className="card">
-                                    <p className='text-center mt-1 mb-0 text-em'>
+                            <div className="col border-0" key={curProduct.id}>
+                                
+                                    <p className='text-center mt-1 mb-3 text-em'>
                                         {curProduct.name}
                                     </p>
-                                    <div className="card-body">
+                                    <div className="card-body border-0 d-flex flex-column align-items-center gap-2">
                                         <img 
                                             src={curProduct.image_url} 
                                             alt={curProduct.name}
                                             className="product-image"
                                         />
-                                    </div>
-                                </div>
+                                        <button
+                                        onClick={() => navigate(`/productDetails/${curProduct.slug}`)} 
+                                        className="btn btn-outline border-0 show-details">
+                                            Scopri di Più
+                                        </button>
+                                    </div>    
                             </div>
                         ))}
                     </div>
