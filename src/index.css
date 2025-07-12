@@ -161,14 +161,14 @@ main {
     margin-bottom: 100px;
     scroll-behavior: smooth;
     /* Firefox */
-    scrollbar-width: none; 
+    scrollbar-width: none;
     /* IE and Edge */
     -ms-overflow-style: none;
 }
 
 .carousel-container::-webkit-scrollbar {
     /* Chrome, Safari, Opera */
-    display: none; 
+    display: none;
 }
 
 .carousel-container img {
@@ -386,6 +386,24 @@ main {
         height: 25px;
     }
 
+
+    .hamburger-menu {
+
+        justify-content: space-around;
+    }
+
+    .hamburger-menu span {
+        margin-left: 0px;
+        width: 40px;
+        height: 2px;
+        background: currentColor;
+        border-radius: 2px;
+        transition: all 0.4s ease;
+        transform-origin: center;
+    }
+
+
+
 }
 
 /* Hero Section */
@@ -401,7 +419,7 @@ main {
 .carousel-container {
     flex-wrap: nowrap !important;
     overflow-x: auto;
-    margin-bottom : 100px;
+    margin-bottom: 100px;
 }
 
 .carousel-container img {
@@ -413,26 +431,26 @@ main {
 } */
 
 /* Modifiche pagina dettagli (Geani) */
-.no-promo{
+.no-promo {
     text-decoration: line-through;
     color: red;
-    font-weight: bold;   
+    font-weight: bold;
 }
 
-.promo{
+.promo {
     color: green;
     font-weight: bold;
 }
 
-.margin-top{
+.margin-top {
     margin-top: 150px !important;
 }
 
-.main{
+.main {
     background-color: #fff;
 }
 
-.body{
+.body {
     background-color: black;
 
     height: auto;
@@ -453,7 +471,7 @@ main {
     cursor: pointer;
 }
 
-.image-price:hover .prezzo{
+.image-price:hover .prezzo {
     cursor: pointer;
     display: block;
     text-align: center;
@@ -484,14 +502,14 @@ main {
 .footer-column ul {
     list-style: none;
     padding: 0;
-   
+
 }
 
 .footer-column ul li a {
     margin: 0.5rem 0;
     text-decoration: none;
     color: white;
-  
+
 }
 
 .footer-column h4 {
