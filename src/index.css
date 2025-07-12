@@ -302,3 +302,40 @@ a {
     height: auto;
 
 }
+
+/* footer */
+.footer {
+    background-color: black;
+    color: white;
+    padding: 1rem;
+    font-family: 'Arial', sans-serif;
+}
+
+.container-footer {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.footer-column {
+    flex: 1;
+    min-width: 200px;
+    margin: 1rem;
+}
+
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+   
+}
+
+.footer-column ul li a {
+    margin: 0.5rem 0;
+    text-decoration: none;
+    color: white;
+  
+}
+
+.footer-column h4 {
+    font-style: italic;
+}
