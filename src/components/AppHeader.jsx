@@ -2,32 +2,62 @@ import { NavLink } from 'react-router-dom';
 import { motion, useScroll, useAnimation } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
-const AppHeader = () => {
+const AppHeader = ({ isHomePage }) => {
     const { scrollY } = useScroll();
     const controls = useAnimation();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     useEffect(() => {
         const unsubscribe = scrollY.on("change", (y) => {
-            if (y > 50) {
-                controls.start({
-                    backgroundColor: '#ffffff',
-                    borderBottom: '1px solid #cccccc',
-                    color: '#000000',
-                    transition: { duration: 0.4 }
-                });
+            if (isHomePage) {
+                // Comportamento per la homepage
+                if (y > 50) {
+                    controls.start({
+                        backgroundColor: '#ffffff',
+                        borderBottom: '1px solid #cccccc',
+                        color: '#000000',
+                        transition: { duration: 0.4 }
+                    });
+                } else {
+                    controls.start({
+                        backgroundColor: 'transparent',
+                        borderBottom: '1px solid #ffffff',
+                        color: '#ffffff',
+                        transition: { duration: 0.4 }
+                    });
+                }
             } else {
-                controls.start({
-                    backgroundColor: 'transparent',
-                    borderBottom: '1px solid #ffffff',
-                    color: '#ffffff',
-                    transition: { duration: 0.4 }
-                });
+                // Comportamento per le altre pagine
+                if (y > 50) {
+                    controls.start({
+                        backgroundColor: '#ffffff',
+                        borderBottom: '1px solid #cccccc',
+                        color: '#000000',
+                        transition: { duration: 0.4 }
+                    });
+                } else {
+                    controls.start({
+                        backgroundColor: '#000000',
+                        borderBottom: '1px solid #ffffff',
+                        color: '#ffffff',
+                        transition: { duration: 0.4 }
+                    });
+                }
             }
         });
 
+        // Imposta lo stato iniziale per le pagine non-homepage
+        if (!isHomePage) {
+            controls.start({
+                backgroundColor: '#000000',
+                borderBottom: '1px solid #ffffff',
+                color: '#ffffff',
+                transition: { duration: 0.4 }
+            });
+        }
+
         return () => unsubscribe();
-    }, [scrollY, controls]);
+    }, [scrollY, controls, isHomePage]);
 
     const toggleMenu = () => {
         setIsMenuOpen(prev => !prev);
@@ -42,9 +72,7 @@ const AppHeader = () => {
     return (
         <motion.header className='header' animate={controls}>
             <div className="nav-bar d-flex justify-content-between align-items-center p-3">
-
-                {/* Hamburger (mobile only) */}
-                
+                {/* Hamburger menu (mobile only) */}
                 <button 
                     className={`hamburger-menu d-lg-none ${isMenuOpen ? 'active' : ''}`}
                     onClick={toggleMenu}
@@ -104,14 +132,14 @@ const AppHeader = () => {
                         whileHover={{ scale: 1.1 }}
                         transition={{ duration: 0.2 }}
                     >
-                      <i class="fa-solid fa-magnifying-glass"></i>
+                        <i className="fa-solid fa-magnifying-glass"></i>
                     </motion.p>
                     <motion.p 
                         className='m-0'
                         whileHover={{ scale: 1.1 }}
                         transition={{ duration: 0.2 }}
                     >
-                        <i class="fa-solid fa-bag-shopping"></i>
+                        <i className="fa-solid fa-bag-shopping"></i>
                     </motion.p>
                 </div>
             </div>
