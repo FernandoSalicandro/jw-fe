@@ -258,7 +258,17 @@ a {
 
 }
 
+/* Carousel */
 
+.carousel-container {
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    margin-bottom : 100px;
+}
+
+.carousel-container img {
+    max-width: 100%;
+}
 
 /* Modifiche pagina dettagli (Geani) */
 .no-promo{
