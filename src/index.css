@@ -258,6 +258,8 @@ a {
 
 }
 
+/*Fernando */
+
 /* Carousel */
 
 .carousel-container {
@@ -269,6 +271,10 @@ a {
 .carousel-container img {
     max-width: 100%;
 }
+
+/* .carousel-container::-webkit-scrollbar{
+    display: none;
+} */
 
 /* Modifiche pagina dettagli (Geani) */
 .no-promo{
