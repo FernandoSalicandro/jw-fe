@@ -380,8 +380,116 @@ main {
         font-size: 1.1rem;
     }
 
+
     .carousel-btn {
         width: 25px;
         height: 25px;
     }
+
+}
+
+/* Hero Section */
+.hero-section img {
+    width: 100%;
+
+}
+
+/*Fernando */
+
+/* Carousel */
+
+.carousel-container {
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    margin-bottom : 100px;
+}
+
+.carousel-container img {
+    max-width: 100%;
+}
+
+/* .carousel-container::-webkit-scrollbar{
+    display: none;
+} */
+
+/* Modifiche pagina dettagli (Geani) */
+.no-promo{
+    text-decoration: line-through;
+    color: red;
+    font-weight: bold;   
+}
+
+.promo{
+    color: green;
+    font-weight: bold;
+}
+
+.margin-top{
+    margin-top: 150px !important;
+}
+
+.main{
+    background-color: #fff;
+}
+
+.body{
+    background-color: black;
+
+    height: auto;
+
+}
+
+/* Altezza della card in "you may like" */
+
+.ge-height {
+    height: 100px;
+}
+
+.image-price .prezzo {
+    display: none;
+}
+
+.image-price:hover .prezzo{
+    display: block;
+    text-align: center;
+    font-size: smaller;
+    color: grey;
+}
+
+/* footer */
+.footer {
+    background-color: black;
+    color: white;
+    padding: 1rem;
+    font-family: 'Arial', sans-serif;
+}
+
+.container-footer {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.footer-column {
+    flex: 1;
+    min-width: 200px;
+    margin: 1rem;
+}
+
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+   
+}
+
+.footer-column ul li a {
+    margin: 0.5rem 0;
+    text-decoration: none;
+    color: white;
+  
+}
+
+.footer-column h4 {
+    font-style: italic;
+
 }
