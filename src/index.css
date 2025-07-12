@@ -289,7 +289,7 @@ a {
 }
 
 .margin-top{
-    margin-top: 150px;
+    margin-top: 150px !important;
 }
 
 .main{
@@ -301,6 +301,23 @@ a {
 
     height: auto;
 
+}
+
+/* Altezza della card in "you may like" */
+
+.ge-height {
+    height: 100px;
+}
+
+.image-price .prezzo {
+    display: none;
+}
+
+.image-price:hover .prezzo{
+    display: block;
+    text-align: center;
+    font-size: smaller;
+    color: grey;
 }
 
 /* footer */
