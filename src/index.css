@@ -295,7 +295,7 @@ main {
 }
 
 .footer-column h4 {
-    font-style: italic;
+    font-family: "Libertinus Mono", monospace;
 }
 
 .footer-column ul {
@@ -309,7 +309,19 @@ main {
     margin: 0.5rem 0;
     display: block;
 }
+.footer-column a{
+   font-size: small;
+}
 
+.footer-column p{
+    font-family: 'Dancing Script', cursive;
+}
+
+.footer-social a{
+    color: white;
+    font-size: 15px;
+    margin-right: 10px;
+}
 /* Utility Classes */
 .margin-top {
     margin-top: 150px !important;
