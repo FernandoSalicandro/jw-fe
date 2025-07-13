@@ -37,7 +37,7 @@ export default function ProductPage() {
 
     return (
         <>
-            <body className="body">
+           
                 {gioiello ?
                     <main className="main">
                         <div className="container">
@@ -107,7 +107,7 @@ export default function ProductPage() {
                     </main>
                     : <p>Caricamento in corso...</p>}
 
-            </body>
+            
         </>
     )
 

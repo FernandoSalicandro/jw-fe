@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import { motion, useScroll, useAnimation } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const AppHeader = ({ isHomePage }) => {
     const { scrollY } = useScroll();
@@ -9,6 +10,18 @@ const AppHeader = ({ isHomePage }) => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [searchValue, setSearchValue] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
+
+useEffect(() => {
+    if(searchValue && searchValue.length >= 4){
+        axios.get(`http://localhost:3000/products?search=${searchValue}`).then(resp =>
+            setSearchResults(resp.data)
+        ).catch(err => console.log(err))    
+    
+    } else {
+        setSearchResults([]);
+    }
+}, [searchValue])
 
     useEffect(() => {
         const handleScroll = (y) => {
@@ -195,6 +208,17 @@ const AppHeader = ({ isHomePage }) => {
                         </div>
 
                     </div>
+                    {searchResults.length >0 &&
+                    <div className="search-res-modal">
+                        {searchResults.map(curResult => (
+                            <div className="search-res-item">
+                                <a href={`/productDetails/${curResult.slug}`}>
+                                    {curResult.name}
+                                </a>
+                            </div>
+                        ))}
+                    </div>
+                    }
                 </>
 
             )}
