@@ -4,6 +4,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { ProductContext } from "../Context/ProductContext.jsx";
 import { useCart } from "../Context/CartContext.jsx";
+import Loader from "../components/Loader.jsx";
 
 export default function ProductPage() {
   const urlApi = "http://localhost:3000/products";
@@ -11,6 +12,7 @@ export default function ProductPage() {
   const [gioiello, setgioiello] = useState(null);
   const { products } = useContext(ProductContext);
   const {addToCart} = useCart()
+  const [loading, setLoading] = useState(true);
 
 //   Funzione per aggiungere al carello
 const handleAdd = (event) => {
@@ -32,9 +34,12 @@ const handleAdd = (event) => {
   useEffect(() => {
     axios.get(`${urlApi}/${slug}`).then((resp) => {
       setgioiello(resp.data);
+      setLoading(false)
       console.table(resp.data);
     });
   }, []);
+
+  if (loading) return <Loader />
 
   return (
     <>
