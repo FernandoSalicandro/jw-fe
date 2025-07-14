@@ -7,7 +7,7 @@ const EarringsPage = () => {
     fetch("http://localhost:3000/products?category=earrings")
       .then((res) => res.json())
       .then((data) => setEarrings(data))
-      .catch((err) => console.error("Errore fetch orecchini:", err));
+      .catch((err) => console.error("Errore fetch earrings:", err));
   }, []);
 
   return (
