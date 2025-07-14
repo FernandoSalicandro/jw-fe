@@ -1,7 +1,10 @@
-import { NavLink } from 'react-router-dom';
-import { motion, useScroll, useAnimation } from 'framer-motion';
+import { NavLink, Link } from 'react-router-dom';
+import { motion, useScroll, useAnimation, easeInOut } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import ProductsCarousel from '../components/ProductsCarousel.jsx';
+import MotionLinkUnderline from '../components/MotionLink.jsx';
+
 
 const AppHeader = ({ isHomePage }) => {
     const { scrollY } = useScroll();
@@ -11,17 +14,18 @@ const AppHeader = ({ isHomePage }) => {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [searchValue, setSearchValue] = useState('');
     const [searchResults, setSearchResults] = useState([]);
+    const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
 
-useEffect(() => {
-    if(searchValue && searchValue.length >= 4){
-        axios.get(`http://localhost:3000/products?search=${searchValue}`).then(resp =>
-            setSearchResults(resp.data)
-        ).catch(err => console.log(err))    
-    
-    } else {
-        setSearchResults([]);
-    }
-}, [searchValue])
+    useEffect(() => {
+        if (searchValue && searchValue.length >= 3) {
+            axios.get(`http://localhost:3000/products?search=${searchValue}`).then(resp =>
+                setSearchResults(resp.data)
+            ).catch(err => console.log(err))
+
+        } else {
+            setSearchResults([]);
+        }
+    }, [searchValue])
 
     useEffect(() => {
         const handleScroll = (y) => {
@@ -64,16 +68,12 @@ useEffect(() => {
 
         const unsubscribe = scrollY.on("change", handleScroll);
 
-        if (!isHomePage) {
-            controls.start({
-                backgroundColor: '#000000',
-                borderBottom: '1px solid #ffffff',
-                transition: { duration: 0.4 }
-            });
-        }
+        // 👇 Forza update immediato sul mount o cambio pagina
+        handleScroll(scrollY.get());
 
         return () => unsubscribe();
     }, [scrollY, controls, isHomePage]);
+
 
     const toggleMenu = () => {
         setIsMenuOpen(prev => !prev);
@@ -95,6 +95,8 @@ useEffect(() => {
             return isHomePage ? 'text-white' : 'text-white'; // ← in alto
         }
     })();
+
+    const MotionLink = motion(Link);
 
 
 
@@ -140,13 +142,13 @@ useEffect(() => {
                     >
                         Home
                     </NavLink>
-                    <NavLink
-                        to='/categories'
-                        className={`nav-link ${textClass}`}
-                        onClick={closeMenu}
+                    <button
+
+                        className={`border-0 btn btn-outline ${isScrolled ? 'show-details' : 'show-details-white'} ${textClass} fs-5 `}
+                        onClick={() => { setIsCategoriesOpen(!isCategoriesOpen); closeMenu() }}
                     >
-                        Categorie
-                    </NavLink>
+                        Categories
+                    </button>
                 </motion.div>
 
                 {/* Brand Logo */}
@@ -189,7 +191,7 @@ useEffect(() => {
                 <>
                     <div className={`nav-search-cont container-fluid bg-white text-black py-3 d-flex justify-content-center align-items-center gap-1 ${isSearchOpen ? 'open' : ''}`}>
                         <i className="fa-solid fa-magnifying-glass" aria-label="Search"></i>
-                        <div action='submit' className="nav-search container-fluid form d-flex justify-content-center align-items-center gap-1">
+                        <div className="nav-search container-fluid form d-flex justify-content-center align-items-center gap-1">
                             <input
                                 type="text"
                                 placeholder="Search..."
@@ -208,21 +210,67 @@ useEffect(() => {
                         </div>
 
                     </div>
-                    {searchResults.length >0 &&
-                    <div className="search-res-modal">
-                        {searchResults.map(curResult => (
-                            <div className="search-res-item">
-                                <a href={`/productDetails/${curResult.slug}`}>
-                                    {curResult.name}
-                                </a>
-                            </div>
-                        ))}
-                    </div>
-                    }
-                </>
+                    {searchResults.length > 0 &&
+                        <>
 
+                            <motion.div
+                                className="bg-white pb-2 border overflow-hidden"
+                                initial={{ height: 0 }}
+                                animate={{ height: 'auto' }}
+                                exit={{ height: 0 }}
+                                transition={{ ease: easeInOut, duration: 0.8 }}
+                            >
+                                <div className='d-flex justify-content-between align-items-center p-2'>
+                                    <p className='text-black mx-5 m-0'>Results</p>
+                                    <button className="btn btn-outline border-0 show-details mx-5 m-0">Show All</button>
+
+                                </div>
+
+                                <div className="search-res-modal ">
+                                    <ProductsCarousel products={searchResults} onCloseSearch={() => setIsSearchOpen(false)} />
+                                </div>
+
+
+
+                            </motion.div>
+                        </>
+                    }
+
+
+
+
+                </>
             )}
 
+            {isCategoriesOpen &&
+                <motion.div
+                    className="categories-nav-modal bg-white text-black pb-2 border overflow-hidden"
+                    initial={{ width: 0 }}
+                    animate={{ width: 300 }}
+                    exit={{ width: 0 }}
+                    transition={{ ease: easeInOut, duration: 0.8 }}
+                >
+
+                    <div className="d-flex justify-content-end p-2">
+                        <button
+                            className="btn-close"
+                            onClick={() => setIsCategoriesOpen(false)}
+                            aria-label="Close categories menu"
+                        ></button>
+                    </div>
+                    <ul>
+                        <li><MotionLinkUnderline to="/rings">Rings</MotionLinkUnderline></li>
+                        <li><MotionLinkUnderline to="/earrings">Earrings</MotionLinkUnderline></li>
+                        <li><MotionLinkUnderline to="/bracelets">Bracelets</MotionLinkUnderline></li>
+                        <li><MotionLinkUnderline to="/necklaces">Necklaces</MotionLinkUnderline></li>
+
+                    </ul>
+                   
+
+
+                </motion.div>
+
+            }
         </motion.header>
     );
 };
