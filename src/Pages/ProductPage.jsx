@@ -45,8 +45,8 @@ export default function ProductPage() {
                 </div>
                 {/* Bottoni
                  */}
-                <button className="btn btn-dark w-50 d-block">ADD TO CART</button>
-                <button className="btn btn-dark w-50 d-block mt-3">ADD TO WISHLIST</button>
+                <button className="btn btn-dark w-50 d-block show-details">ADD TO CART</button>
+                <button className="btn btn-dark w-50 d-block mt-3 show-details">ADD TO WISHLIST</button>
                 {/* Accordion */}
 
                 <div class="accordion mt-5" id="accordionExample">
