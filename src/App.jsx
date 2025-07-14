@@ -7,6 +7,9 @@ import RingPage from "./Pages/RingPage.jsx";
 import GuestLayout from "./layout/GuestLayout.jsx";
 import Loader from "./components/Loader.jsx";
 import { useEffect, useState } from "react";
+import EarringsPage from "./pages/EarringsPage.jsx";
+import BraceletsPage from "./pages/BraceletsPage.jsx";
+import NecklacesPage from "./pages/NecklacesPage.jsx";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -29,6 +32,9 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/productDetails/:slug" element={<ProductPage />} />
             <Route path="/rings" element={<RingPage />} />
+            <Route path="/earrings" element={<EarringsPage />} />
+            <Route path="/bracelets" element={<BraceletsPage />} />
+            <Route path="/necklaces" element={<NecklacesPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
