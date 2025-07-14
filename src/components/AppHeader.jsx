@@ -223,7 +223,7 @@ const AppHeader = ({ isHomePage }) => {
       </motion.header>
 
       {/* Cart Modal */}
-      <CartModal isOpen={cartIsOpen} onClose={() => setCartIsOpen(false)} />
+      <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </>
   );
 };
