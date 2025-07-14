@@ -4,10 +4,10 @@ const NecklacesPage = () => {
   const [necklaces, setNecklaces] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/products?category=bracelets")
+    fetch("http://localhost:3000/products?category=necklaces")
       .then((res) => res.json())
       .then((data) => setNecklaces(data))
-      .catch((err) => console.error("Error fetch bracelets:", err));
+      .catch((err) => console.error("Error fetch necklaces:", err));
   }, []);
 
   return (
