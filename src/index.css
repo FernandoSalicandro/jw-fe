@@ -1,10 +1,10 @@
 /* Reset e stili base */
- * {
-    font-family: 'Playfair Display', serif;
- }
+* {
+  font-family: "Playfair Display", serif;
+}
 :root {
-    --header-height: 120px;
-    --nav-search-height: 100px;
+  --header-height: 120px;
+  --nav-search-height: 100px;
 }
 /*common transitions - Fernando*/
 .header,
@@ -17,12 +17,9 @@
   transition: color 0.4s ease, background-color 0.4s ease, border-color 0.4s ease;
 }
 
-
-
-
- header p {
-    font-weight: 600;
- }
+header p {
+  font-weight: 600;
+}
 a {
   text-decoration: none;
   color: inherit;
@@ -34,14 +31,14 @@ main {
 
 /* Header Styles - Fernando*/
 .header {
-    color: white;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: var(--header-height);
-    border-bottom: 1px solid white;
-    z-index: 9999;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--header-height);
+  border-bottom: 1px solid white;
+  z-index: 9999;
 }
 
 .nav-bar {
@@ -59,15 +56,13 @@ main {
 }
 
 .left-col a {
-    font-size: 1.5rem;
-    font-weight: 500;
-    transition: opacity 0.3s ease;
-    position: relative;
-    overflow: hidden;
-    padding: 6px 12px;
+  font-size: 1.5rem;
+  font-weight: 500;
+  transition: opacity 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  padding: 6px 12px;
 }
-
-
 
 .left-col a:hover {
   opacity: 0.8;
@@ -130,7 +125,7 @@ main {
 }
 
 .fa-bag-shopping {
-    padding : 0px 12px 0px 12px;
+  padding: 0px 12px 0px 12px;
 }
 
 /* Hamburger Menu - Fernando */
@@ -181,19 +176,19 @@ main {
 }
 
 @keyframes nav-search-anim {
-    0% {
-        height: 0px;
-    }
+  0% {
+    height: 0px;
+  }
 
-    100% {
-        height: 100px;
-    }
+  100% {
+    height: 100px;
+  }
 }
 
 .nav-search {
-    border: none;
-    height: var(--nav-search-height);
-    animation: nav-search-anim 1s ease-in-out;
+  border: none;
+  height: var(--nav-search-height);
+  animation: nav-search-anim 1s ease-in-out;
 }
 
 .nav-search input {
@@ -224,33 +219,45 @@ main {
   scrollbar-width: none;
 }
 
-
 .search-res-item img {
-    width: 100px;
+  width: 100px;
 }
 
 .categories-nav-modal {
-    display: flex; 
-    flex-direction: column;
-    justify-content: start;
-    padding: 1rem;
-    height: calc(100vh - var(--header-height));
-    z-index : 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  padding: 1rem;
+  height: calc(100vh - var(--header-height));
+  z-index: 9999;
 }
 
 .categories-nav-modal img {
-    
-    width: 40px;
-    height: 40px;
+  width: 40px;
+  height: 40px;
 }
 
-
-header li, header a {
-    font-size: 1.2rem;
-    color: white;
-    list-style: none;
+header li,
+header a {
+  font-size: 1.2rem;
+  color: white;
+  list-style: none;
 }
 
+.cart-modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100vh;
+  background-color: white; /* o un colore a tua scelta */
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 1rem;
+}
 
 /* Hero Section - Fernando*/
 .hero-section img {
@@ -327,41 +334,41 @@ header li, header a {
 }
 
 @keyframes fillLeftToRight {
-    from {
-        background-size: 0% 100%;
-    }
+  from {
+    background-size: 0% 100%;
+  }
 
-    to {
-        background-size: 100% 100%;
-    }
+  to {
+    background-size: 100% 100%;
+  }
 }
 
 /*Animazione Bianca*/
 
 .show-details-white {
-    background: linear-gradient(to right, white 100%, white 100%);
-    background-size: 0% 100%;
-    background-repeat: no-repeat;
-    color: white;
-    transition: color 0.3s ease;
-    position: relative;
-    z-index: 1;
+  background: linear-gradient(to right, white 100%, white 100%);
+  background-size: 0% 100%;
+  background-repeat: no-repeat;
+  color: white;
+  transition: color 0.3s ease;
+  position: relative;
+  z-index: 1;
 }
 
 /* Effetto riempimento Sinistra -> Destra - Fernando*/
 .show-details-white:hover {
-    animation: fillLeftToRight 1s forwards;
-    color: rgb(10, 10, 10) !important;
+  animation: fillLeftToRight 1s forwards;
+  color: rgb(10, 10, 10) !important;
 }
 
 @keyframes fillLeftToRight {
-    from {
-        background-size: 0% 100%;
-    }
+  from {
+    background-size: 0% 100%;
+  }
 
-    to {
-        background-size: 100% 100%;
-    }
+  to {
+    background-size: 100% 100%;
+  }
 }
 
 /* Footer - Federica */
@@ -401,17 +408,17 @@ header li, header a {
 }
 
 .footer-column a {
-    font-size: small;
+  font-size: small;
 }
 
 .footer-column p {
-    font-family: 'Dancing Script', cursive;
+  font-family: "Dancing Script", cursive;
 }
 
 .footer-social a {
-    color: white;
-    font-size: 15px;
-    margin-right: 10px;
+  color: white;
+  font-size: 15px;
+  margin-right: 10px;
 }
 
 /* Utility Classes */
@@ -420,7 +427,7 @@ header li, header a {
 }
 
 .price-box {
-  font-family: 'Georgia', serif;
+  font-family: "Georgia", serif;
 }
 
 .no-promo {
@@ -432,7 +439,7 @@ header li, header a {
 }
 
 .no-promo::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: 0;
@@ -444,10 +451,9 @@ header li, header a {
 
 .promo {
   font-size: 1.25rem;
-  color: #D4AF37; /* oro lusso */
+  color: #d4af37; /* oro lusso */
   font-weight: bold;
 }
-
 
 /* Altezza della card in "you may like" */
 .ge-height {
@@ -485,10 +491,9 @@ header li, header a {
 
 /* Media Queries */
 @media (max-width: 1200px) {
-
   .left-col a {
-  padding: 6px 12px !important;
- }
+    padding: 6px 12px !important;
+  }
 
   .brand-col p {
     font-size: 2.5rem;
@@ -503,10 +508,9 @@ header li, header a {
 }
 
 @media (max-width: 1100px) {
-
   .left-col a {
-  padding: 6px 12px !important;
- }
+    padding: 6px 12px !important;
+  }
 
   .brand-col p {
     font-size: 2.5rem;
@@ -521,10 +525,9 @@ header li, header a {
 }
 
 @media (max-width: 992px) {
-
   .left-col a {
-  padding: 6px 12px !important;
- }
+    padding: 6px 12px !important;
+  }
 
   .hamburger-menu {
     display: flex;
@@ -567,10 +570,9 @@ header li, header a {
 }
 
 @media (max-width: 768px) {
-
- .left-col a {
-  padding: 6px 12px;
- }
+  .left-col a {
+    padding: 6px 12px;
+  }
 
   .header {
     height: 100px;
@@ -601,10 +603,9 @@ header li, header a {
 }
 
 @media (max-width: 576px) {
-
   .left-col a {
-  padding: 6px 12px;
- }
+    padding: 6px 12px;
+  }
 
   .header {
     height: 80px;
@@ -651,6 +652,7 @@ header li, header a {
   }
 }
 
+
 /* Ring Page Styles */
 
 .heroRing-img{
@@ -661,4 +663,47 @@ header li, header a {
 .heroRing-img img {
   width: 100%;
   height: auto;
+}
+
+/* LOADER SCREEN */
+.loading-screen {
+  background-color: #fff;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Helvetica Neue', sans-serif;
+}
+
+.logo-pulse {
+  width: 120px;
+  height: auto;
+  animation: pulse 1.5s ease-in-out infinite;
+  filter: drop-shadow(0 0 10px gold);
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+    filter: drop-shadow(0 0 10px gold);
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+    filter: drop-shadow(0 0 20px gold);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+    filter: drop-shadow(0 0 10px gold);
+  }
+}
+
+.loading-text {
+  margin-top: 20px;
+  font-size: 1.2rem;
+  color: #444;
+  letter-spacing: 1px;
 }

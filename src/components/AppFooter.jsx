@@ -1,4 +1,4 @@
-
+import { NavLink } from 'react-router-dom';
 const AppFooter = () => {
     return (
         <footer className="footer">
@@ -8,42 +8,44 @@ const AppFooter = () => {
                     <p>Please call or email for any information or to make an appointment at one of our boutiques.</p>
                     <p>+1 (212) 421 3030</p>
                     <div className="footer-social">
-                        <a href="#"><i className="fab fa-facebook-f"></i></a>
-                        <a href="#"><i className="fab fa-instagram"></i></a>
-                        <a href="#"><i className="fab fa-twitter"></i></a>
-                        </div>
+                        <NavLink to="#"><i className="fab fa-facebook-f"></i></NavLink>
+                        <NavLink to="#"><i className="fab fa-instagram"></i></NavLink>
+                        <NavLink to="#"><i className="fab fa-twitter"></i></NavLink>
+                    </div>
                 </div>
                 <div className="footer-column">
                     <h4>SHOP</h4>
                     <ul>
-                        <li><a href="#">Anelli</a></li>
-                        <li><a href="#">Bracciali</a></li>
-                        <li><a href="#">Collane</a></li>
-                        <li><a href="#">Orecchini</a></li>
+                        <li><NavLink to="/earrings">Earrings</NavLink></li>
+                        <li><NavLink to="/bracelets">Bracelets</NavLink></li>
+                        <li><NavLink to="/necklace">Necklaces</NavLink></li>
+                        <li><NavLink to="/rings">Rings</NavLink></li>
                     </ul>
                 </div>
 
                 <div className="footer-column">
                     <h4>CLIENT SERVICES</h4>
                     <ul>
-                        <li><a href="#">Chi siamo</a></li>
-                        <li><a href="#">Servizi clienti</a></li>
-                        <li><a href="#">Spedizione</a></li>
-                        <li><a href="#">Resi e rimborsi</a></li>
+                        <li><NavLink to="/About Us">About Us</NavLink></li>
+                        <li><NavLink to="/CustomerService">Customer Service</NavLink></li>
+                        <li><NavLink to="/Shippingandreturns">Shipping and Returns</NavLink></li>
                     </ul>
                 </div>
 
                 <div className="footer-column">
                     <h4>CONTACT</h4>
                     <ul>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Book an Appointment</a></li>
-                        <li><a href="#">Carrers</a></li>
+                        <li><NavLink to="/contact">Contact Us</NavLink></li>
+                        <li><NavLink to="/book-appointment">Book an Appointment</NavLink></li>
+                        <li><NavLink to="/careers">Careers</NavLink></li>
                     </ul>
                 </div>
                 <div className="footer-column">
                     <h4>Sign Up</h4>
-                    <p>Scopri in anteprima i nuovi arrivi dal nostro straordinario laboratorio, gli eventi speciali e altre novità dal mondo di JW LUX.</p>
+                    <p>Discover in advance the new arrivals from our extraordinary workshop, special events, and other news from the world of JW LUX.</p>
+                    <NavLink to="/subscribe">
+                        <button className="bg-white btn btn-outline border-0 text-black show-details">Subscribe</button>
+                    </NavLink>
                 </div>
             </div>
         </footer>
