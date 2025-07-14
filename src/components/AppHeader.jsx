@@ -205,7 +205,7 @@ const AppHeader = ({ isHomePage }) => {
               initial={{ x: -300, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: -300, opacity: 0 }}
-              transition={{ ease: easeInOut, duration: 0.8 }}
+              transition={{ ease: easeInOut, duration: 0.5 }}
             >
               <div className="d-flex justify-content-end p-2">
                 <button className="btn-close" onClick={() => setIsCategoriesOpen(false)} aria-label="Close categories menu"></button>
