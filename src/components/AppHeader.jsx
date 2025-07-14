@@ -128,7 +128,7 @@ const AppHeader = ({ isHomePage }) => {
               <i type="button" onClick={() => setIsSearchOpen(!isSearchOpen)} className="fa-solid fa-magnifying-glass" aria-label="Search"></i>
             </motion.p>
             <motion.p className={`m-0 ${textClass}`} whileHover={{ scale: 1.1 }} transition={{ duration: 0.2 }}>
-              <i role='button' onClick={() => setCartIsOpen(!cartIsOpen)} className="fa-solid fa-bag-shopping" aria-label="Shopping cart"></i>
+              <i role='button' onClick={() => setIsCartOpen(!isCartOpen)} className="fa-solid fa-bag-shopping" aria-label="Shopping cart"></i>
             </motion.p>
           </div>
         </div>
