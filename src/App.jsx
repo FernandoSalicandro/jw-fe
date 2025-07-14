@@ -19,12 +19,7 @@ function App() {
             <Route path='/productDetails/:slug' element={<ProductPage />} />
           </Route>
         </Routes>
-
-
-
-
-
-
+        
       </BrowserRouter>
 
     </>
