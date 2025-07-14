@@ -211,10 +211,10 @@ const AppHeader = ({ isHomePage }) => {
                 <button className="btn-close" onClick={() => setIsCategoriesOpen(false)} aria-label="Close categories menu"></button>
               </div>
               <ul>
-                <li><MotionLinkUnderline to="/rings">Rings</MotionLinkUnderline></li>
-                <li><MotionLinkUnderline to="/earrings">Earrings</MotionLinkUnderline></li>
-                <li><MotionLinkUnderline to="/bracelets">Bracelets</MotionLinkUnderline></li>
-                <li><MotionLinkUnderline to="/necklaces">Necklaces</MotionLinkUnderline></li>
+                <li><MotionLinkUnderline onClick={() => setIsCategoriesOpen(false)} to="/rings">Rings</MotionLinkUnderline></li>
+                <li><MotionLinkUnderline onClick={() => setIsCategoriesOpen(false)} to="/earrings">Earrings</MotionLinkUnderline></li>
+                <li><MotionLinkUnderline onClick={() => setIsCategoriesOpen(false)} to="/bracelets">Bracelets</MotionLinkUnderline></li>
+                <li><MotionLinkUnderline onClick={() => setIsCategoriesOpen(false)} to="/necklaces">Necklaces</MotionLinkUnderline></li>
               </ul>
             </motion.div>
           )}
