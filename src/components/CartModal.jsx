@@ -2,7 +2,32 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../Context/CartContext';
 
 const CartModal = ({ isOpen, onClose }) => {
-  const { cart, removeFromCart } = useCart();
+  const { cart, removeFromCart, setCart } = useCart();
+
+const increaseQuantity = (id) => {
+  setCart(prevCart =>
+    prevCart.map(item =>
+      item.id === id
+        ? {
+            ...item,
+            quantity: item.quantity < item.stock_quantity // Per evitare di poter ordinare più dello stock
+              ? item.quantity + 1
+              : item.quantity
+          }
+        : item
+    )
+  );
+};
+
+  const decreaseQuantity = (id) => {
+    setCart(prevCart =>
+      prevCart.map(item =>
+        item.id === id
+          ? { ...item, quantity: Math.max(item.quantity - 1, 1) } // evita valori < 1
+          : item
+      )
+    );
+  };
 
   return (
     <AnimatePresence>
@@ -22,19 +47,24 @@ const CartModal = ({ isOpen, onClose }) => {
           {cart.length > 0 ? (
             <ul className="mt-3 list-unstyled d-flex flex-column">
               {cart.map(item => (
-                <li key={item.id} className="mb-3 border-bottom pb-2">
-                  <div className="d-flex justify-content-between">
-                    <div>
-                      <p className="mb-1 fw-bold">{item.name}</p>
-                      <p className="mb-1">Quantità: {item.quantity}</p>
-                      <p className="mb-1">Prezzo: {item.price} €</p>
+                <li key={item.id} className="mb-3 border-bottom pb-">
+                  <div class="card mb-3 rounded">
+                    <div class="row g-0">
+                      <div class="col-md-4">
+                        <img src={item.image_url} class="img-fluid rounded" alt={item.name} />
+                      </div>
+                      <div class="col-md-8">
+                        <div class="card-body">
+                          <h5 class="card-title h6">{item.name}</h5>
+                          <p className='card-text'> <small>Price: {parseInt(item.price)} €</small></p>
+                          <p class="card-text">
+                            <span><button onClick={() => decreaseQuantity(item.id)} className='btn btn-outline-secondary' disabled={item.quantity === 1}>-</button></span>
+                            <span className='mx-2'>{item.quantity}</span>
+                            <span><button onClick={() => increaseQuantity(item.id)} className="btn btn-outline-secondary" disabled={item.quantity >= item.stock_quantity}>+</button></span></p>
+                          <button className='btn btn-outline-danger w-100' onClick={() => removeFromCart(item.id)}>Rimuovi</button>
+                        </div>
+                      </div>
                     </div>
-                    <button
-                      className="btn btn-sm btn-outline-danger"
-                      onClick={() => removeFromCart(item.id)}
-                    >
-                      Rimuovi
-                    </button>
                   </div>
                 </li>
               ))}
