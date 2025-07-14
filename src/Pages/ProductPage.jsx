@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { ProductContext } from "../Context/ProductContext.jsx";
-import { useCart } from "../Context/CartContext.jsx";
+import  { useCart } from "../Context/CartContext.jsx";
 
 export default function ProductPage() {
   const urlApi = "http://localhost:3000/products";
