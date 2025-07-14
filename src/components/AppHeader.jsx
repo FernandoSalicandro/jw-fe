@@ -17,7 +17,7 @@ const AppHeader = ({ isHomePage }) => {
   const [searchValue, setSearchValue] = useState('');
   const { searchResults, setSearchResults } = useSearch()
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
-  const [cartIsOpen, setCartIsOpen] = useState(false);
+  const {isCartOpen, setIsCartOpen} = useCart()
 
 
   const navigate = useNavigate()
@@ -224,7 +224,6 @@ const AppHeader = ({ isHomePage }) => {
 
       {/* Cart Modal */}
       <CartModal isOpen={cartIsOpen} onClose={() => setCartIsOpen(false)} />
-
     </>
   );
 };
