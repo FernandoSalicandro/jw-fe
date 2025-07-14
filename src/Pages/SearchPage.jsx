@@ -53,7 +53,7 @@ export default function SearchPage() {
             <div className="">
                 <div className="container mt-5">
 
-                    <h2>Risultati della ricerca</h2>
+                    <h2>Your Search Results...</h2>
                     <div className="row">
                         {filteredResults.map(product => (
                             <div key={product.id} className="col-md-4 mb-4">

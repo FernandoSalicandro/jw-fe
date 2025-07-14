@@ -15,7 +15,7 @@ const AppHeader = ({ isHomePage }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchValue, setSearchValue] = useState('');
-  const {searchResults, setSearchResults} = useSearch()
+  const { searchResults, setSearchResults } = useSearch()
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [cartIsOpen, setCartIsOpen] = useState(false);
 
@@ -134,71 +134,97 @@ const AppHeader = ({ isHomePage }) => {
         </div>
 
         {/* Search Bar */}
-        {isSearchOpen && (
-          <>
-            <div className={`nav-search-cont container-fluid bg-white text-black py-3 d-flex justify-content-center align-items-center gap-1`}>
-              <i className="fa-solid fa-magnifying-glass"></i>
-              <div className="nav-search container-fluid form d-flex gap-1">
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  className="form-control p-3"
-                  value={searchValue}
-                  onChange={(e) => setSearchValue(e.target.value)}
-                />
-                <i role="button" onClick={() => setIsSearchOpen(false)} className="fa-solid fa-xmark" aria-label="Close search"></i>
-              </div>
-            </div>
+        <AnimatePresence>
+          {isSearchOpen && (
+            <>
 
-            {searchResults.length > 0 && (
-              <motion.div
-                className="bg-white pb-2 border overflow-hidden"
-                initial={{ height: 0 }}
-                animate={{ height: 'auto' }}
-                exit={{ height: 0 }}
-                transition={{ ease: easeInOut, duration: 0.8 }}
-              >
-                <div className='d-flex justify-content-between align-items-center p-2'>
-                  <p className='text-black mx-5 m-0'>Results</p>
-                  <button 
-                  className="btn btn-outline border-0 show-details mx-5 m-0"
-                  onClick={()=> navigate('/search')}
-                  
-                  >Show All</button>
-                </div>
-                <div className="search-res-modal">
-                  <ProductsCarousel products={searchResults} onCloseSearch={() => setIsSearchOpen(false)} />
-                </div>
-              </motion.div>
-            )}
-          </>
-        )}
+
+              {isSearchOpen && (
+                <motion.div
+
+                  initial={{ y: -42, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -32, opacity: 0 }}
+                  transition={{ ease: "easeOut", duration: 0.5 }}
+                  className="nav-search-cont container-fluid bg-white text-black py-3 d-flex justify-content-center align-items-center gap-1"
+                >
+                  <i className="fa-solid fa-magnifying-glass"></i>
+                  <div className="nav-search container-fluid form d-flex gap-1">
+                    <input
+                      type="text"
+                      placeholder="Search..."
+                      className="form-control p-3"
+                      value={searchValue}
+                      onChange={(e) => setSearchValue(e.target.value)}
+                    />
+                    <i
+                      role="button"
+                      onClick={() => setIsSearchOpen(false)}
+                      className="fa-solid fa-xmark"
+                      aria-label="Close search"
+                    ></i>
+                  </div>
+                </motion.div>
+              )}
+
+
+            
+
+                {searchResults.length > 0 && (
+                  <motion.div
+                    className="bg-white pb-2 border overflow-hidden"
+                    initial={{ y: -32, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -100, opacity: 0 }}
+                    transition={{ ease: easeInOut, duration: 0.5 }}
+                  >
+                    <div className='d-flex justify-content-between align-items-center p-2'>
+                      <p className='text-black mx-5 m-0'>Results</p>
+                      <button
+                        className="btn btn-outline border-0 show-details mx-5 m-0"
+                        onClick={() => { navigate('/search'); setIsSearchOpen(false) }}
+
+                      >Show All</button>
+                    </div>
+                    <div className="search-res-modal">
+                      <ProductsCarousel products={searchResults} onCloseSearch={() => setIsSearchOpen(false)} />
+                    </div>
+                  </motion.div>
+                )}
+              
+
+            </>
+          )}
+        </AnimatePresence>
 
         {/* Categories Modal */}
-        {isCategoriesOpen && (
-          <motion.div
-            className="categories-nav-modal bg-white text-black pb-2 border overflow-hidden"
-            initial={{ width: 0 }}
-            animate={{ width: 300 }}
-            exit={{ width: 0 }}
-            transition={{ ease: easeInOut, duration: 0.8 }}
-          >
-            <div className="d-flex justify-content-end p-2">
-              <button className="btn-close" onClick={() => setIsCategoriesOpen(false)} aria-label="Close categories menu"></button>
-            </div>
-            <ul>
-              <li><MotionLinkUnderline to="/rings">Rings</MotionLinkUnderline></li>
-              <li><MotionLinkUnderline to="/earrings">Earrings</MotionLinkUnderline></li>
-              <li><MotionLinkUnderline to="/bracelets">Bracelets</MotionLinkUnderline></li>
-              <li><MotionLinkUnderline to="/necklaces">Necklaces</MotionLinkUnderline></li>
-            </ul>
-          </motion.div>
-        )}
+        <AnimatePresence>
+          {isCategoriesOpen && (
+            <motion.div
+              className="categories-nav-modal bg-white text-black pb-2 border overflow-hidden"
+              initial={{ x: -300, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -300, opacity: 0 }}
+              transition={{ ease: easeInOut, duration: 0.8 }}
+            >
+              <div className="d-flex justify-content-end p-2">
+                <button className="btn-close" onClick={() => setIsCategoriesOpen(false)} aria-label="Close categories menu"></button>
+              </div>
+              <ul>
+                <li><MotionLinkUnderline to="/rings">Rings</MotionLinkUnderline></li>
+                <li><MotionLinkUnderline to="/earrings">Earrings</MotionLinkUnderline></li>
+                <li><MotionLinkUnderline to="/bracelets">Bracelets</MotionLinkUnderline></li>
+                <li><MotionLinkUnderline to="/necklaces">Necklaces</MotionLinkUnderline></li>
+              </ul>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
       </motion.header>
 
       {/* Cart Modal */}
       <CartModal isOpen={cartIsOpen} onClose={() => setCartIsOpen(false)} />
-     
+
     </>
   );
 };

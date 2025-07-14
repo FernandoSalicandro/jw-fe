@@ -7,6 +7,7 @@ import RingPage from "./Pages/RingPage.jsx";
 import SearchPage from './Pages/SearchPage.jsx'
 import GuestLayout from "./layout/GuestLayout.jsx";
 import Loader from "./components/Loader.jsx";
+import AutoScrollTop from "./components/autoScrollTop.jsx";
 import { useEffect, useState } from "react";
 import EarringsPage from "./pages/EarringsPage.jsx";
 import BraceletsPage from "./pages/BraceletsPage.jsx";
@@ -28,6 +29,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
+        <AutoScrollTop />
         <Routes>
           <Route element={<GuestLayout />}>
             <Route path="/" element={<HomePage />} />
@@ -36,7 +38,7 @@ function App() {
             <Route path="/earrings" element={<EarringsPage />} />
             <Route path="/bracelets" element={<BraceletsPage />} />
             <Route path="/necklaces" element={<NecklacesPage />} />
-            <Route path='/search' element={<SearchPage />}/>
+            <Route path='/search' element={<SearchPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
