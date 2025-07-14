@@ -1,10 +1,11 @@
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { motion, useScroll, useAnimation, easeInOut, AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import ProductsCarousel from '../components/ProductsCarousel.jsx';
 import MotionLinkUnderline from '../components/MotionLink.jsx';
 import { useCart } from '../Context/CartContext';
+import { useSearch } from '../Context/SearchContext.jsx';
 import CartModal from '../components/CartModal.jsx';
 
 const AppHeader = ({ isHomePage }) => {
@@ -14,10 +15,12 @@ const AppHeader = ({ isHomePage }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchValue, setSearchValue] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
+  const {searchResults, setSearchResults} = useSearch()
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [cartIsOpen, setCartIsOpen] = useState(false);
 
+
+  const navigate = useNavigate()
   const { cart, removeFromCart } = useCart();
 
   useEffect(() => {
@@ -157,7 +160,11 @@ const AppHeader = ({ isHomePage }) => {
               >
                 <div className='d-flex justify-content-between align-items-center p-2'>
                   <p className='text-black mx-5 m-0'>Results</p>
-                  <button className="btn btn-outline border-0 show-details mx-5 m-0">Show All</button>
+                  <button 
+                  className="btn btn-outline border-0 show-details mx-5 m-0"
+                  onClick={()=> navigate('/search')}
+                  
+                  >Show All</button>
                 </div>
                 <div className="search-res-modal">
                   <ProductsCarousel products={searchResults} onCloseSearch={() => setIsSearchOpen(false)} />
