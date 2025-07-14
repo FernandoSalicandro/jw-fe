@@ -13,7 +13,7 @@ const underlineVariants = {
   hover: { width: '100%' }
 };
 
-export default function MotionLinkUnderline({ to, children }) {
+export default function MotionLinkUnderline({ to, children, ...props }) {
   return (
     <motion.div
       initial="initial"
@@ -23,6 +23,7 @@ export default function MotionLinkUnderline({ to, children }) {
     >
       <MotionLink
         to={to}
+        {...props}
         variants={linkVariants}
         style={{
           textDecoration: 'none',
