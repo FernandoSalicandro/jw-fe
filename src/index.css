@@ -652,6 +652,19 @@ header a {
   }
 }
 
+
+/* Ring Page Styles */
+
+.heroRing-img{
+  position: relative;
+  width: 100%;
+}
+
+.heroRing-img img {
+  width: 100%;
+  height: auto;
+}
+
 /* LOADER SCREEN */
 .loading-screen {
   background-color: #fff;
