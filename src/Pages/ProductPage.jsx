@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { ProductContext } from "../Context/ProductContext.jsx";
 import { useCart } from "../Context/CartContext.jsx";
 import Loader from "../components/Loader.jsx";
+import { useNavigate } from "react-router-dom";
 
 export default function ProductPage() {
   const urlApi = "http://localhost:3000/products";
@@ -13,12 +14,15 @@ export default function ProductPage() {
   const { products } = useContext(ProductContext);
   const {addToCart} = useCart()
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate()
 
 //   Funzione per aggiungere al carello
 const handleAdd = (event) => {
     event.preventDefault()
     addToCart({... gioiello, quantity: 1})
 }
+
+
   
 
   // Funzione per randomizzare 4 elementi
@@ -37,7 +41,7 @@ const handleAdd = (event) => {
       setLoading(false)
       console.table(resp.data);
     });
-  }, []);
+  }, [slug]);
 
   if (loading) return <Loader />
 
@@ -101,7 +105,7 @@ const handleAdd = (event) => {
               {randomItems.map((curItem, id) => (
                 <div key={id} className="col image-price mt-5">
                   <div>
-                    <img className="w-100 mb-3" src={curItem.image_url} alt={curItem.name} />
+                    <img role="button"  className="w-100 mb-3" src={curItem.image_url} alt={curItem.name} onClick={() => {navigate(`/productDetails/${curItem.slug}`)}}  />
                   </div>
                   <div className="ge-height">
                     <p className="text-center h6">{curItem.name}</p>
