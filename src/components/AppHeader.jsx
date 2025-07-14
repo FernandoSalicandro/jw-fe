@@ -15,6 +15,7 @@ const AppHeader = ({ isHomePage }) => {
     const [searchValue, setSearchValue] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
+    const [cartIsOpen, setCartIsOpen] = useState(false);
 
     useEffect(() => {
         if (searchValue && searchValue.length >= 3) {
@@ -101,7 +102,8 @@ const AppHeader = ({ isHomePage }) => {
 
 
     return (
-        <motion.header
+        <>
+         <motion.header
             className='header'
             animate={controls}
             initial={isHomePage ? {
@@ -183,7 +185,7 @@ const AppHeader = ({ isHomePage }) => {
                         whileHover={{ scale: 1.1 }}
                         transition={{ duration: 0.2 }}
                     >
-                        <i className="fa-solid fa-bag-shopping" aria-label="Shopping cart"></i>
+                        <i role='button' onClick={() => setCartIsOpen(!cartIsOpen)} className="fa-solid fa-bag-shopping" aria-label="Shopping cart"></i>
                     </motion.p>
                 </div>
             </div>
@@ -272,6 +274,8 @@ const AppHeader = ({ isHomePage }) => {
 
             }
         </motion.header>
+        </>
+       
     );
 };
 
