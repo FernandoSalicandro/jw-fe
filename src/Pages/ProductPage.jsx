@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -27,7 +27,7 @@ const handleAdd = (event) => {
     return shuffled.slice(0, count);
   };
 
-  const randomItems = getRandomSubset(products, 4);
+  const randomItems = useMemo(() => getRandomSubset(products, 4), [products]);
 
   console.log(randomItems);
 
@@ -59,7 +59,7 @@ const handleAdd = (event) => {
                 </div>
                 {/* Bottoni
                  */}
-                <button className="btn btn-dark w-50 d-block show-details" onClick={() => handleAdd(event)} >ADD TO CART</button>
+                <button className="btn btn-dark w-50 d-block show-details" onClick={handleAdd} >ADD TO CART</button>
                 <button className="btn btn-dark w-50 d-block mt-3 show-details">ADD TO WISHLIST</button>
                 {/* Accordion */}
 
