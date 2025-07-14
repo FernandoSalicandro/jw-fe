@@ -41,7 +41,7 @@ export default function ProductPage() {
                 <h2>{gioiello.name}</h2>
                 <div className="price-box">
                   <p className={gioiello.is_promo === 1 ? "no-promo" : "promo"}>Price: {gioiello.price} € </p>
-                  {gioiello.is_promo && <p className="promo">Dicount Price: {gioiello.discount_price} € </p>}
+                  {gioiello.is_promo === 1  ? <p className="promo">Dicount Price: {gioiello.discount_price} € </p> : ""}
                 </div>
                 {/* Bottoni
                  */}
