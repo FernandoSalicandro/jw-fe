@@ -4,6 +4,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import HomePage from "./Pages/Homepage.jsx";
 import ProductPage from "./Pages/ProductPage.jsx";
 import RingPage from "./Pages/RingPage.jsx";
+import SearchPage from './Pages/SearchPage.jsx'
 import GuestLayout from "./layout/GuestLayout.jsx";
 import Loader from "./components/Loader.jsx";
 import { useEffect, useState } from "react";
@@ -35,6 +36,7 @@ function App() {
             <Route path="/earrings" element={<EarringsPage />} />
             <Route path="/bracelets" element={<BraceletsPage />} />
             <Route path="/necklaces" element={<NecklacesPage />} />
+            <Route path='/search' element={<SearchPage />}/>
           </Route>
         </Routes>
       </BrowserRouter>
