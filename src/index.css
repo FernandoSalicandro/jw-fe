@@ -226,6 +226,7 @@ main {
   height: calc(100vh - var(--header-height));
   z-index: 9999;
   width: 300px;
+   box-shadow: 1px 0px 0px 0px rgba(178, 177, 177, 0.1);
 }
 
 .categories-nav-modal img {
