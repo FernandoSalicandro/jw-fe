@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ProductContext } from "../Context/ProductContext.jsx";
 import { useCart } from "../Context/CartContext.jsx";
+import { useWishList } from "../Context/WishListContext.jsx";
 import Loader from "../components/Loader.jsx";
 
 export default function ProductPage() {
@@ -10,7 +11,8 @@ export default function ProductPage() {
   const { slug } = useParams();
   const [gioiello, setgioiello] = useState(null);
   const { products } = useContext(ProductContext);
-  const { addToCart, setCartIsOpen } = useCart(); // include controllo per mostrare il carrello
+  const { addToCart, setCartIsOpen } = useCart(); 
+  const {addToWishList, setIsWishListOpen} = useWishList(); // include controllo per mostrare il carrello
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -19,6 +21,13 @@ export default function ProductPage() {
     event.preventDefault();
     addToCart({ ...gioiello, quantity: 1 });
     setCartIsOpen(true); // mostra il carrello
+  };
+
+  //Aggiungi alla Wishlist
+  const handleWishListAdd = (event) => {
+    event.preventDefault();
+    addToWishList({ ...gioiello, quantity: 1 });
+    setIsWishListOpen(true); 
   };
 
   // Funzione per randomizzare 4 prodotti
@@ -61,7 +70,7 @@ export default function ProductPage() {
                 <button className="btn btn-dark w-50 d-block show-details" onClick={handleAdd}>
                   ADD TO CART
                 </button>
-                <button className="btn btn-dark w-50 d-block mt-3 show-details">
+                <button className="btn btn-dark w-50 d-block mt-3 show-details" onClick={handleWishListAdd}>
                   ADD TO WISHLIST
                 </button>
 
