@@ -56,7 +56,7 @@ const increaseQuantity = (id) => {
                       <div class="col-md-8">
                         <div class="card-body">
                           <h5 class="card-title h6">{item.name}</h5>
-                          <p className='card-text'> <small>Price: {parseInt(item.price)} €</small></p>
+                          <p className='card-text'> <small>Price: {item.is_promo === 1 ? item.discount_price : item.price } €</small></p>
                           <p class="card-text">
                             <span><button onClick={() => decreaseQuantity(item.id)} className='btn btn-outline-secondary' disabled={item.quantity === 1}>-</button></span>
                             <span className='mx-2'>{item.quantity}</span>
@@ -75,7 +75,7 @@ const increaseQuantity = (id) => {
 
           {cart.length > 0 && (
             <p className="fw-bold mt-3">
-              Totale: {cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2)} €
+              Totale: {cart.reduce((sum, item) => sum + (item.is_promo === 1 ? item.discount_price : item.price) * item.quantity, 0).toFixed(2)} €
             </p>
           )}
         </motion.div>
