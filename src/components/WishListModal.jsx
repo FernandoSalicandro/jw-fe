@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useWishList } from '../Context/WishListContext';
 
 const WishListModal = ({ isOpen, onClose }) => {
-    const { wishList, removeFromWishList, setWishList } = useWishList();
+    const { wishList, removeFromWishList, setWishList, clearWishList } = useWishList();
 
     const increaseQuantity = (id) => {
         setWishList(prevWishlist => prevWishlist.map(
@@ -24,6 +24,7 @@ const WishListModal = ({ isOpen, onClose }) => {
         ));
     };
 
+    console.log(wishList)
     return (
         <AnimatePresence>
             {isOpen && (
@@ -64,6 +65,7 @@ const WishListModal = ({ isOpen, onClose }) => {
                                                     >
                                                         Scopri di più
                                                     </button>
+                                                    <button onClick={removeFromWishList}>rimuovi</button>
                                                 </div>
                                             </div>
                                         </div>
