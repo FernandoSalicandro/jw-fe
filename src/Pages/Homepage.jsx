@@ -24,7 +24,7 @@ export default function HomePage() {
         <>
             <main>
                 <div className="hero-section">
-                    <img src="img\hero-homepage.png" alt="" />
+                    <video src="img\video-hero.mp4" autoPlay loop muted></video>
                 </div>
 
                 <h2 className="text-center my-5">JW FOR ...</h2>
