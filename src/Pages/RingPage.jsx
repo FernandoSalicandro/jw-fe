@@ -19,12 +19,12 @@ export default function RingPage() {
         <h1 className="mb-4">Rings</h1>
         <div className="row">
           {rings.map((ring) => (
-            <div className="col-md-4 mb-4" key={ring.id}>
-              <div className="card h-100 border-0">
-                <img src={ring.image_url} className="card-img-top hover-img" alt={ring.name} />
+            <div className="col-md-4 mb-4 image-price" key={ring.id}>
+              <div className="card h-100 border-0 mb-5">
+                <img onClick={() => navigate(`/productDetails/${ring.slug}`)} src={ring.image_url} className="card-img-top hover-img" alt={ring.name} />
                 <div className="card-body text-center">
                   <h5 className="card-title">{ring.name}</h5>
-                  
+                  <p className="card-text prezzo">{ring.price} €</p>
                 </div>
               </div>
             </div>

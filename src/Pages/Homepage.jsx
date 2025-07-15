@@ -59,15 +59,11 @@ export default function HomePage() {
                                             src={curProduct.image_url} 
                                             alt={curProduct.name}
                                             className="product-image hover-img"
+                                            onClick={() => navigate(`/productDetails/${curProduct.slug}`)} 
                                         />
                                         <p className='text-center mt-1 mb-2 text-em'>
                                         {curProduct.name}
                                         </p>
-                                        <button
-                                        onClick={() => navigate(`/productDetails/${curProduct.slug}`)} 
-                                        className="btn btn-outline border-0 show-details">
-                                            Scopri di Più
-                                        </button>
                                     </div>    
                             </div>
                         ))}
