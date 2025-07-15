@@ -3,18 +3,15 @@ import { createContext, useContext, useState, useEffect } from "react";
 const WishListContext = createContext();
 
 export const WishListProvider = ({children}) => {
-    const [wishList, setWishList] = useState([]);
+    
+    
+    const [wishList, setWishList] = useState(() => {   //---> Wishlist carica direttamente dal local storage la prima volta che viene initializzata
+        const stored = localStorage.getItem("wishList")
+        return stored ? JSON.parse(stored) : []
+    })
+
     const [isWishListOpen, setIsWishListOpen] = useState(false)
 
-    // Caricamento dal localStorage
-    useEffect(() => {
-        const stored = localStorage.getItem("wishList");
-        if (stored) {
-            setWishList(JSON.parse(stored));
-        }
-        
-    
-    }, []);
 
     // Salva il wishList nel localStorage
     useEffect(() => {

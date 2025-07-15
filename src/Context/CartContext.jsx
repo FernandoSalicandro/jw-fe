@@ -3,16 +3,12 @@ import { createContext, useContext, useState, useEffect } from "react";
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(() =>{
+    const stored = localStorage.getItem("cart")
+        return stored ? JSON.parse(stored) : []
+  });
   const[isCartOpen, setIsCartOpen] = useState(false)
 
-  // Caricamento del carrello dal localStorage
-  useEffect(() => {
-    const stored = localStorage.getItem("cart");
-    if (stored) {
-      setCart(JSON.parse(stored));
-    }
-  }, []);
 
   // Salva il carrello nel localStorage
   useEffect(() => {
