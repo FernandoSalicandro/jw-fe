@@ -24,7 +24,7 @@ export default function HomePage() {
         <>
             <main>
                 <div className="hero-section">
-                    <video src="img\video-hero.mp4" autoPlay loop muted></video>
+                    <img src="./img/hero-homepage.png" alt="" />
                 </div>
 
                 <h2 className="text-center my-5">JW FOR ...</h2>
@@ -58,7 +58,7 @@ export default function HomePage() {
                                         <img 
                                             src={curProduct.image_url} 
                                             alt={curProduct.name}
-                                            className="product-image"
+                                            className="product-image hover-img"
                                         />
                                         <p className='text-center mt-1 mb-2 text-em'>
                                         {curProduct.name}

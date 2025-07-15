@@ -21,13 +21,10 @@ export default function RingPage() {
           {rings.map((ring) => (
             <div className="col-md-4 mb-4" key={ring.id}>
               <div className="card h-100 border-0">
-                <img src={ring.image_url} className="card-img-top" alt={ring.name} />
-                <div className="card-body">
+                <img src={ring.image_url} className="card-img-top hover-img" alt={ring.name} />
+                <div className="card-body text-center">
                   <h5 className="card-title">{ring.name}</h5>
-                  <p className="card-text">${ring.price}</p>
-                  <button onClick={() => navigate(`/productDetails/${ring.slug}`)} className="btn btn-outline show-details">
-                    Dettagli prodotto
-                  </button>
+                  
                 </div>
               </div>
             </div>
