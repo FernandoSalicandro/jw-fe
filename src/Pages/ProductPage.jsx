@@ -7,45 +7,74 @@ import { useWishList } from "../Context/WishListContext.jsx";
 import Loader from "../components/Loader.jsx";
 
 export default function ProductPage() {
-  const urlApi = "http://localhost:3000/products";
-  const { slug } = useParams();
-  const [gioiello, setgioiello] = useState(null);
-  const { products } = useContext(ProductContext);
-  const { addToCart, setCartIsOpen } = useCart(); 
-  const {addToWishList, setIsWishListOpen} = useWishList(); // include controllo per mostrare il carrello
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
-  // Funzione per aggiungere al carrello
-  const handleAdd = (event) => {
-    event.preventDefault();
-    addToCart({ ...gioiello, quantity: 1 });
-    setCartIsOpen(true); // mostra il carrello
-  };
+    const urlApi = "http://localhost:3000/products";
+    const { slug } = useParams();
+    const [gioiello, setgioiello] = useState(null);
+    const { products } = useContext(ProductContext);
+    const { addToCart, setCartIsOpen, cart } = useCart(); // include controllo per mostrare il carrello
+    const {addToWishList, setIsWishListOpen} = useWishList(); // include controllo per mostrare il carrello
+    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
+    const [limitReached, setLimitReached] = useState(false)
 
-  //Aggiungi alla Wishlist
+    // Funzione per gestire il pulsante add to cart in caso di raggingimento della soglia massima
+    const getQuantityInCart = (product) => {
+        const item = cart.find((item) => item.id === product.id);
+        return item ? item.quantity : 0
+    }
+
+    // Funzione per aggiungere al carrello
+    const handleAdd = (event) => {
+        event.preventDefault();
+
+        const currentQuantity = getQuantityInCart(gioiello); // controllo la quantità di quel gioiello nel carello
+
+        if (currentQuantity >= gioiello.stock_quantity) {  // se la condizione è true mi restituisce setLimitReaced a true e non proccede
+            setLimitReached(true);
+            return;
+        } // altrimenti aggiungo al carrello
+
+        // Aggiunta al carrello
+        addToCart({ ...gioiello, quantity: 1 });
+        setCartIsOpen(true);
+        setLimitReached(false); // resetta il messaggio se tutto ok
+    };
+  
+   //Aggiungi alla Wishlist
   const handleWishListAdd = (event) => {
     event.preventDefault();
     addToWishList({ ...gioiello, quantity: 1 });
     setIsWishListOpen(true); 
   };
 
-  // Funzione per randomizzare 4 prodotti
-  const getRandomSubset = (arr, count) => {
-    const shuffled = [...arr].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, count);
-  };
+    // Use effect per togliere il messaggio in caso di non raggiungimento dello stock
+    useEffect(() => {
+        if (!gioiello) return;
 
-  const randomItems = useMemo(() => getRandomSubset(products, 4), [products]);
+        const currentQuantity = getQuantityInCart(gioiello);
 
-  useEffect(() => {
-    axios.get(`${urlApi}/${slug}`).then((resp) => {
-      setgioiello(resp.data);
-      setLoading(false);
-    });
-  }, [slug]);
+        if (currentQuantity < gioiello.stock_quantity && limitReached) {
+            setLimitReached(false);
+        }
+    }, [cart, gioiello, limitReached]);
 
-  if (loading) return <Loader />;
+    // Funzione per randomizzare 4 prodotti
+    const getRandomSubset = (arr, count) => {
+        const shuffled = [...arr].sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, count);
+    };
+
+    const randomItems = useMemo(() => getRandomSubset(products, 4), [products]);
+
+    useEffect(() => {
+        axios.get(`${urlApi}/${slug}`).then((resp) => {
+            setgioiello(resp.data);
+            setLoading(false);
+        });
+    }, [slug]);
+
+    if (loading) return <Loader />;
 
   return (
     <>
@@ -70,9 +99,12 @@ export default function ProductPage() {
                 <button className="btn btn-dark w-50 d-block show-details" onClick={handleAdd}>
                   ADD TO CART
                 </button>
+
+                {limitReached ? <div className="text-danger mt-2">Hai raggiunto la quantità massima disponibile</div> : ""}
                 <button className="btn btn-dark w-50 d-block mt-3 show-details" onClick={handleWishListAdd}>
                   ADD TO WISHLIST
                 </button>
+
 
                 <div className="accordion mt-5" id="accordionExample">
                   <div className="accordion-item">
@@ -98,6 +130,7 @@ export default function ProductPage() {
                       </div>
                     </div>
                   </div>
+                 
                   <div className="accordion-item">
                     <h2 className="accordion-header">
                       <button
@@ -126,6 +159,7 @@ export default function ProductPage() {
                       </div>
                     </div>
                   </div>
+
                 </div>
               </div>
             </div>

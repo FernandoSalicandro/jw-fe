@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const EarringsPage = () => {
   const [earrings, setEarrings] = useState([]);
+  const navigate = useNavigate();  
 
   useEffect(() => {
     fetch("http://localhost:3000/products?category=earrings")
@@ -20,11 +22,14 @@ const EarringsPage = () => {
         <div className="row">
           {earrings.map((product) => (
             <div className="col-md-4 mb-4" key={product.id}>
-              <div className="card h-100">
+              <div className="card h-100 border-0">
                 <img src={product.image_url} alt={product.name} className="card-img-top" />
                 <div className="card-body">
                   <h5 className="card-title">{product.name}</h5>
                   <p className="card-text">{product.price} €</p>
+                  <button onClick={() => navigate(`/productDetails/${product.slug}`)} className="btn btn-outline show-details">
+                    Dettagli prodotto
+                  </button>
                 </div>
               </div>
             </div>
