@@ -12,7 +12,7 @@ export const WishListProvider = ({children}) => {
         if (stored) {
             setWishList(JSON.parse(stored));
         }
-        setIsWishListOpen(true);
+        
     
     }, []);
 
