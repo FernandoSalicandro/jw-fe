@@ -5,8 +5,10 @@ import axios from 'axios';
 import ProductsCarousel from '../components/ProductsCarousel.jsx';
 import MotionLinkUnderline from '../components/MotionLink.jsx';
 import { useCart } from '../Context/CartContext';
+import { useWishList } from '../Context/WishListContext';
 import { useSearch } from '../Context/SearchContext.jsx';
 import CartModal from '../components/CartModal.jsx';
+import WishListModal from '../components/WishListModal.jsx';
 
 const AppHeader = ({ isHomePage }) => {
   const { scrollY } = useScroll();
@@ -18,6 +20,8 @@ const AppHeader = ({ isHomePage }) => {
   const { searchResults, setSearchResults } = useSearch()
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const {isCartOpen, setIsCartOpen} = useCart()
+  const {isWishListOpen, setIsWishListOpen} = useWishList();
+  
 
 
   const navigate = useNavigate()
@@ -127,6 +131,9 @@ const AppHeader = ({ isHomePage }) => {
             <motion.p className={`m-0 ${textClass}`} whileHover={{ scale: 1.1 }} transition={{ duration: 0.2 }}>
               <i type="button" onClick={() => setIsSearchOpen(!isSearchOpen)} className="fa-solid fa-magnifying-glass" aria-label="Search"></i>
             </motion.p>
+              <motion.p className={`m-0 ${textClass}`} whileHover={{ scale: 1.1 }} transition={{ duration: 0.2 }}>
+              <i type="button"  class="fa-regular fa-heart" onClick={() => setIsWishListOpen(!isWishListOpen)} aria-label="Wish list"></i>
+            </motion.p>
             <motion.p className={`m-0 ${textClass}`} whileHover={{ scale: 1.1 }} transition={{ duration: 0.2 }}>
               <i role='button' onClick={() => setIsCartOpen(!isCartOpen)} className="fa-solid fa-bag-shopping" aria-label="Shopping cart"></i>
             </motion.p>
@@ -224,6 +231,8 @@ const AppHeader = ({ isHomePage }) => {
 
       {/* Cart Modal */}
       <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+        {/* WishList Modal */}
+      <WishListModal isOpen={isWishListOpen} onClose={() => setIsWishListOpen(false)} />
     </>
   );
 };
