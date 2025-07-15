@@ -245,7 +245,7 @@ header a {
   position: fixed;
   top: 0;
   right: 0;
-  width: 300px;
+  width: 350px;
   height: 100vh;
   background-color: white; /* o un colore a tua scelta */
   box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
@@ -286,7 +286,7 @@ header a {
 .carousel-btn {
   display: flex;
   position: absolute;
-  top: 50%;
+  top: 40%;
   transform: translateY(-50%);
   width: 40px;
   height: 40px;

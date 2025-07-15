@@ -24,7 +24,7 @@ export default function HomePage() {
         <>
             <main>
                 <div className="hero-section">
-                    <img src="img\heroFullscreen.png" alt="" />
+                    <img src="img\hero-necklaces.png" alt="" />
                 </div>
 
                 <h2 className="text-center my-5">JW FOR ...</h2>
@@ -54,15 +54,15 @@ export default function HomePage() {
                         {products && products.map(curProduct => (
                             <div className="col border-0" key={curProduct.id}>
                                 
-                                    <p className='text-center mt-1 mb-3 text-em'>
-                                        {curProduct.name}
-                                    </p>
                                     <div className="card-body border-0 d-flex flex-column align-items-center gap-2">
                                         <img 
                                             src={curProduct.image_url} 
                                             alt={curProduct.name}
                                             className="product-image"
                                         />
+                                        <p className='text-center mt-1 mb-2 text-em'>
+                                        {curProduct.name}
+                                        </p>
                                         <button
                                         onClick={() => navigate(`/productDetails/${curProduct.slug}`)} 
                                         className="btn btn-outline border-0 show-details">
