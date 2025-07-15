@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const BraceletsPage = () => {
   const [bracelets, setBracelets] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("http://localhost:3000/products?category=bracelets")
@@ -25,7 +27,9 @@ const BraceletsPage = () => {
                 <div className="card-body">
                   <h5 className="card-title">{product.name}</h5>
                   <p className="card-text">{product.price} €</p>
-                  <button className="btn btn-success">Vedi Dettagli</button>
+                  <button onClick={() => navigate(`/productDetails/${product.slug}`)} className="btn btn-outline show-details">
+                    Dettagli prodotto
+                  </button>
                 </div>
               </div>
             </div>
