@@ -132,7 +132,7 @@ const AppHeader = ({ isHomePage }) => {
               <i type="button" onClick={() => setIsSearchOpen(!isSearchOpen)} className="fa-solid fa-magnifying-glass" aria-label="Search"></i>
             </motion.p>
               <motion.p className={`m-0 ${textClass}`} whileHover={{ scale: 1.1 }} transition={{ duration: 0.2 }}>
-              <i type="button"  class="fa-regular fa-heart" onClick={() => setIsWishListOpen(!isWishListOpen)} aria-label="Wish list"></i>
+              <i type="button"  className="fa-regular fa-heart" onClick={() => setIsWishListOpen(!isWishListOpen)} aria-label="Wish list"></i>
             </motion.p>
             <motion.p className={`m-0 ${textClass}`} whileHover={{ scale: 1.1 }} transition={{ duration: 0.2 }}>
               <i role='button' onClick={() => setIsCartOpen(!isCartOpen)} className="fa-solid fa-bag-shopping" aria-label="Shopping cart"></i>
