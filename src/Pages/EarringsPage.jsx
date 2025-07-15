@@ -21,15 +21,12 @@ const EarringsPage = () => {
         <h1 className="mb-4">Earrings</h1>
         <div className="row">
           {earrings.map((product) => (
-            <div className="col-md-4 mb-4" key={product.id}>
-              <div className="card h-100 border-0">
-                <img src={product.image_url} alt={product.name} className="card-img-top hover-img" />
-                <div className="card-body">
+            <div className="col-md-4 mb-4 image-price" key={product.id}>
+              <div className="card h-100 border-0 mb-5">
+                <img onClick={() => navigate(`/productDetails/${product.slug}`)} src={product.image_url} alt={product.name} className="card-img-top hover-img" />
+                <div className="card-body text-center">
                   <h5 className="card-title">{product.name}</h5>
-                  <p className="card-text">{product.price} €</p>
-                  <button onClick={() => navigate(`/productDetails/${product.slug}`)} className="btn btn-outline show-details">
-                    Dettagli prodotto
-                  </button>
+                  <p className="card-text prezzo">{product.price} €</p>
                 </div>
               </div>
             </div>
