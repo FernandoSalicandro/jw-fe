@@ -63,7 +63,7 @@ const ProductsCarousel = ({ products, onCloseSearch }) => {
                                     navigate(`/productDetails/${product.slug}`)}}
                                 className="btn btn-outline border-0 show-details"
                             >
-                                Scopri di Più
+                                Discover More
                             </button>
                         </div>
                     </div>
