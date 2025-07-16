@@ -15,6 +15,7 @@ import NecklacesPage from "./pages/NecklacesPage.jsx";
 import CheckoutPage from "./pages/checkoutPage.jsx";
 import ThankYouPage from "./pages/thankyouPage.jsx";
 import AboutUs from './Pages/AboutUs.jsx'
+import WishListPage from "./Pages/WishListPage.jsx";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -45,6 +46,7 @@ function App() {
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/thank-you" element={<ThankYouPage />} />
             <Route path='/about-us' element={<AboutUs />}/>
+            <Route path='/wishlist' element={<WishListPage />}/>
           </Route>
         </Routes>
       </BrowserRouter>

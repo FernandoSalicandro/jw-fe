@@ -1,8 +1,10 @@
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate }  from 'react-router-dom';
 import { useWishList } from '../Context/WishListContext';
 
 const WishListModal = ({ isOpen, onClose }) => {
-    const { wishList, removeFromWishList, setWishList, clearWishList } = useWishList();
+    const { wishList, removeFromWishList, setWishList, clearWishList, isWishListOpen, setIsWishListOpen } = useWishList();
+    const navigate = useNavigate();
 
     const increaseQuantity = (id) => {
         setWishList(prevWishlist => prevWishlist.map(
@@ -36,7 +38,7 @@ const WishListModal = ({ isOpen, onClose }) => {
                     transition={{ type: "tween", ease: "easeInOut", duration: 0.5 }}
                 >
                     <div className="d-flex justify-content-between align-items-start">
-                        <p className="m-0">I gioielli che desideri</p>
+                        <p className="m-0">Your Desires</p>
                         <button
                             onClick={onClose}
                             className="btn-close position-absolute top-0 end-0 m-3"
@@ -63,7 +65,7 @@ const WishListModal = ({ isOpen, onClose }) => {
                                                             window.location.href = `/productDetails/${item.slug}`;
                                                         }}
                                                     >
-                                                        Scopri di più
+                                                       Show More
                                                     </button>
                                                     <button className='btn btn-outline border-0 bg-black text-white show-details-empty mt-2 w-100' onClick={() => removeFromWishList(item.id)}>Remove product</button>
                                                 </div>
@@ -72,10 +74,11 @@ const WishListModal = ({ isOpen, onClose }) => {
                                     </div>
                                 </li>
                             ))}
-
+                            <button className="btn btn-text" onClick={() => {navigate('/wishlist'); setIsWishListOpen(!isWishListOpen)}}>Show All Your Favorites</button>
                         </ul>
+
                     ) : (
-                        <p className="mt-3">La tua wishlist è vuota.</p>
+                        <p className="mt-3">Your Wishlist is empty.</p>
                     )}
                 </motion.div>
             )}
