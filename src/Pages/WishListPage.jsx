@@ -50,7 +50,7 @@ export default function WishListPage() {
             <main className="main-page">
 
                 <div className="container section-separator p-2"><h1>Your Desires...</h1></div>
-                <div className="container row row-cols-1 row-cols-md-2 row-cols-lg-3">
+                <div className="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-4">
                     {wishList.length > 0 && wishList.map(curWish => (
                         <>
                             <div className="col-md-4 mb-4 image-price" key={curWish.id}>
