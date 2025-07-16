@@ -1,12 +1,16 @@
-import { useContext, useRef } from 'react';
-import { useParams, useNavigate }  from 'react-router-dom';
+import { useContext, useRef, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { ProductContext } from '../Context/ProductContext.jsx';
+import { motion } from 'framer-motion';
+import ButtonUnderLine from '../components/ButtonUnderLine.jsx'
+import Quotes from '../components/Quotes.jsx';
 
 export default function HomePage() {
     const { products } = useContext(ProductContext);
     const carouselRef = useRef(null);
-    const {slug} = useParams();
+    const { slug } = useParams();
     const navigate = useNavigate();
+    const [isWorkShop, setIsWorkShop] = useState(false)
 
 
     const handleScroll = (direction) => {
@@ -30,7 +34,7 @@ export default function HomePage() {
                 <h2 className="text-center my-5">JW FOR ...</h2>
                 <div className="container position-relative">
                     {/* Bottoni di navigazione */}
-                    <button 
+                    <button
                         className="carousel-btn carousel-btn-left"
                         onClick={() => handleScroll('left')}
                         aria-label="Scroll left"
@@ -38,7 +42,7 @@ export default function HomePage() {
                         <i className="fa-solid fa-chevron-left"></i>
                     </button>
 
-                    <button 
+                    <button
                         className="carousel-btn carousel-btn-right"
                         onClick={() => handleScroll('right')}
                         aria-label="Scroll right"
@@ -53,26 +57,72 @@ export default function HomePage() {
                     >
                         {products && products.map(curProduct => (
                             <div className="col border-0" key={curProduct.id}>
-                                
-                                    <div className="card-body border-0 d-flex flex-column align-items-center gap-2">
-                                        <img 
-                                            src={curProduct.image_url} 
-                                            alt={curProduct.name}
-                                            className="product-image hover-img"
-                                        />
-                                        <p className='text-center mt-1 mb-2 text-em'>
+
+                                <div className="card-body border-0 d-flex flex-column align-items-center gap-2">
+                                    <img
+                                        src={curProduct.image_url}
+                                        alt={curProduct.name}
+                                        className="product-image hover-img"
+                                    />
+                                    <p className='text-center mt-1 mb-2 text-em'>
                                         {curProduct.name}
-                                        </p>
-                                        <button
-                                        onClick={() => navigate(`/productDetails/${curProduct.slug}`)} 
+                                    </p>
+                                    <button
+                                        onClick={() => navigate(`/productDetails/${curProduct.slug}`)}
                                         className="btn btn-outline border-0 show-details">
-                                            Scopri di Più
-                                        </button>
-                                    </div>    
+                                        Scopri di Più
+                                    </button>
+                                </div>
                             </div>
                         ))}
                     </div>
                 </div>
+
+                {/* Brand Story*/}
+                {/* Quotes Section */}
+                <Quotes text={`"We have woven our hands, our passion, and our time to create jewelry that doesn’t follow trends, but tells stories meant to last through time."`} author={"JW LUX"} />
+                <div className="section-separator"></div>
+                {/* Brand Story Sub-section */}
+                <div className="brand-multi-sub mx-5 my-5 ">
+                    <h2 className='text-center'>The World Of JW LUX</h2>
+                    <div className='container d-flex gap-3 justify-content-center my-5'>
+
+
+
+                        <p type='button' className='position-relative text-decoration-none'>
+                            Our WorkShop
+                            <span className='position-absolute start-0'
+                                style={{
+                                    backgroundColor: 'black',
+                                    height: '1px',
+                                    width: '100%',
+                                    bottom: '-8px'
+                                }}>
+                            </span>
+                        </p>
+                        <p type='button'>Handmade Philosophy</p>
+                        <p type='button'>We Are JW Lux</p>
+                    </div>
+
+
+
+                </div>
+
+                <div className="container">
+                    <div className="row row-cols-2 d-flex text-cente brand-story-img">
+                        <div className="col p-0"><img src="img/brand-story-img.png" alt="" /></div>
+                        <div className="col p-0 text-center">Ciao</div>
+                    </div>
+                    <div className="row row-cols-2 d-flex text-cente brand-story-img">
+                        <div className="col p-0">Ciao</div>
+                        <div className="col p-0"><img src="img/brand-story-img.png" alt="" /></div>
+
+                    </div>
+
+
+                </div>
+
+
             </main>
         </>
     );
