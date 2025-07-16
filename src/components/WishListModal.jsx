@@ -65,7 +65,7 @@ const WishListModal = ({ isOpen, onClose }) => {
                                                     >
                                                         Scopri di più
                                                     </button>
-                                                    <button className='btn btn-outline border-0 show-details-white mt-2 w-100' onClick={() => removeFromWishList(item.id)}>Remove product</button>
+                                                    <button className='btn btn-outline border-0 bg-black text-white show-details-empty mt-2 w-100' onClick={() => removeFromWishList(item.id)}>Remove product</button>
                                                 </div>
                                             </div>
                                         </div>
