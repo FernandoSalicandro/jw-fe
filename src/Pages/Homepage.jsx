@@ -69,7 +69,7 @@ export default function HomePage() {
                                     <button
                                         onClick={() => navigate(`/productDetails/${curProduct.slug}`)}
                                         className="btn btn-outline border-0 show-details">
-                                        Scopri di Più
+                                        Discover More
                                     </button>
                                 </div>
 
