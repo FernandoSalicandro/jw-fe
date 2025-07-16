@@ -26,7 +26,7 @@ const AppFooter = () => {
                 <div className="footer-column">
                     <h4>CLIENT SERVICES</h4>
                     <ul>
-                        <li><NavLink to="/About Us">About Us</NavLink></li>
+                        <li><NavLink to="/about-us">About Us</NavLink></li>
                         <li><NavLink to="/CustomerService">Customer Service</NavLink></li>
                         <li><NavLink to="/Shippingandreturns">Shipping and Returns</NavLink></li>
                     </ul>

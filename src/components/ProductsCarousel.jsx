@@ -45,7 +45,7 @@ const ProductsCarousel = ({ products, onCloseSearch }) => {
                 {products.map(product => (
                     <div
                         key={product.id}
-                        className="card flex-shrink-0"
+                        className="card flex-shrink-0 border-0"
                         style={{ minWidth: '250px', maxWidth: '250px' }}
                     >
                         <img
