@@ -2,10 +2,15 @@
 * {
   font-family: "Playfair Display", serif;
 }
+
 :root {
   --header-height: 120px;
   --nav-search-height: 100px;
+  --section-separator-height-m: 50px;
+  --section-separator-height-l: 80px;
+
 }
+
 /*common transitions - Fernando*/
 .header,
 .header .nav-link,
@@ -20,6 +25,7 @@
 header p {
   font-weight: 600;
 }
+
 a {
   text-decoration: none;
   color: inherit;
@@ -224,7 +230,7 @@ main {
   height: calc(100vh - var(--header-height));
   z-index: 9999;
   width: 300px;
-   box-shadow: 1px 0px 0px 0px rgba(178, 177, 177, 0.1);
+  box-shadow: 1px 0px 0px 0px rgba(178, 177, 177, 0.1);
 }
 
 .categories-nav-modal img {
@@ -245,7 +251,8 @@ header a {
   right: 0;
   width: 350px;
   height: 100vh;
-  background-color: white; /* o un colore a tua scelta */
+  background-color: white;
+  /* o un colore a tua scelta */
   box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
   z-index: 99999;
   display: flex;
@@ -312,6 +319,18 @@ header a {
 .carousel-btn-right {
   right: 0;
 }
+
+/* Brand Story Quotes - Fernando*/
+
+.our-story h2 {
+  font-family: "Dancing Script", cursive;
+}
+
+.brand-story-img img {
+  max-width: 100%;
+}
+
+
 
 .show-details {
   background: linear-gradient(to right, black 100%, black 100%);
@@ -418,6 +437,11 @@ header a {
 }
 
 /* Utility Classes */
+
+.section-separator {
+  height: var(--section-separator-height-m);
+}
+
 .margin-top {
   margin-top: 150px !important;
 }
@@ -447,7 +471,8 @@ header a {
 
 .promo {
   font-size: 1.25rem;
-  color: #d4af37; /* oro lusso */
+  color: #d4af37;
+  /* oro lusso */
   font-weight: bold;
 }
 
@@ -494,10 +519,12 @@ header a {
   .brand-col p {
     font-size: 2.5rem;
   }
+
   .left-col a,
   .right-col p {
     font-size: 1.3rem;
   }
+
   .brand-col img {
     width: 80px;
   }
@@ -511,10 +538,12 @@ header a {
   .brand-col p {
     font-size: 2.5rem;
   }
+
   .left-col a,
   .right-col p {
     font-size: 1.3rem;
   }
+
   .brand-col img {
     width: 80px;
   }
@@ -528,6 +557,7 @@ header a {
   .hamburger-menu {
     display: flex;
   }
+
   .left-col {
     display: none;
     position: absolute;
@@ -542,24 +572,30 @@ header a {
     align-items: flex-start;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
+
   .left-col.show {
     display: flex !important;
   }
+
   .left-col a {
     font-size: 1.8rem;
     padding: 1rem 0;
   }
+
   .brand-col {
     width: 60%;
   }
+
   .right-col {
     width: 20%;
     gap: 1rem;
   }
+
   .carousel-btn {
     width: 35px;
     height: 35px;
   }
+
   .image-price .prezzo {
     display: none;
   }
@@ -573,26 +609,33 @@ header a {
   .header {
     height: 100px;
   }
+
   .nav-bar {
     padding: 0 1rem;
   }
+
   .brand-col p {
     font-size: 2rem;
     letter-spacing: 0.3rem;
   }
+
   .brand-col img {
     width: 60px;
   }
+
   .right-col p {
     font-size: 1.2rem;
   }
+
   .left-col a {
     font-size: 1.2rem;
   }
+
   .carousel-btn {
     width: 30px;
     height: 30px;
   }
+
   .image-price .prezzo {
     display: none;
   }
@@ -606,32 +649,41 @@ header a {
   .header {
     height: 80px;
   }
+
   .brand-col p {
     font-size: 1.5rem;
     letter-spacing: 0.2rem;
   }
+
   .brand-col img {
     width: 40px;
   }
+
   .right-col {
     gap: 0.8rem;
   }
+
   .right-col p {
     font-size: 1rem;
   }
+
   .left-col {
     padding: 1.5rem;
   }
+
   .left-col a {
     font-size: 1.1rem;
   }
+
   .carousel-btn {
     width: 25px;
     height: 25px;
   }
+
   .hamburger-menu {
     justify-content: space-around;
   }
+
   .hamburger-menu span {
     margin-left: 0px;
     width: 40px;
@@ -640,9 +692,11 @@ header a {
     transition: all 0.4s ease;
     transform-origin: center;
   }
+
   .hero-section img {
     height: 300px;
   }
+
   .image-price .prezzo {
     display: none;
   }
@@ -651,7 +705,7 @@ header a {
 
 /* Ring Page Styles */
 
-.heroRing-img{
+.heroRing-img {
   position: relative;
   width: 100%;
 }
@@ -669,8 +723,8 @@ header a {
   color: white;
   text-align: center;
   font-size: 2rem;
-  
-  
+
+
 }
 
 /* LOADER SCREEN */
@@ -697,11 +751,13 @@ header a {
     opacity: 0.7;
     filter: drop-shadow(0 0 10px gold);
   }
+
   50% {
     transform: scale(1.1);
     opacity: 1;
     filter: drop-shadow(0 0 20px gold);
   }
+
   100% {
     transform: scale(1);
     opacity: 0.7;
@@ -717,7 +773,7 @@ header a {
 }
 
 .page-main {
-  margin-top : var(--header-height)
+  margin-top: var(--header-height)
 }
 
 
@@ -729,7 +785,7 @@ header a {
   color: black;
   width: 100%;
   height: 80px;
-  border-bottom : 1px solid lightgrey;
+  border-bottom: 1px solid lightgrey;
 }
 
 
