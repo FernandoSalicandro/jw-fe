@@ -71,7 +71,7 @@ export default function WishListPage() {
                 {relatedProducts.length > 0 && (
                     <>
                         <h2 className="text-center mb-5">May You Like Also...</h2>
-                        <div className="container row row-cols-1 row-cols-md-2 row-cols-lg-3">
+                        <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4">
                             {relatedProducts.map(product => (
                                 <div className="col mb-4 image-price" key={product.id}>
                                     <div className="card h-100 border-0 mb-5">
