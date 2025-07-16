@@ -68,9 +68,13 @@ const CheckoutPage = () => {
               </li>
             ))}
           </ul>
-
           <form onSubmit={handleSubmit}>
-            <h4 className="mt-4 mb-3">Dati di Spedizione</h4>
+            <h4 className="mt-4 mb-3">Contact</h4>
+            <div className="mb-3">
+              <label className="form-label">Email</label>
+              <input type="email" name="email" required className="form-control" onChange={handleChange} />
+            </div>
+            <h4 className="mt-4 mb-3">Shipping Details</h4>
             <div className="mb-3">
               <select
                 className="form-select mb-3"
@@ -90,27 +94,40 @@ const CheckoutPage = () => {
             </div>
             <div className="mb-3">
               <label className="form-label">First Name</label>
-              <input type="text" name="name" required className="form-control" onChange={handleChange} />
+              <input type="text" name="firstname" required className="form-control" onChange={handleChange} />
             </div>
             <div className="mb-3">
               <label className="form-label">Last Name</label>
-              <input type="text" name="name" required className="form-control" onChange={handleChange} />
+              <input type="text" name="lastname" required className="form-control" onChange={handleChange} />
             </div>
-            <div className="mb-3">
+            <div className="mb-4">
               <label className="form-label">Address</label>
               <input type="text" name="address" required className="form-control" onChange={handleChange} />
             </div>
             <div className="mb-3">
-              <label className="form-label">Email</label>
-              <input type="email" name="email" required className="form-control" onChange={handleChange} />
+              <select
+                className="form-select mb-3"
+                value={selectedRegion}
+                onChange={(e) => {
+                  setSelectedRegion(e.target.value);
+                  setSelectedCountry(""); // reset regione
+                }}
+              >
+                <option value="">Select Region</option>
+                {regions.map((region) => (
+                  <option key={region} value={region}>
+                    {region}
+                  </option>
+                ))}
+              </select>
             </div>
 
-            <h4>Metodo di Pagamento</h4>
+            <h4 className="mb-3">Metodo di Pagamento</h4>
             <div className="mb-3">
               <select name="paymentMethod" className="form-select" onChange={handleChange}>
                 <option value="credit_card">Credit Card</option>
                 <option value="paypal">PayPal</option>
-                <option value="cash">Contanti alla consegna</option>
+                <option value="wire-transfer">Wire Transfer</option>
               </select>
             </div>
 
