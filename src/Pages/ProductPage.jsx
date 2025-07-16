@@ -46,19 +46,31 @@ export default function ProductPage() {
     const handleWishListAdd = (event) => {
         event.preventDefault();
 
-        if(!gioiello) return
+        if (!gioiello) return
 
-        if (Array.isArray(wishList) && wishList.some(item => item.id === gioiello.id)) {
-            setAlreadyinWishlist(true);
-        } else {
-            addToWishList({ ...gioiello, quantity: 1 });
+        const isAlready = wishList.some(item => item.id === gioiello.id);
+
+        if (isAlready) {
+            setAlreadyinWishlist(true)
             setIsWishListOpen(true);
+            return;
         }
+
+        // Altrimenti aggiungilo e mostra comunque il messaggio
+        addToWishList({ ...gioiello, quantity: 1 });
+        setIsWishListOpen(true);
+        setAlreadyinWishlist(true);
     };
 
-    useEffect(() =>{
-        setAlreadyinWishlist(false)
-    },[gioiello])
+    useEffect(() => {
+        if (!gioiello) {
+            setAlreadyinWishlist(false);
+            return;
+        }
+
+        const isInWishlist = wishList.some(item => item.id === gioiello.id);
+        setAlreadyinWishlist(isInWishlist);
+    }, [wishList, gioiello]);
 
 
     // Use effect per togliere il messaggio in caso di non raggiungimento dello stock
@@ -120,7 +132,7 @@ export default function ProductPage() {
                                 </button>
                                 {alreadyInWishlist && (
                                     <div className="alert alert-warning mt-2">
-                                        This product is already in your wishlist.
+                                        This product is in your wishlist.
                                     </div>
                                 )}
 
