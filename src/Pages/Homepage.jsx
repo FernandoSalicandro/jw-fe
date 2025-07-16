@@ -2,7 +2,6 @@ import { useContext, useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ProductContext } from '../Context/ProductContext.jsx';
 import { motion } from 'framer-motion';
-import ButtonUnderLine from '../components/ButtonUnderLine.jsx'
 import Quotes from '../components/Quotes.jsx';
 
 export default function HomePage() {
@@ -73,6 +72,7 @@ export default function HomePage() {
                                         Scopri di Più
                                     </button>
                                 </div>
+
                             </div>
                         ))}
                     </div>
@@ -100,8 +100,9 @@ export default function HomePage() {
                                 }}>
                             </span>
                         </p>
-                        <p type='button'>Handmade Philosophy</p>
-                        <p type='button'>We Are JW Lux</p>
+                        <button type="button" className="btn btn-link">We Are JW Lux</button>
+                     <button type="button" className="btn btn-link">We Are JW Lux</button>
+
                     </div>
 
 

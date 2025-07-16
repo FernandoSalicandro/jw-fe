@@ -57,7 +57,7 @@ const WishListModal = ({ isOpen, onClose }) => {
                                                 <div className="card-body">
                                                     <h5 className="card-title h6">{item.name}</h5>
                                                     <button
-                                                        className="btn btn-outline border-0 text-black show-details mt-2"
+                                                        className="btn btn-outline border-0 text-black show-details mt-2 w-100"
                                                         onClick={() => {
                                                             onClose();
                                                             window.location.href = `/productDetails/${item.slug}`;
@@ -65,7 +65,7 @@ const WishListModal = ({ isOpen, onClose }) => {
                                                     >
                                                         Scopri di più
                                                     </button>
-                                                    <button onClick={removeFromWishList}>rimuovi</button>
+                                                    <button className='btn btn-outline border-0 show-details-white mt-2 w-100' onClick={() => removeFromWishList(item.id)}>Remove product</button>
                                                 </div>
                                             </div>
                                         </div>
