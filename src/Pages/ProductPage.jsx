@@ -121,13 +121,12 @@ export default function ProductPage() {
                                     )}
                                 </div>
 
-                                <button className="btn btn-dark w-50 d-block show-details" onClick={handleAdd}>
+                                <button className="btn btn-outline w-50 d-block show-details" onClick={handleAdd} style={{border: "1px solid black"}}>
                                     ADD TO CART
                                 </button>
 
                                 {limitReached ? <div className="text-danger mt-2">Hai raggiunto la quantità massima disponibile</div> : ""}
-
-                                <button className={"btn btn-dark w-50 d-block mt-3 show-details"} onClick={handleWishListAdd} disabled={alreadyInWishlist}>
+                                <button className="btn btn-outline w-50 d-block mt-3 show-details" onClick={handleWishListAdd} disabled={alreadyInWishlist} style={{border: "1px solid black"}}> 
 
                                     ADD TO WISHLIST
                                 </button>
