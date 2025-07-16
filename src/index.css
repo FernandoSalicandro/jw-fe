@@ -470,6 +470,10 @@ header a {
 
 /* Utility Classes */
 
+.main-page {
+  margin-top: var(--header-height);
+}
+
 .section-separator {
   height: var(--section-separator-height-m);
 }
@@ -830,3 +834,4 @@ header a {
   transform: scale(1.1);
   transition: ease 0.3s;
 }
+

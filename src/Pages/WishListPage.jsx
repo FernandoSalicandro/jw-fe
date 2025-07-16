@@ -1,18 +1,99 @@
-export default function WishListPage () {
+import { useState, useEffect, useContext } from 'react';
+import axios from 'axios';
+import { useWishList } from '../Context/WishListContext.jsx'
+import { ProductContext } from '../Context/ProductContext.jsx'
+import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion'
+
+export default function WishListPage() {
+    const { products } = useContext(ProductContext);
+    const { wishList } = useWishList()
+    const navigate = useNavigate();
+    const [relatedProducts, setRelatedProducts] = useState([]);
+
+    useEffect(() => {
+        if (wishList.length === 0) return;
+
+        const requests = wishList.map(item => {
+            return axios.get(`http://localhost:3000/products/related/${item.slug}`)
+                .then(response => response.data)
+                .catch(error => {
+                    console.log("Errore nel caricamento dei correlati per", item.slug, error);
+                    return [];
+                });
+        });
+
+        Promise.all(requests)
+            .then(results => {
+                const allRelated = results.flat();
+
+                const uniqueRelated = allRelated.filter((product, index, self) => {
+                    const isInWishlist = wishList.some(w => w.id === product.id);
+                    const isFirstOccurrence = index === self.findIndex(p => p.id === product.id);
+                    return !isInWishlist && isFirstOccurrence;
+                });
+
+                setRelatedProducts(uniqueRelated);
+            })
+            .catch(error => {
+                console.error("Errore durante il recupero dei prodotti correlati:", error);
+            });
+
+    }, [wishList]);
+
+
+
+
+
     return (
         <>
-        <main className="main-page">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta totam velit reprehenderit laboriosam rem, odio aspernatur, quia quis quidem aliquid, ut doloremque dolor enim commodi neque cumque nihil pariatur magni?
-            Saepe necessitatibus quaerat delectus nisi minus? Inventore ea accusantium non ad, error voluptatem deleniti minima incidunt, eligendi unde fuga iure cumque quod eos odit similique. Mollitia odit neque optio minus?
-            Non voluptatem, suscipit sit quisquam ipsa quibusdam odio at similique impedit pariatur. Maxime incidunt voluptate est laboriosam placeat quis qui eius, rem perferendis repellat, ipsa numquam alias eaque consectetur cumque.
-            Minus laudantium sequi odit. Unde sunt eos vero vitae odit voluptates, laboriosam quis repellat tempora ipsa in non? Repudiandae quia, illo temporibus impedit iure perspiciatis recusandae at assumenda ipsum eum.
-            Voluptatum sed quis eius incidunt est quisquam dolorum quibusdam libero porro neque assumenda pariatur commodi maxime obcaecati, deleniti, autem temporibus. Suscipit deleniti ex accusamus, temporibus inventore nobis hic eligendi quae.
-            Impedit dicta officiis ea quis laudantium id consequuntur in quia assumenda debitis doloribus aspernatur iure, nemo illum vel enim magnam dolore neque praesentium quas laborum! Quis labore totam corporis blanditiis!
-            Ea, odio. Ut omnis iste modi repellat, architecto sunt esse explicabo consequuntur distinctio delectus fugiat quo iure deleniti maiores voluptatum optio magni labore at beatae sed molestias totam quam corporis.
-            Dolorem est quia assumenda minus corporis, veniam aliquam quis accusamus eligendi sunt sed error, labore doloremque, nobis reiciendis dolore iusto! Quae, libero numquam minus quibusdam dolor eius assumenda quisquam aperiam.
-            Deleniti, quia? Iste repudiandae autem laudantium dolores ab officia, modi nihil, nesciunt inventore aut voluptatibus blanditiis. Delectus velit sit fuga ipsa ipsam distinctio. Porro et temporibus ipsam doloremque expedita tempora?
-            Corrupti magni similique odio deserunt id consectetur, cupiditate optio modi molestias quis facilis sunt praesentium ad natus? Corrupti incidunt perferendis totam suscipit, accusantium nesciunt asperiores minima optio numquam, commodi ratione.</p>
-        </main>
+            <main className="main-page">
+
+                <div className="container section-separator p-2"><h1>Your Desires...</h1></div>
+                <div className="container row row-cols-1 row-cols-md-2 row-cols-lg-3">
+                    {wishList.length > 0 && wishList.map(curWish => (
+                        <>
+                            <div className="col-md-4 mb-4 image-price" key={curWish.id}>
+                                <div className="card h-100 border-0 mb-5">
+                                    <img onClick={() => navigate(`/productDetails/${curWish.slug}`)} src={curWish.image_url} className="card-img-top hover-img" alt={curWish.name} />
+                                    <div className="card-body text-center">
+                                        <h5 className="card-title">{curWish.name}</h5>
+                                        <p className="card-text prezzo">{curWish.price} €</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </>
+                    ))}
+
+                </div>
+              
+                {relatedProducts.length > 0 && (
+                    <>
+                        <h2 className="text-center mb-5">May You Like Also...</h2>
+                        <div className="container row row-cols-1 row-cols-md-2 row-cols-lg-3">
+                            {relatedProducts.map(product => (
+                                <div className="col mb-4 image-price" key={product.id}>
+                                    <div className="card h-100 border-0 mb-5">
+                                        <img
+                                            onClick={() => navigate(`/productDetails/${product.slug}`)}
+                                            src={product.image_url}
+                                            className="card-img-top hover-img"
+                                            alt={product.name}
+                                        />
+                                        <div className="card-body text-center">
+                                            <h5 className="card-title">{product.name}</h5>
+                                            <p className="card-text prezzo">{product.price} €</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </>
+                )}
+
+
+            </main>
         </>
     )
 }
