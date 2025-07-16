@@ -2,6 +2,9 @@ import { useState } from "react";
 import { useCart } from "../Context/CartContext";
 import { useNavigate } from "react-router-dom";
 import countryRegionData from "../data/countryRegionData.js";
+import { loadStripe } from '@stripe/stripe-js';
+
+const stripePromise = loadStripe('pk_test_51RlUTcQKQGhBKiFRXR1HO0pQhxcVpUcdJ3yrJ1YF0AlFfVfVvqKPJdFEFQTprciFSyyijkKqf6dla1M1sFV9XSfn00E4eEJ8Nn');
 
 const CheckoutPage = () => {
   const { cart, clearCart } = useCart();
@@ -22,15 +25,9 @@ const CheckoutPage = () => {
     postalCode: "",
     phone: "",
     email: "",
-    paymentMethod: "credit_card",
-    cardHolder: "",
-    cardNumber: "",
-    cvv: "",
-    expiryMonth: "",
-    expiryYear: "",
-    paypalEmail: "",
-    iban: "",
   });
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,15 +38,31 @@ const CheckoutPage = () => {
     return cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Dati Cliente:", formData);
-    console.log("Carrello:", cart);
+    setIsLoading(true);
+    try {
+      const response = await fetch('http://localhost:3000/products/create-checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          items: cart,
+          customerEmail: formData.email,
+        }),
+      });
 
-    // Qui potresti inviare l'ordine a un backend se necessario
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
 
-    clearCart();
-    navigate("/thank-you");
+      const { url } = await response.json();
+      window.location.href = url;
+    } catch (error) {
+      console.error('Error:', error);
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -134,12 +147,12 @@ const CheckoutPage = () => {
             </div>
             <div className="mb-3">
               <label className="form-label">Apartment/Suite (optional)</label>
-              <input type="text" name="apartment" required className="form-control" onChange={handleChange} />
+              <input type="text" name="apartment" className="form-control" onChange={handleChange} />
             </div>
             <div className="row g-3 mb-3">
               <div className="col-md-4">
                 <label className="form-label">City</label>
-                <input type="text" name="city" className="form-control" placeholder="Enter a city" />
+                <input type="text" name="city" className="form-control" placeholder="Enter a city" required />
               </div>
               <div className="col-md-4">
                 <label className="form-label">Postal code (optional)</label>
@@ -168,79 +181,13 @@ const CheckoutPage = () => {
               <input type="text" name="phone" required className="form-control" onChange={handleChange} />
             </div>
 
-            <h4 className="mb-3">Payment Method</h4>
-            <div className="mb-3">
-              <select name="paymentMethod" className="form-select" onChange={handleChange}>
-                <option value="credit_card">Credit Card</option>
-                <option value="paypal">PayPal</option>
-                <option value="wire-transfer">Wire Transfer</option>
-              </select>
-            </div>
-            {/* Credit Card inputs */}
-            {formData.paymentMethod === "credit_card" && (
-              <>
-                <div className="row g-3 mb-3">
-                  <div className="col-md-8">
-                    <label className="form-label">Card Holder</label>
-                    <input type="text" name="cardHolder" className="form-control" value={formData.cardNumber} onChange={handleChange} />
-                  </div>
-                  <div className="col-md-4">
-                    <label className="form-label">CVV</label>
-                    <input type="text" name="cvv" className="form-control" value={formData.cardHolder} onChange={handleChange} />
-                  </div>
-                </div>
-                <div className="row g-3 mb-3">
-                  <div className="col-md-8">
-                    <label className="form-label">Card Number</label>
-                    <input type="text" name="cardNumber" className="form-control" value={formData.cardNumber} onChange={handleChange} />
-                  </div>
-                  <div className="col-md-4">
-                    <label className="form-label">Expiration Date</label>
-                    <div className="d-flex gap-2">
-                      <select className="form-select" name="expiryMonth" value={formData.expiryMonth || ""} onChange={handleChange}>
-                        <option value="">Month</option>
-                        {Array.from({ length: 12 }, (_, i) => (
-                          <option key={i + 1} value={String(i + 1).padStart(2, "0")}>
-                            {String(i + 1).padStart(2, "0")}
-                          </option>
-                        ))}
-                      </select>
-
-                      <select className="form-select" name="expiryYear" value={formData.expiryYear || ""} onChange={handleChange}>
-                        <option value="">Year</option>
-                        {Array.from({ length: 10 }, (_, i) => {
-                          const year = new Date().getFullYear() + i;
-                          return (
-                            <option key={year} value={year}>
-                              {year}
-                            </option>
-                          );
-                        })}
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </>
-            )}
-
-            {/* PayPal input */}
-            {formData.paymentMethod === "paypal" && (
-              <div className="mb-3">
-                <label className="form-label">PayPal Email</label>
-                <input type="email" name="paypalEmail" className="form-control" value={formData.paypalEmail} onChange={handleChange} />
-              </div>
-            )}
-
-            {/* Wire Transfer input */}
-            {formData.paymentMethod === "wire-transfer" && (
-              <div className="mb-3">
-                <label className="form-label">IBAN</label>
-                <input type="text" name="iban" className="form-control" value={formData.iban} onChange={handleChange} />
-              </div>
-            )}
-
-            <button type="submit" className="btn btn-outline show-details mt-2" style={{ border: "1px solid black" }}>
-              Continue to shipping
+            <button
+              type="submit"
+              className="btn btn-outline show-details mt-2"
+              style={{ border: "1px solid black" }}
+              disabled={isLoading}
+            >
+              {isLoading ? "Processing..." : "Proceed to Payment"}
             </button>
           </form>
         </>
