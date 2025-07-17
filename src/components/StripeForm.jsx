@@ -19,10 +19,9 @@ const StripeForm = ({ clientSecret, navigate, clearCart, cart, formData, snapSho
         }))
 
         stripe.confirmPayment({
-            elements, 
+            elements,
             confirmParams: {
                 //qua possiamo modificare a piacimento per rimandare alla pagina che vogliamo, l'ho settata per la thankyou page
-                return_url: undefined
             },
             redirect: "if_required"
 
@@ -34,10 +33,12 @@ const StripeForm = ({ clientSecret, navigate, clearCart, cart, formData, snapSho
                 console.log('Pagamento avvenuto con successo');
                 //dopo la conferma che non c'è stato intoppo svuotiamo il carrello
                 clearCart();
-                navigate("thank-you", {
-                    snapShotCart: snapShotCart,
-                    customer: formData
-                })
+                navigate("/thankyou", {
+                    state: {
+                        snapShotCart:snapShotCart,
+                        customer: formData
+                    }
+                });
             }
         }).catch(err => {
             console.log('Errore durante il pagamento:', err.message);

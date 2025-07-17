@@ -22,6 +22,8 @@ const PaymentPage = () => {
     const navigate = useNavigate();
     // per svuotare il carrello post-pagamento
     const { clearCart } = useCart();
+    //Per la foto del carello e del customer
+    const [snapShotCart, setSnapShotCart] = useState([]);
 
     // Riceviamo i dati dallo state passato da CheckoutPage
     const { cart, formData, selectedCountry, selectedRegion } = location.state || {};
@@ -35,9 +37,11 @@ const PaymentPage = () => {
             navigate('/checkout');
             return;
         }
-        const snapShotCart = cart ? cart.map((obj) => ({ ...obj })) : [];
-        console.log(snapShotCart)
+
         
+        const snapshot = cart.map((obj) => ({ ...obj }));
+        setSnapShotCart(snapshot);  // salva la foto nel state
+
         // Calcoliamo il totale del carrello (attenzione: usiamo direttamente item.price * item.quantity)
         const amount = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
@@ -119,7 +123,7 @@ const PaymentPage = () => {
                         <h3>Do you have a Coupon? Please reedem your discount!</h3>
                         <div className="mb-3">
                             <label htmlFor="exampleFormControlInput1" className="form-label"></label>
-                            <input type="email" className="form-control" id="" placeholder="Coupon Code"/>
+                            <input type="email" className="form-control" id="" placeholder="Coupon Code" />
                             <button className='btn btn-outline-primary mt-2'>Redeem</button>
                         </div>
                     </div>
