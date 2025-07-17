@@ -93,9 +93,24 @@ export default function ProductPage() {
     const randomItems = useMemo(() => getRandomSubset(products, 4), [products]);
 
     useEffect(() => {
-        axios.get(`${urlApi}/${slug}`).then((resp) => {
-            setgioiello(resp.data);
-            setLoading(false);
+        setLoading(true);
+        //correzione -- cambio il set gioiello in null in modo da forzar la pulizia dello stato.
+         setgioiello(null);
+        // Ho aggiunto ?nocache=${Date.now()} per forzare il refetch dei dati ed evitare cache vecchie
+        axios.get(`${urlApi}/${slug}?nocache=${Date.now()}`, {
+            headers: {
+                'Cache-Control' : 'no-cache',
+                'Pragma' : 'no-cache',
+                'Expires' : '0'
+            }
+        }).then((resp) => {
+            
+           setgioiello(resp.data);
+           setLoading(false);
+
+
+
+            
         });
     }, [slug]);
 

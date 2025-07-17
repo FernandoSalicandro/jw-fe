@@ -55,7 +55,7 @@ const PaymentPage = () => {
                 console.log('Errore durante la creazione del paymentIntent:', err);
             });
             // Attiviamo useEffect solo se i dati qua sotto in [] cambiano
-    }, [cart, formData, navigate]); 
+    }, []); 
 
     return (
         <div className="container py-5" style={{ marginTop: "100px" }}>
