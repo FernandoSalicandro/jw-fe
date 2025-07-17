@@ -3,21 +3,19 @@ import { useCart } from "../Context/CartContext";
 import { useNavigate } from "react-router-dom";
 import countryRegionData from "../data/countryRegionData.js";
 
-
 const CheckoutPage = () => {
-  const { cart } = useCart(); 
-  const navigate = useNavigate(); 
+  const { cart } = useCart();
+  const navigate = useNavigate();
 
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedRegion, setSelectedRegion] = useState("");
 
- 
   const countries = countryRegionData.map((c) => c.countryName);
-  const regions =
-    countryRegionData.find((c) => c.countryName === selectedCountry)?.regions.map((r) => r.name) || [];
+  const regions = countryRegionData.find((c) => c.countryName === selectedCountry)?.regions.map((r) => r.name) || [];
 
   //qua tengo tutti i dati che l'utente inserisce nel form
   const [formData, setFormData] = useState({
+    email: "",
     firstName: "",
     lastName: "",
     address: "",
@@ -25,7 +23,6 @@ const CheckoutPage = () => {
     city: "",
     postalCode: "",
     phone: "",
-    email: "",
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -41,13 +38,21 @@ const CheckoutPage = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    //qua lo porto alla pagina del pagamento e gli passo tutti i dati in un oggetto
+    const fullFormData = {
+      ...formData,
+      country: selectedCountry,
+      province: selectedRegion,
+    };
+
+    // ✅ Salvo i dati nel localStorage
+    localStorage.setItem("formData", JSON.stringify(fullFormData));
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    // Navigo alla pagina pagamento con i dati nello state (opzionale)
     navigate("/payment", {
       state: {
-        formData,
+        formData: fullFormData,
         cart,
-        selectedCountry,
-        selectedRegion,
       },
     });
   };
@@ -58,7 +63,7 @@ const CheckoutPage = () => {
 
       {cart.length === 0 ? (
         //se l'utente arriva qua senza nulla, gli diciamo gentilmente di tornare a comprare roba lol
-        <p>Il tuo carrello è vuoto.</p> 
+        <p>Il tuo carrello è vuoto.</p>
       ) : (
         <>
           {/* riepilogo ordine */}
@@ -93,9 +98,7 @@ const CheckoutPage = () => {
             <hr />
             <li className="list-group-item d-flex justify-content-between fw-bold border-0">
               <span>Subtotal</span>
-              <span>
-                {cart.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2)} €
-              </span>
+              <span>{cart.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2)} €</span>
             </li>
           </ul>
 
@@ -154,7 +157,7 @@ const CheckoutPage = () => {
             <div className="row g-3 mb-3">
               <div className="col-md-4">
                 <label className="form-label">City</label>
-                <input type="text" name="city" className="form-control" placeholder="Enter a city" required />
+                <input type="text" name="city" className="form-control" placeholder="Enter a city" required onChange={handleChange}/>
               </div>
               <div className="col-md-4">
                 <label className="form-label">Postal code (optional)</label>
@@ -162,11 +165,7 @@ const CheckoutPage = () => {
               </div>
               <div className="col-md-4">
                 <label className="form-label">Select Region/Province</label>
-                <select
-                  className="form-select mb-3"
-                  value={selectedRegion}
-                  onChange={(e) => setSelectedRegion(e.target.value)}
-                >
+                <select className="form-select mb-3" value={selectedRegion} onChange={(e) => setSelectedRegion(e.target.value)}>
                   <option value="">Select Region/Province</option>
                   {regions.map((region) => (
                     <option key={region} value={region}>
@@ -184,12 +183,7 @@ const CheckoutPage = () => {
             </div>
 
             {/* pulsante per andare al pagamento */}
-            <button
-              type="submit"
-              className="btn btn-outline show-details mt-2"
-              style={{ border: "1px solid black" }}
-              disabled={isLoading}
-            >
+            <button type="submit" className="btn btn-outline show-details mt-2" style={{ border: "1px solid black" }} disabled={isLoading}>
               {isLoading ? "Processing..." : "Proceed to Payment"}
             </button>
           </form>

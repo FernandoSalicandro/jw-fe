@@ -1,74 +1,73 @@
-// Import utili da React Router per navigare e leggere lo stato passato dalla pagina precedente
 import { useLocation, useNavigate } from 'react-router-dom';
-
-// Stripe tools: Elements è il provider, loadStripe inizializza Stripe la chiave pubblica che abbiamo in env
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-
-//per svuptare il carrello quando ci pare
 import { useCart } from '../Context/CartContext';
-
-import { useState, useEffect } from 'react';
-
-// il form personalizzato
+import { useState, useEffect, useRef } from 'react';
 import StripeForm from '../components/StripeForm';
 import axios from 'axios';
-
-// Inizializziamo Stripe con la  chiave pubblica (devo occultare la chiave)
 const stripePromise = loadStripe('pk_test_51RlUTcQKQGhBKiFRXR1HO0pQhxcVpUcdJ3yrJ1YF0AlFfVfVvqKPJdFEFQTprciFSyyijkKqf6dla1M1sFV9XSfn00E4eEJ8Nn');
-
 const PaymentPage = () => {
-    const location = useLocation();
-    const navigate = useNavigate();
-    // per svuotare il carrello post-pagamento
-
-    const { clearCart } = useCart();
-    //Per la foto del carello e del customer
-    const [snapShotCart, setSnapShotCart] = useState([]);
-
-
-
-    // Riceviamo i dati dallo state passato da CheckoutPage
-    const { cart, formData, selectedCountry, selectedRegion } = location.state || {};
-
-    // Qui salveremo il client secret restituito dal backend (serve per Stripe Elements)
-    const [clientSecret, setClientSecret] = useState(null);
-
-    useEffect(() => {
-        // se non abbiamo i dati torniamo al checkout
-        if (!cart || !formData || cart.length === 0) {
-            navigate('/checkout');
-            return;
-        }
-
-
-        
-        const snapshot = cart.map((obj) => ({ ...obj }));
-        setSnapShotCart(snapshot);  // salva la foto nel state
-
-
-        // Calcoliamo il totale del carrello (attenzione: usiamo direttamente item.price * item.quantity)
-        const amount = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
-
-        // Chiamata al backend per generare il paymentIntent (Stripe)
-        axios.post("http://localhost:3000/products/create-payment-intent", {
-            amount,
-            // mandiamo anche l'email per eventuali scontrini
-            customerEmail: formData.email, 
-            // utile lato backend per gestire lo stock /inviare ricevuta
-            items: cart 
-        })
-            .then(resp => {
-                // Salviamo il client secret, che ci serve per inizializzare Stripe Elements
-                setClientSecret(resp.data.clientSecret);
-            })
-            .catch((err) => {
-                console.log('Errore durante la creazione del paymentIntent:', err);
-            });
-            // Attiviamo useEffect solo se i dati qua sotto in [] cambiano
-    }, []); 
-
-    return (
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { clearCart } = useCart();
+  const [snapShotCart, setSnapShotCart] = useState([]);
+  const [clientSecret, setClientSecret] = useState(null);
+  const orderCreatedRef = useRef(false);
+  const { cart, formData, selectedCountry, selectedRegion } = location.state || {};
+  // :segno_spunta_bianco: Ordine nel database (solo se dati cambiano)
+  useEffect(() => {
+    if (!cart || !formData || cart.length === 0) {
+      navigate('/checkout');
+      return;
+    }
+    if (orderCreatedRef.current) return;
+    orderCreatedRef.current = true;
+    const amount = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    axios
+      .post('http://localhost:3000/products/orders', {
+        formData,
+        cart,
+        selectedCountry,
+        selectedRegion,
+        subtotal_price: amount,
+        discount_value: 0,
+        total_price: amount,
+        payment_method: 'stripe',
+      })
+      .then((resp) => {
+        localStorage.setItem(
+          'orderData',
+          JSON.stringify({
+            orderId: resp.data.orderId,
+            formData,
+            cart,
+          })
+        );
+      })
+      .catch((err) => {
+        console.error('Errore creazione ordine:', err);
+      });
+  }, [cart, formData, selectedCountry, selectedRegion, navigate]);
+  // :segno_spunta_bianco: PaymentIntent Stripe (una sola volta, non reinvoca su cambio quantità)
+  useEffect(() => {
+    if (!cart || !formData || cart.length === 0) return;
+    const snapshot = cart.map((obj) => ({ ...obj }));
+    setSnapShotCart(snapshot);
+    const amount = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    axios
+      .post('http://localhost:3000/products/create-payment-intent', {
+        amount,
+        customerEmail: formData.email,
+        items: cart,
+      })
+      .then((resp) => {
+        setClientSecret(resp.data.clientSecret);
+      })
+      .catch((err) => {
+        console.log('Errore durante la creazione del paymentIntent:', err);
+      });
+  }, []);
+ return (
         <div className="container py-5" style={{ marginTop: "100px" }}>
             <h1 className="mb-4">Confirm and pay</h1>
             <div className="row">
@@ -103,7 +102,6 @@ const PaymentPage = () => {
                             <span>{cart && cart.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2)} €</span>
                         </li>
                     </ul>
-
                     <div className='mt-4'>
                         <h3>Do you have a Coupon? Please reedem your discount!</h3>
                         <div className="mb-3">
@@ -112,8 +110,6 @@ const PaymentPage = () => {
                             <button className='btn border-black show-details mt-2'>Redeem</button>
                         </div>
                     </div>
-
-
                     <h4 className='mb-4'>Shipping Details</h4>
                     <div className='mb-5'>
                         <p className='fs-5'>Your order will be dispatched to the address provided. We ivite you to verify that all shipping details are correct before proceeding.</p>
@@ -123,42 +119,35 @@ const PaymentPage = () => {
                         <div className="card-header mb-3">
                             Mr/Mrs <strong>{formData.firstName} {formData.lastName}</strong>
                         </div>
-                        <ul className="list-group list-group-flush">
-                            <li className="list-group-item"><strong>Address:</strong> {formData.address}</li>
-                            <li className="list-group-item"><strong>Apartment:</strong> {formData.apartment !== "" ? formData.apartment : "Non Specified"}</li>
-                            <li className="list-group-item"><strong>City:</strong> {formData.city}</li>
-                            <li className="list-group-item"><strong>Postal Code:</strong> {formData.postalCode}</li>
-                            <li className="list-group-item"><strong>Phone Number:</strong> {formData.phone}</li>
-                            <li className="list-group-item"><strong>E-mail:</strong> {formData.email}</li>
-                        </ul>
-                    </div>
-                    
-
-                    
-
-                </div>
-
-                {/* --- COLONNA DESTRA (Stripe Elements) --- */}
-                <div className="col-md-6">
-                    {clientSecret ? (
-                        // Appena abbiamo il clientSecret, Stripe Elements può essere renderizzato
-                        <Elements stripe={stripePromise} options={{ clientSecret }}>
-                            <StripeForm
-                                clientSecret={clientSecret}
-                                navigate={navigate}
-                                clearCart={clearCart}
-                                cart={cart}
-                                formData={formData}
-                            
-                            />
-                        </Elements>
-                    ) : (
-                        <p>Caricamento modulo di pagamento...</p>
-                    )}
-                </div>
-            </div>
+            <ul className="list-group list-group-flush">
+              <li className="list-group-item"><strong>Address:</strong> {formData.address}</li>
+              <li className="list-group-item"><strong>Apartment:</strong> {formData.apartment !== '' ? formData.apartment : 'Non Specified'}</li>
+              <li className="list-group-item"><strong>City:</strong> {formData.city}</li>
+              <li className="list-group-item"><strong>Postal Code:</strong> {formData.postalCode}</li>
+              <li className="list-group-item"><strong>Phone Number:</strong> {formData.phone}</li>
+              <li className="list-group-item"><strong>E-mail:</strong> {formData.email}</li>
+            </ul>
+          </div>
+          </div>
         </div>
-    );
+        {/* COLONNA DESTRA */}
+        <div className="col-md-6">
+          {clientSecret ? (
+            <Elements stripe={stripePromise} options={{ clientSecret }}>
+              <StripeForm
+                clientSecret={clientSecret}
+                navigate={navigate}
+                clearCart={clearCart}
+                cart={cart}
+                formData={formData}
+              />
+            </Elements>
+          ) : (
+            <p>Caricamento modulo di pagamento...</p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 };
-
 export default PaymentPage;
