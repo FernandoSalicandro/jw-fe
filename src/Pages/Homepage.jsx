@@ -30,6 +30,7 @@ useEffect(() => {
     return (
         <>
             <main>
+                <div class="black-div"></div>
                 <div className="hero-section">
                     <img src="./img/hero-homepage.png" alt="" />
                 </div>

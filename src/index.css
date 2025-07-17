@@ -1,3 +1,5 @@
+CSS
+
 /* Reset e stili base */
 * {
   font-family: "Playfair Display", serif;
@@ -470,6 +472,11 @@ header a {
 
 /* Utility Classes */
 
+.black-div {
+  height: 120px;
+  width: 100%;
+  background-color: #060605
+}
 .main-page {
   margin-top: var(--header-height);
 }
@@ -586,12 +593,18 @@ header a {
 }
 
 @media (max-width: 992px) {
-  .left-col a {
-    padding: 6px 12px !important;
+  .nav-bar {
+    display: flex !important; /* Forza il display flex */
+    justify-content: space-between;
+    align-items: center;
   }
 
   .hamburger-menu {
-    display: flex;
+    display: flex; /* Mostra l'hamburger menu */
+    width: 50px;
+    margin-right: 10px;
+    position: relative;
+    z-index: 1000;
   }
 
   .left-col {
@@ -601,144 +614,64 @@ header a {
     left: 0;
     width: 100%;
     background: rgba(0, 0, 0, 0.95);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
     padding: 2rem;
     flex-direction: column;
-    align-items: flex-start;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .left-col.show {
-    display: flex !important;
-  }
-
-  .left-col a {
-    font-size: 1.8rem;
-    padding: 1rem 0;
+    display: flex;
   }
 
   .brand-col {
-    width: 60%;
+    width: auto; /* Rimuoviamo la larghezza fissa */
+    flex-grow: 1; /* Permette al brand di occupare lo spazio disponibile */
+    text-align: center;
+    padding: 0 20px;
   }
 
   .right-col {
-    width: 20%;
+    width: auto; /* Rimuoviamo la larghezza fissa */
     gap: 1rem;
   }
 
-  .carousel-btn {
-    width: 35px;
-    height: 35px;
-  }
-
-  .image-price .prezzo {
-    display: none;
-  }
-}
-
-@media (max-width: 768px) {
-  .left-col a {
-    padding: 6px 12px;
-  }
-
-  .header {
-    height: 100px;
-  }
-
-  .nav-bar {
-    padding: 0 1rem;
-  }
-
+  /* Aggiustiamo le dimensioni del testo e delle icone */
   .brand-col p {
     font-size: 2rem;
-    letter-spacing: 0.3rem;
+    justify-content: center;
   }
 
   .brand-col img {
     width: 60px;
   }
+}
 
-  .right-col p {
-    font-size: 1.2rem;
+@media (max-width: 768px) {
+  .brand-col p {
+    font-size: 1.8rem;
   }
 
-  .left-col a {
-    font-size: 1.2rem;
+  .brand-col img {
+    width: 50px;
   }
 
-  .carousel-btn {
-    width: 30px;
-    height: 30px;
-  }
-
-  .image-price .prezzo {
-    display: none;
+  .right-col {
+    gap: 0.8rem;
   }
 }
 
 @media (max-width: 576px) {
-  .left-col a {
-    padding: 6px 12px;
-  }
-
-  .header {
-    height: 80px;
-  }
-
   .brand-col p {
     font-size: 1.5rem;
-    letter-spacing: 0.2rem;
   }
 
   .brand-col img {
     width: 40px;
   }
 
-  .right-col {
-    gap: 0.8rem;
-  }
-
   .right-col p {
-    font-size: 1rem;
-  }
-
-  .left-col {
-    padding: 1.5rem;
-  }
-
-  .left-col a {
-    font-size: 1.1rem;
-  }
-
-  .carousel-btn {
-    width: 25px;
-    height: 25px;
-  }
-
-  .hamburger-menu {
-    justify-content: space-around;
-  }
-
-  .hamburger-menu span {
-    margin-left: 0px;
-    width: 40px;
-    height: 2px;
-    border-radius: 2px;
-    transition: all 0.4s ease;
-    transform-origin: center;
-  }
-
-  .hero-section img {
-    height: 300px;
-  }
-
-  .image-price .prezzo {
-    display: none;
+    font-size: 1.2rem;
   }
 }
-
-
 /* Ring Page Styles */
 
 .heroRing-img {
