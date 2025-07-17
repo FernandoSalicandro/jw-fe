@@ -12,11 +12,13 @@ import { useEffect, useState } from "react";
 import EarringsPage from "./pages/EarringsPage.jsx";
 import BraceletsPage from "./pages/BraceletsPage.jsx";
 import NecklacesPage from "./pages/NecklacesPage.jsx";
-import CheckoutPage from "./pages/checkoutPage.jsx";
+import CheckoutPage from './Pages/CheckoutPage.jsx';
 import ThankYouPage from "./pages/thankyouPage.jsx";
-import AboutUs from './pages/AboutUs.jsx'
-import WishListPage from "./pages/WishListPage.jsx";
 import CartPage from "./pages/CartPage.jsx";
+import AboutUs from './Pages/AboutUs.jsx'
+import WishListPage from "./Pages/WishListPage.jsx";
+import PaymentPage from './Pages/PaymentPage.jsx';
+
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -45,10 +47,11 @@ function App() {
             <Route path="/necklaces" element={<NecklacesPage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
-            <Route path="/thank-you" element={<ThankYouPage />} />
+            <Route path="/thankyou" element={<ThankYouPage />} />
             <Route path='/about-us' element={<AboutUs />}/>
             <Route path='/wishlist' element={<WishListPage />}/>
             <Route path='/cart' element={<CartPage />}/>
+            <Route path='/payment' element={<PaymentPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
