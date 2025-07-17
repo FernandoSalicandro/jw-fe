@@ -15,6 +15,7 @@ const PaymentPage = () => {
     const orderCreatedRef = useRef(false);
     const { cart, formData, selectedCountry, selectedRegion } = location.state || {};
     // :segno_spunta_bianco: Ordine nel database (solo se dati cambiano)
+    // Primo useEffect per l'ordine nel database
     useEffect(() => {
         if (!cart || !formData || cart.length === 0) {
             navigate('/checkout');
@@ -22,18 +23,19 @@ const PaymentPage = () => {
         }
         if (orderCreatedRef.current) return;
         orderCreatedRef.current = true;
+
         const amount = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
-        axios
-            .post('http://localhost:3000/products/orders', {
-                formData,
-                cart,
-                selectedCountry,
-                selectedRegion,
-                subtotal_price: amount,
-                discount_value: 0,
-                total_price: amount,
-                payment_method: 'stripe',
-            })
+
+        axios.post('http://localhost:3000/products/orders', {
+            formData,
+            cart,
+            selectedCountry,
+            selectedRegion,
+            subtotal_price: amount,
+            discount_value: 0,
+            total_price: amount,
+            payment_method: 'stripe',
+        })
             .then((resp) => {
                 localStorage.setItem(
                     'orderData',
@@ -48,25 +50,47 @@ const PaymentPage = () => {
                 console.error('Errore creazione ordine:', err);
             });
     }, [cart, formData, selectedCountry, selectedRegion, navigate]);
-    // :segno_spunta_bianco: PaymentIntent Stripe (una sola volta, non reinvoca su cambio quantità)
-    useEffect(() => {
-        if (!cart || !formData || cart.length === 0) return;
-        const snapshot = cart.map((obj) => ({ ...obj }));
-        setSnapShotCart(snapshot);
-        const amount = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
-        axios
-            .post('http://localhost:3000/products/create-payment-intent', {
-                amount,
-                customerEmail: formData.email,
-                items: cart,
-            })
-            .then((resp) => {
-                setClientSecret(resp.data.clientSecret);
-            })
-            .catch((err) => {
-                console.log('Errore durante la creazione del paymentIntent:', err);
-            });
-    }, []);
+
+    // Secondo useEffect per PaymentIntent Stripe
+  // Secondo useEffect per PaymentIntent Stripe
+useEffect(() => {
+    // Salviamo i dati iniziali in una costante per evitare riferimenti che cambiano
+    const initialCart = cart;
+    const initialFormData = formData;
+
+    if (!initialCart || !initialFormData || initialCart.length === 0) return;
+
+    // Crea una copia pulita del carrello una sola volta
+    const snapshot = initialCart.map(item => ({
+        id: item.id,
+        name: item.name,
+        quantity: parseInt(item.quantity),
+        price: parseFloat(item.price),
+        image_url: item.image_url
+    }));
+
+    setSnapShotCart(snapshot);
+
+    const amount = snapshot.reduce((acc, item) => 
+        acc + item.price * item.quantity, 0
+    );
+
+    axios.post('http://localhost:3000/products/create-payment-intent', {
+        amount: parseFloat(amount.toFixed(2)),
+        customerEmail: initialFormData.email,
+        items: snapshot
+    })
+    .then((resp) => {
+        if (resp.data && resp.data.clientSecret) {
+            setClientSecret(resp.data.clientSecret);
+        } else {
+            throw new Error('Client Secret non ricevuto');
+        }
+    })
+    .catch((err) => {
+        console.error('Errore durante la creazione del paymentIntent:', err);
+    });
+}, []); // Manteniamo le dependency vuote per non interferire con lo scaling
     return (
         <div className="container py-5" style={{ marginTop: "100px" }}>
             <h1 className="mb-4">Confirm and pay</h1>
@@ -129,22 +153,22 @@ const PaymentPage = () => {
                         </ul>
                     </div>
                 </div>
-                 {/* COLONNA DESTRA */}
-            <div className="col-md-6">
-                {clientSecret ? (
-                    <Elements stripe={stripePromise} options={{ clientSecret }}>
-                        <StripeForm
-                            clientSecret={clientSecret}
-                            navigate={navigate}
-                            clearCart={clearCart}
-                            cart={cart}
-                            formData={formData}
-                        />
-                    </Elements>
-                ) : (
-                    <p>Caricamento modulo di pagamento...</p>
-                )}
-            </div>
+                {/* COLONNA DESTRA */}
+                <div className="col-md-6">
+                    {clientSecret ? (
+                        <Elements stripe={stripePromise} options={{ clientSecret }}>
+                            <StripeForm
+                                clientSecret={clientSecret}
+                                navigate={navigate}
+                                clearCart={clearCart}
+                                cart={cart}
+                                formData={formData}
+                            />
+                        </Elements>
+                    ) : (
+                        <p>Caricamento modulo di pagamento...</p>
+                    )}
+                </div>
             </div>
         </div>
 
