@@ -14,9 +14,11 @@ import BraceletsPage from "./pages/BraceletsPage.jsx";
 import NecklacesPage from "./pages/NecklacesPage.jsx";
 import CheckoutPage from './Pages/CheckoutPage.jsx';
 import ThankYouPage from "./pages/thankyouPage.jsx";
+import CartPage from "./pages/CartPage.jsx";
 import AboutUs from './Pages/AboutUs.jsx'
 import WishListPage from "./Pages/WishListPage.jsx";
 import PaymentPage from './Pages/PaymentPage.jsx';
+
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -48,6 +50,7 @@ function App() {
             <Route path="/thankyou" element={<ThankYouPage />} />
             <Route path='/about-us' element={<AboutUs />}/>
             <Route path='/wishlist' element={<WishListPage />}/>
+            <Route path='/cart' element={<CartPage />}/>
             <Route path='/payment' element={<PaymentPage />} />
           </Route>
         </Routes>
