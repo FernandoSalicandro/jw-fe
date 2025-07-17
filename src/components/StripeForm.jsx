@@ -61,17 +61,18 @@ const StripeForm = ({ clientSecret, navigate, clearCart, cart, formData }) => {
     }
   };
   return (
-    <form onSubmit={handlePayment}>
-      <PaymentElement />
-      <button
-        type="submit"
-        disabled={!stripe || paying}
-        className="btn btn-outline-danger mt-3"
-      >
-        {paying ? 'Processing...' : 'Pay Now'}
-      </button>
-    </form>
-  );
+        <form onSubmit={handlePayment}>
+            <PaymentElement />
+            <button
+                type='submit'
+                disabled={!stripe || paying}
+                className="btn show-details border-black mt-3"
+            >
+                {paying ? 'Processing...' : 'Pay Now'}
+            </button>
+        </form>
+    );
+
 };
 export default StripeForm;
 

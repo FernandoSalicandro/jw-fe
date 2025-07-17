@@ -67,62 +67,58 @@ const PaymentPage = () => {
         console.log('Errore durante la creazione del paymentIntent:', err);
       });
   }, []);
-  return (
-    <div className="container py-5" style={{ marginTop: '100px' }}>
-      <h1 className="mb-4">Conferma e paga</h1>
-      <div className="row">
-        {/* COLONNA SINISTRA */}
-        <div className="col-md-6">
-          <h4>Riepilogo Ordine</h4>
-          <ul className="list-group mb-4">
-            {cart &&
-              cart.map((item) => (
-                <li key={item.id} className="list-group-item border-0">
-                  <div className="d-flex align-items-center">
-                    <img
-                      src={item.image_url}
-                      alt={item.name}
-                      style={{
-                        width: '60px',
-                        height: '60px',
-                        marginRight: '10px',
-                        objectFit: 'cover',
-                        borderRadius: '6px',
-                      }}
-                    />
-                    <div className="flex-grow-1">
-                      <strong>{item.name}</strong>
-                      <br />
-                      <small>Quantità: {item.quantity}</small>
+ return (
+        <div className="container py-5" style={{ marginTop: "100px" }}>
+            <h1 className="mb-4">Confirm and pay</h1>
+            <div className="row">
+                {/* --- COLONNA SINISTRA --- */}
+                <div className="col-md-6">
+                    <h4>Order Summary</h4>
+                    <ul className="list-group mb-4">
+                        {cart && cart.map((item) => (
+                            <li key={item.id} className="list-group-item border rounded border-warning">
+                                <div className="d-flex align-items-center">
+                                    <img
+                                        src={item.image_url}
+                                        alt={item.name}
+                                        style={{
+                                            width: "60px",
+                                            height: "60px",
+                                            marginRight: "10px",
+                                            objectFit: "cover",
+                                            borderRadius: "6px"
+                                        }}
+                                    />
+                                    <div className="flex-grow-1">
+                                        <strong>{item.name}</strong><br />
+                                        <small>Quantity: {item.quantity}</small>
+                                    </div>
+                                    <div>{(item.price * item.quantity).toFixed(2)} €</div>
+                                </div>
+                            </li>
+                        ))}
+                        <li className="list-group-item d-flex justify-content-between fw-bold border-0">
+                            <span>Total</span>
+                            <span>{cart && cart.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2)} €</span>
+                        </li>
+                    </ul>
+                    <div className='mt-4'>
+                        <h3>Do you have a Coupon? Please reedem your discount!</h3>
+                        <div className="mb-3">
+                            <label htmlFor="exampleFormControlInput1" className="form-label"></label>
+                            <input type="email" className="form-control" id="" placeholder="Coupon Code" />
+                            <button className='btn border-black show-details mt-2'>Redeem</button>
+                        </div>
                     </div>
-                    <div>{(item.price * item.quantity).toFixed(2)} €</div>
-                  </div>
-                </li>
-              ))}
-            <li className="list-group-item d-flex justify-content-between fw-bold border-0">
-              <span>Totale</span>
-              <span>
-                {cart &&
-                  cart
-                    .reduce((acc, item) => acc + item.price * item.quantity, 0)
-                    .toFixed(2)}{' '}
-                €
-              </span>
-            </li>
-          </ul>
-          <h4 className="mb-4">Shipping Details</h4>
-          <div className="mb-5">
-            <p className="fs-5">
-              Your order will be dispatched to the address provided. We invite
-              you to verify that all shipping details are correct before
-              proceeding.
-            </p>
-            <p className="text-secondary text-end fs-6">– Kindly: JW-LUX Team</p>
-          </div>
-          <div className="card">
-            <div className="card-header mb-3">
-              Mr/Mrs <strong>{formData.firstName} {formData.lastName}</strong>
-            </div>
+                    <h4 className='mb-4'>Shipping Details</h4>
+                    <div className='mb-5'>
+                        <p className='fs-5'>Your order will be dispatched to the address provided. We ivite you to verify that all shipping details are correct before proceeding.</p>
+                        <p className='text-secondary text-end fs-6'>– Kindly: JW-LUX Team</p>
+                    </div>
+                    <div className="card">
+                        <div className="card-header mb-3">
+                            Mr/Mrs <strong>{formData.firstName} {formData.lastName}</strong>
+                        </div>
             <ul className="list-group list-group-flush">
               <li className="list-group-item"><strong>Address:</strong> {formData.address}</li>
               <li className="list-group-item"><strong>Apartment:</strong> {formData.apartment !== '' ? formData.apartment : 'Non Specified'}</li>
@@ -132,12 +128,6 @@ const PaymentPage = () => {
               <li className="list-group-item"><strong>E-mail:</strong> {formData.email}</li>
             </ul>
           </div>
-          <div className="mt-4">
-            <h3>Do you have a Coupon? Please redeem your discount!</h3>
-            <div className="mb-3">
-              <input type="text" className="form-control" placeholder="Coupon Code" />
-              <button className="btn btn-outline-primary mt-2">Redeem</button>
-            </div>
           </div>
         </div>
         {/* COLONNA DESTRA */}
