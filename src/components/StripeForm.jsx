@@ -50,7 +50,7 @@ const StripeForm = ({ clientSecret, navigate, clearCart, cart, formData }) => {
             <button
                 type='submit'
                 disabled={!stripe || paying}
-                className="btn btn-outline-danger mt-3"
+                className="btn show-details border-black mt-3"
             >
                 {paying ? 'Processing...' : 'Pay Now'}
             </button>

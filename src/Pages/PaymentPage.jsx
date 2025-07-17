@@ -70,14 +70,14 @@ const PaymentPage = () => {
 
     return (
         <div className="container py-5" style={{ marginTop: "100px" }}>
-            <h1 className="mb-4">Conferma e paga</h1>
+            <h1 className="mb-4">Confirm and pay</h1>
             <div className="row">
                 {/* --- COLONNA SINISTRA --- */}
                 <div className="col-md-6">
-                    <h4>Riepilogo Ordine</h4>
+                    <h4>Order Summary</h4>
                     <ul className="list-group mb-4">
                         {cart && cart.map((item) => (
-                            <li key={item.id} className="list-group-item border-0">
+                            <li key={item.id} className="list-group-item border rounded border-warning">
                                 <div className="d-flex align-items-center">
                                     <img
                                         src={item.image_url}
@@ -92,17 +92,26 @@ const PaymentPage = () => {
                                     />
                                     <div className="flex-grow-1">
                                         <strong>{item.name}</strong><br />
-                                        <small>Quantità: {item.quantity}</small>
+                                        <small>Quantity: {item.quantity}</small>
                                     </div>
                                     <div>{(item.price * item.quantity).toFixed(2)} €</div>
                                 </div>
                             </li>
                         ))}
                         <li className="list-group-item d-flex justify-content-between fw-bold border-0">
-                            <span>Totale</span>
+                            <span>Total</span>
                             <span>{cart && cart.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2)} €</span>
                         </li>
                     </ul>
+
+                    <div className='mt-4'>
+                        <h3>Do you have a Coupon? Please reedem your discount!</h3>
+                        <div className="mb-3">
+                            <label htmlFor="exampleFormControlInput1" className="form-label"></label>
+                            <input type="email" className="form-control" id="" placeholder="Coupon Code" />
+                            <button className='btn border-black show-details mt-2'>Redeem</button>
+                        </div>
+                    </div>
 
 
                     <h4 className='mb-4'>Shipping Details</h4>
@@ -123,14 +132,7 @@ const PaymentPage = () => {
                             <li className="list-group-item"><strong>E-mail:</strong> {formData.email}</li>
                         </ul>
                     </div>
-                    <div className='mt-4'>
-                        <h3>Do you have a Coupon? Please reedem your discount!</h3>
-                        <div className="mb-3">
-                            <label htmlFor="exampleFormControlInput1" className="form-label"></label>
-                            <input type="email" className="form-control" id="" placeholder="Coupon Code" />
-                            <button className='btn btn-outline-primary mt-2'>Redeem</button>
-                        </div>
-                    </div>
+                    
 
                     
 
