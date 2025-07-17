@@ -104,7 +104,7 @@ const PaymentPage = () => {
                         </li>
                     </ul>
 
- ge-payment-graphics
+
                     <h4 className='mb-4'>Shipping Details</h4>
                     <div className='mb-5'>
                         <p className='fs-5'>Your order will be dispatched to the address provided. We ivite you to verify that all shipping details are correct before proceeding.</p>
