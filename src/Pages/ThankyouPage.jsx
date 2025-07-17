@@ -37,7 +37,6 @@ console.log(customer)
         </ul>
     </div>
 
-  console.log(snapShotCart, customer); // solo per debug
 
  
 

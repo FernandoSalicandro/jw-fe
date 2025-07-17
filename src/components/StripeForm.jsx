@@ -1,89 +1,55 @@
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
 import { useState } from 'react';
 import axios from 'axios';
-
 const StripeForm = ({ clientSecret, navigate, clearCart, cart, formData }) => {
     const stripe = useStripe();
     const elements = useElements();
     const [paying, setPaying] = useState(false);
-
     const handlePayment = async (e) => {
         e.preventDefault();
         setPaying(true);
-
-
-        //--correzione: aggiungo local storage per salvare i dati anche dopo il redirect di stripe diobastianich
-        localStorage.setItem('orderData', JSON.stringify({
-            cart,
-            formData
-        }))
-
-        stripe.confirmPayment({
-            elements,
-            confirmParams: {
-                //qua possiamo modificare a piacimento per rimandare alla pagina che vogliamo, l'ho settata per la thankyou page
-            },
-            redirect: "if_required"
-
-        }).then(result => {
-            if (result.error) {
-                console.log('Errore durante il pagamento:', result.error.message);
-                setPaying(false);
-            } else {
-                console.log('Pagamento avvenuto con successo');
-                //dopo la conferma che non c'è stato intoppo svuotiamo il carrello
-                clearCart();
-                navigate("/thankyou", {
-                    state: {
-                        snapShotCart:snapShotCart,
-                        customer: formData
-                    }
-                });
-
+        // Scatta una "foto" del carrello per thankyou
+        const snapShotCart = cart.map(item => ({ ...item }));
         try {
-            // Salva i dati dell'ordine
-            localStorage.setItem('orderData', JSON.stringify({
-                cart,
-                formData
-            }));
-
-            // Prima prova a scalare lo stock
+            // Salva l'ordine nel localStorage
+            localStorage.setItem('orderData', JSON.stringify({ cart, formData }));
+            // Prima scala lo stock
             console.log("Tentativo di scaling stock...", cart);
-            
-            await axios.post("http://localhost:3000/products/scale-stock", {
-                items: cart
-            });
-            
+            await axios.post("http://localhost:3000/products/scale-stock", { items: cart });
             console.log("Stock scalato con successo");
-
-            // Poi procedi con il pagamento Stripe
+            // Poi conferma il pagamento
             const result = await stripe.confirmPayment({
                 elements,
                 confirmParams: {
                     return_url: window.location.origin + "/thankyou"
                 },
+                redirect: "if_required"
             });
-
             if (result.error) {
                 console.log('Errore durante il pagamento:', result.error.message);
                 setPaying(false);
-                
-                // Se il pagamento fallisce, ripristina lo stock
-                // TODO: implementare endpoint di ripristino stock
-
+            } else {
+                // Paga tutto ok
+                console.log('Pagamento avvenuto con successo');
+                clearCart();
+                navigate("/thankyou", {
+                    state: {
+                        snapShotCart,
+                        customer: formData
+                    }
+                });
             }
         } catch (err) {
             console.log('Errore generale:', err);
             setPaying(false);
         }
     };
-
     return (
         <form onSubmit={handlePayment}>
             <PaymentElement />
-            <button 
-                type='submit' 
-                disabled={!stripe || paying} 
+            <button
+                type='submit'
+                disabled={!stripe || paying}
                 className="btn btn-outline-danger mt-3"
             >
                 {paying ? 'Processing...' : 'Pay Now'}
@@ -91,5 +57,4 @@ const StripeForm = ({ clientSecret, navigate, clearCart, cart, formData }) => {
         </form>
     );
 };
-
 export default StripeForm;
