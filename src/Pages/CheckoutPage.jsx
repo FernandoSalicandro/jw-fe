@@ -2,20 +2,21 @@ import { useState } from "react";
 import { useCart } from "../Context/CartContext";
 import { useNavigate } from "react-router-dom";
 import countryRegionData from "../data/countryRegionData.js";
-import { loadStripe } from '@stripe/stripe-js';
 
-const stripePromise = loadStripe('pk_test_51RlUTcQKQGhBKiFRXR1HO0pQhxcVpUcdJ3yrJ1YF0AlFfVfVvqKPJdFEFQTprciFSyyijkKqf6dla1M1sFV9XSfn00E4eEJ8Nn');
 
 const CheckoutPage = () => {
-  const { cart, clearCart } = useCart();
-  const navigate = useNavigate();
+  const { cart } = useCart(); 
+  const navigate = useNavigate(); 
 
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedRegion, setSelectedRegion] = useState("");
 
+ 
   const countries = countryRegionData.map((c) => c.countryName);
-  const regions = countryRegionData.find((c) => c.countryName === selectedCountry)?.regions.map((r) => r.name) || [];
+  const regions =
+    countryRegionData.find((c) => c.countryName === selectedCountry)?.regions.map((r) => r.name) || [];
 
+  //qua tengo tutti i dati che l'utente inserisce nel form
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -29,40 +30,26 @@ const CheckoutPage = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  //funzione per aggiornare formData man mano che l'utente digita
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const getTotal = () => {
-    return cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
-  };
-
-  const handleSubmit = async (e) => {
+  //quando l'utente clicca su "Proceed to Payment" lo portiamo alla pagina vera del pagamento, passando i dati
+  const handleSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
-    try {
-      const response = await fetch('http://localhost:3000/products/create-checkout-session', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          items: cart,
-          customerEmail: formData.email,
-        }),
-      });
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const { url } = await response.json();
-      window.location.href = url;
-    } catch (error) {
-      console.error('Error:', error);
-      setIsLoading(false);
-    }
+    //qua lo porto alla pagina del pagamento e gli passo tutti i dati in un oggetto
+    navigate("/payment", {
+      state: {
+        formData,
+        cart,
+        selectedCountry,
+        selectedRegion,
+      },
+    });
   };
 
   return (
@@ -70,9 +57,11 @@ const CheckoutPage = () => {
       <h1 className="mb-4">Checkout</h1>
 
       {cart.length === 0 ? (
-        <p>Il tuo carrello è vuoto.</p>
+        //se l'utente arriva qua senza nulla, gli diciamo gentilmente di tornare a comprare roba lol
+        <p>Il tuo carrello è vuoto.</p> 
       ) : (
         <>
+          {/* riepilogo ordine */}
           <div className="mb-4 mt-4">
             <h4>Order Summary</h4>
           </div>
@@ -104,16 +93,22 @@ const CheckoutPage = () => {
             <hr />
             <li className="list-group-item d-flex justify-content-between fw-bold border-0">
               <span>Subtotal</span>
-              <span>{cart.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2)} €</span>
+              <span>
+                {cart.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2)} €
+              </span>
             </li>
           </ul>
+
+          {/* form per i dati del cliente */}
           <form onSubmit={handleSubmit}>
             <h4 className="mt-4 mb-3">Contact</h4>
             <div className="mb-3">
               <label className="form-label">Email</label>
               <input type="email" name="email" required className="form-control" onChange={handleChange} />
             </div>
+
             <h4 className="mt-4 mb-3">Shipping Details</h4>
+            {/* paese */}
             <div className="mb-3">
               <select
                 className="form-select mb-3"
@@ -131,6 +126,8 @@ const CheckoutPage = () => {
                 ))}
               </select>
             </div>
+
+            {/* nome e cognome */}
             <div className="row g-3 mb-3">
               <div className="col-md-6">
                 <label className="form-label">First Name</label>
@@ -141,14 +138,19 @@ const CheckoutPage = () => {
                 <input type="text" name="lastName" required className="form-control" onChange={handleChange} />
               </div>
             </div>
+
+            {/* indirizzo */}
             <div className="mb-3">
               <label className="form-label">Address</label>
               <input type="text" name="address" required className="form-control" onChange={handleChange} />
             </div>
+
             <div className="mb-3">
               <label className="form-label">Apartment/Suite (optional)</label>
               <input type="text" name="apartment" className="form-control" onChange={handleChange} />
             </div>
+
+            {/* città, cap, provincia */}
             <div className="row g-3 mb-3">
               <div className="col-md-4">
                 <label className="form-label">City</label>
@@ -163,9 +165,7 @@ const CheckoutPage = () => {
                 <select
                   className="form-select mb-3"
                   value={selectedRegion}
-                  onChange={(e) => {
-                    setSelectedRegion(e.target.value);
-                  }}
+                  onChange={(e) => setSelectedRegion(e.target.value)}
                 >
                   <option value="">Select Region/Province</option>
                   {regions.map((region) => (
@@ -176,11 +176,14 @@ const CheckoutPage = () => {
                 </select>
               </div>
             </div>
+
+            {/* telefono */}
             <div className="mb-4">
               <label className="form-label">Phone</label>
               <input type="text" name="phone" required className="form-control" onChange={handleChange} />
             </div>
 
+            {/* pulsante per andare al pagamento */}
             <button
               type="submit"
               className="btn btn-outline show-details mt-2"
