@@ -26,7 +26,6 @@ const PaymentPage = () => {
     //Per la foto del carello e del customer
     const [snapShotCart, setSnapShotCart] = useState([]);
 
-    const { clearCart } = useCart(); 
 
 
     // Riceviamo i dati dallo state passato da CheckoutPage
