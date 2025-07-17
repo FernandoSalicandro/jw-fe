@@ -1,23 +1,26 @@
 import { useContext, useEffect } from 'react';
 import { ProductContext } from '../Context/ProductContext.jsx';
-import { useNavigate } from 'react-router-dom';
-import { useCart } from '../Context/CartContext.jsx'
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useCart } from '../Context/CartContext.jsx';
 
 export default function ThankYouPage() {
-  const { requestProducts } = useContext(ProductContext)
-  const navigate = useNavigate()
+  const { requestProducts } = useContext(ProductContext);
   const { clearCart } = useCart();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const { snapShotCart, customer } = location.state || {};
 
   useEffect(() => {
     clearCart();
     localStorage.removeItem("cart");
     localStorage.removeItem("orderData");
     requestProducts();
-  }, [])
+  }, []);
 
+  console.log(snapShotCart, customer); // solo per debug
 
   return (
-
     <>
       <div className="container py-5 text-center" style={{ marginTop: "120px" }}>
         <h1>Grazie per il tuo ordine!</h1>
@@ -28,6 +31,5 @@ export default function ThankYouPage() {
         Torna alla Home
       </button>
     </>
-
   );
 }
