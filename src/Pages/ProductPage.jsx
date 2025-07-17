@@ -7,73 +7,77 @@ import { useWishList } from "../Context/WishListContext.jsx";
 import Loader from "../components/Loader.jsx";
 
 export default function ProductPage() {
-
     const urlApi = "http://localhost:3000/products";
     const { slug } = useParams();
-    const [gioiello, setgioiello] = useState(null);
-    const { products } = useContext(ProductContext);
-    const { addToCart, setCartIsOpen, cart } = useCart(); // include controllo per mostrare il carrello
-    const { addToWishList, setIsWishListOpen, wishList } = useWishList(); // include controllo per mostrare il carrello
-    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
-    const [limitReached, setLimitReached] = useState(false)
-    const [alreadyInWishlist, setAlreadyinWishlist] = useState(false)
+    
+    // States
+    const [gioiello, setGioiello] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [limitReached, setLimitReached] = useState(false);
+    const [alreadyInWishlist, setAlreadyInWishlist] = useState(false);
 
-    // Funzione per gestire il pulsante add to cart in caso di raggingimento della soglia massima
+    // Contexts
+    const { products } = useContext(ProductContext);
+    const { addToCart, setIsCartOpen, cart } = useCart();
+    const { addToWishList, setIsWishListOpen, wishList } = useWishList();
+
+    // Funzione per ottenere la quantità nel carrello
     const getQuantityInCart = (product) => {
+        if (!product) return 0;
         const item = cart.find((item) => item.id === product.id);
-        return item ? item.quantity : 0
-    }
-
-    // Funzione per aggiungere al carrello
-    const handleAdd = (event) => {
-        event.preventDefault();
-
-        const currentQuantity = getQuantityInCart(gioiello); // controllo la quantità di quel gioiello nel carello
-
-        if (currentQuantity >= gioiello.stock_quantity) {  // se la condizione è true mi restituisce setLimitReaced a true e non proccede
-            setLimitReached(true);
-            return;
-        } // altrimenti aggiungo al carrello
-
-        // Aggiunta al carrello
-        addToCart({ ...gioiello, quantity: 1 });
-        setCartIsOpen(true);
-        setLimitReached(false); // resetta il messaggio se tutto ok
+        return item ? item.quantity : 0;
     };
 
-    //Aggiungi alla Wishlist
+    // Gestione aggiunta al carrello
+    const handleAdd = (event) => {
+        event.preventDefault();
+        
+        if (!gioiello) return;
+
+        const currentQuantity = getQuantityInCart(gioiello);
+
+        if (currentQuantity >= gioiello.stock_quantity) {
+            setLimitReached(true);
+            return;
+        }
+
+        addToCart({ ...gioiello, quantity: 1 });
+        setIsCartOpen(true);
+        setLimitReached(false);
+    };
+
+    // Gestione aggiunta alla wishlist
     const handleWishListAdd = (event) => {
         event.preventDefault();
 
-        if (!gioiello) return
+        if (!gioiello) return;
 
         const isAlready = wishList.some(item => item.id === gioiello.id);
 
         if (isAlready) {
-            setAlreadyinWishlist(true)
+            setAlreadyInWishlist(true);
             setIsWishListOpen(true);
             return;
         }
 
-        // Altrimenti aggiungilo e mostra comunque il messaggio
         addToWishList({ ...gioiello, quantity: 1 });
         setIsWishListOpen(true);
-        setAlreadyinWishlist(true);
+        setAlreadyInWishlist(true);
     };
 
+    // Gestione stato wishlist
     useEffect(() => {
         if (!gioiello) {
-            setAlreadyinWishlist(false);
+            setAlreadyInWishlist(false);
             return;
         }
 
         const isInWishlist = wishList.some(item => item.id === gioiello.id);
-        setAlreadyinWishlist(isInWishlist);
+        setAlreadyInWishlist(isInWishlist);
     }, [wishList, gioiello]);
 
-
-    // Use effect per togliere il messaggio in caso di non raggiungimento dello stock
+    // Gestione limite stock
     useEffect(() => {
         if (!gioiello) return;
 
@@ -84,20 +88,38 @@ export default function ProductPage() {
         }
     }, [cart, gioiello, limitReached]);
 
-    // Funzione per randomizzare 4 prodotti
-    const getRandomSubset = (arr, count) => {
-        const shuffled = [...arr].sort(() => 0.5 - Math.random());
-        return shuffled.slice(0, count);
-    };
-
-    const randomItems = useMemo(() => getRandomSubset(products, 4), [products]);
-
+    // Fetch dati prodotto
     useEffect(() => {
-        axios.get(`${urlApi}/${slug}`).then((resp) => {
-            setgioiello(resp.data);
-            setLoading(false);
-        });
+        const fetchProduct = async () => {
+            setLoading(true);
+            setGioiello(null);
+            
+            try {
+                const response = await axios.get(`${urlApi}/${slug}?nocache=${Date.now()}`, {
+                    headers: {
+                        'Cache-Control': 'no-cache',
+                        'Pragma': 'no-cache',
+                        'Expires': '0'
+                    }
+                });
+                setGioiello(response.data);
+            } catch (error) {
+                console.error('Errore nel caricamento del prodotto:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchProduct();
     }, [slug]);
+
+    // Prodotti correlati
+    const randomItems = useMemo(() => {
+        const getRandomSubset = (arr, count) => {
+            return [...arr].sort(() => 0.5 - Math.random()).slice(0, count);
+        };
+        return getRandomSubset(products, 4);
+    }, [products]);
 
     if (loading) return <Loader />;
 
@@ -107,11 +129,20 @@ export default function ProductPage() {
                 <main className="main">
                     <div className="container">
                         <div className="row g-4 margin-top">
+                            {/* Immagine prodotto */}
                             <div className="col-lg-6 mb-4">
-                                <img src={gioiello.image_url} alt={gioiello.name} className="img-fluid" />
+                                <img 
+                                    src={gioiello.image_url} 
+                                    alt={gioiello.name} 
+                                    className="img-fluid" 
+                                />
                             </div>
+
+                            {/* Dettagli prodotto */}
                             <div className="col-lg-6">
                                 <h2>{gioiello.name}</h2>
+                                
+                                {/* Prezzi */}
                                 <div className="price-box">
                                     <p className={gioiello.is_promo === 1 ? "no-promo" : "promo"}>
                                         Price: {gioiello.price} €
@@ -121,22 +152,37 @@ export default function ProductPage() {
                                     )}
                                 </div>
 
-                                <button className="btn btn-outline w-50 d-block show-details" onClick={handleAdd} style={{border: "1px solid black"}}>
+                                {/* Pulsanti azione */}
+                                <button 
+                                    className="btn btn-outline w-50 d-block show-details" 
+                                    onClick={handleAdd} 
+                                    style={{border: "1px solid black"}}
+                                >
                                     ADD TO CART
                                 </button>
 
-                                {limitReached ? <div className="text-danger mt-2">Hai raggiunto la quantità massima disponibile</div> : ""}
-                                <button className="btn btn-outline w-50 d-block mt-3 show-details" onClick={handleWishListAdd} disabled={alreadyInWishlist} style={{border: "1px solid black"}}> 
+                                {limitReached && (
+                                    <div className="text-danger mt-2">
+                                        Hai raggiunto la quantità massima disponibile
+                                    </div>
+                                )}
 
+                                <button 
+                                    className="btn btn-outline w-50 d-block mt-3 show-details" 
+                                    onClick={handleWishListAdd} 
+                                    disabled={alreadyInWishlist}
+                                    style={{border: "1px solid black"}}
+                                >
                                     ADD TO WISHLIST
                                 </button>
+
                                 {alreadyInWishlist && (
                                     <div className="alert alert-warning mt-2">
                                         This product is in your wishlist.
                                     </div>
                                 )}
 
-
+                                {/* Accordion informazioni */}
                                 <div className="accordion mt-5" id="accordionExample">
                                     <div className="accordion-item">
                                         <h2 className="accordion-header">
@@ -190,12 +236,12 @@ export default function ProductPage() {
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
                     </div>
 
+                    {/* Prodotti correlati */}
                     <div className="pb-4">
                         <p className="text-center h2 mt-5">YOU MAY ALSO LIKE...</p>
                         <div className="row row-cols-lg-4 p-3">

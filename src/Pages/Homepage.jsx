@@ -1,16 +1,20 @@
-import { useContext, useRef, useState } from 'react';
+import { useContext, useRef, useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ProductContext } from '../Context/ProductContext.jsx';
 import { motion } from 'framer-motion';
 import Quotes from '../components/Quotes.jsx';
 
 export default function HomePage() {
-    const { products } = useContext(ProductContext);
+    const { products, requestProducts } = useContext(ProductContext);
     const carouselRef = useRef(null);
     const { slug } = useParams();
     const navigate = useNavigate();
     const [isWorkShop, setIsWorkShop] = useState(false)
 
+
+useEffect(() => {
+    requestProducts();
+}, [])
 
     const handleScroll = (direction) => {
         if (carouselRef.current) {
