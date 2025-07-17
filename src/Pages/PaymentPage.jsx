@@ -147,7 +147,6 @@ const PaymentPage = () => {
           )}
         </div>
       </div>
-    </div>
   );
 };
 export default PaymentPage;
