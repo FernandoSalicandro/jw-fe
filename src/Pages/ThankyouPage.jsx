@@ -1,4 +1,13 @@
+import { useLocation } from "react-router-dom";
+
+
+
 export default function ThankYouPage() {
+const location = useLocation()
+const{snapShotCart, customer} = location.state || {};
+
+console.log(snapShotCart, customer)
+
   return (
     <div className="container py-5 text-center" style={{ marginTop: "120px" }}>
       <h1>Grazie per il tuo ordine!</h1>
