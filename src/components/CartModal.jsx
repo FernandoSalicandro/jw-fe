@@ -1,9 +1,10 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "../Context/CartContext";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const CartModal = ({ isOpen, onClose }) => {
-  const { cart, removeFromCart, setCart } = useCart();
+  const { cart, removeFromCart, setCart, setIsCartOpen } = useCart();
   const navigate = useNavigate();
 
   const increaseQuantity = (id) => {
@@ -30,6 +31,11 @@ const CartModal = ({ isOpen, onClose }) => {
           : item
       )
     );
+  };
+
+  const handleViewCard = () => {
+    setIsCartOpen(false);
+    navigate("/cart");
   };
 
   return (
@@ -86,14 +92,19 @@ const CartModal = ({ isOpen, onClose }) => {
 
           {cart.length > 0 && (
             <>
-              <p className="fw-bold mt-3">Totale: {cart.reduce((sum, item) => sum + (item.is_promo === 1 ? item.discount_price : item.price) * item.quantity, 0).toFixed(2)} €</p>
+              <div className="d-flex justify-content-between align-items-center">
+                <p className="fw-bold">Totale: {cart.reduce((sum, item) => sum + (item.is_promo === 1 ? item.discount_price : item.price) * item.quantity, 0).toFixed(2)} €</p>
+                <p onClick={handleViewCard} style={{ cursor: "pointer" }}>
+                  View All
+                </p>
+              </div>
               <button
                 className="btn btn-outline show-details w-100 mt-2"
                 onClick={() => {
                   onClose();
                   navigate("/checkout");
                 }}
-                style={{border: "1px solid black"}}
+                style={{ border: "1px solid black" }}
               >
                 Vai al Checkout
               </button>
