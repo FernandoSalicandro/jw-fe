@@ -21,9 +21,13 @@ const PaymentPage = () => {
     const location = useLocation();
     const navigate = useNavigate();
     // per svuotare il carrello post-pagamento
+
     const { clearCart } = useCart();
     //Per la foto del carello e del customer
     const [snapShotCart, setSnapShotCart] = useState([]);
+
+    const { clearCart } = useCart(); 
+
 
     // Riceviamo i dati dallo state passato da CheckoutPage
     const { cart, formData, selectedCountry, selectedRegion } = location.state || {};
@@ -38,9 +42,11 @@ const PaymentPage = () => {
             return;
         }
 
+
         
         const snapshot = cart.map((obj) => ({ ...obj }));
         setSnapShotCart(snapshot);  // salva la foto nel state
+
 
         // Calcoliamo il totale del carrello (attenzione: usiamo direttamente item.price * item.quantity)
         const amount = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
@@ -49,9 +55,9 @@ const PaymentPage = () => {
         axios.post("http://localhost:3000/products/create-payment-intent", {
             amount,
             // mandiamo anche l'email per eventuali scontrini
-            customerEmail: formData.email,
+            customerEmail: formData.email, 
             // utile lato backend per gestire lo stock /inviare ricevuta
-            items: cart
+            items: cart 
         })
             .then(resp => {
                 // Salviamo il client secret, che ci serve per inizializzare Stripe Elements
@@ -60,10 +66,8 @@ const PaymentPage = () => {
             .catch((err) => {
                 console.log('Errore durante la creazione del paymentIntent:', err);
             });
-        // Attiviamo useEffect solo se i dati qua sotto in [] cambiano
-    }, [cart, formData, navigate]);
-
-    console.log(formData)
+            // Attiviamo useEffect solo se i dati qua sotto in [] cambiano
+    }, []); 
 
     return (
         <div className="container py-5" style={{ marginTop: "100px" }}>
@@ -71,11 +75,11 @@ const PaymentPage = () => {
             <div className="row">
                 {/* --- COLONNA SINISTRA --- */}
                 <div className="col-md-6">
-                    <h4>Order Summary</h4>
+                    <h4>Riepilogo Ordine</h4>
                     <ul className="list-group mb-4">
                         {cart && cart.map((item) => (
                             <li key={item.id} className="list-group-item border-0">
-                                <div className="d-flex align-items-center border border-warning rounded px-3">
+                                <div className="d-flex align-items-center">
                                     <img
                                         src={item.image_url}
                                         alt={item.name}
@@ -89,18 +93,19 @@ const PaymentPage = () => {
                                     />
                                     <div className="flex-grow-1">
                                         <strong>{item.name}</strong><br />
-                                        <small>Quantity: {item.quantity}</small>
+                                        <small>Quantità: {item.quantity}</small>
                                     </div>
-                                    <div className='d-flex align-items-center gap-1'><span className="">{(item.price * item.quantity).toFixed(2)}</span><span>€</span></div>
+                                    <div>{(item.price * item.quantity).toFixed(2)} €</div>
                                 </div>
                             </li>
                         ))}
                         <li className="list-group-item d-flex justify-content-between fw-bold border-0">
-                            <span className=''>Total</span>
+                            <span>Totale</span>
                             <span>{cart && cart.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2)} €</span>
                         </li>
                     </ul>
 
+ ge-payment-graphics
                     <h4 className='mb-4'>Shipping Details</h4>
                     <div className='mb-5'>
                         <p className='fs-5'>Your order will be dispatched to the address provided. We ivite you to verify that all shipping details are correct before proceeding.</p>
@@ -127,6 +132,9 @@ const PaymentPage = () => {
                             <button className='btn btn-outline-primary mt-2'>Redeem</button>
                         </div>
                     </div>
+
+                    
+
                 </div>
 
                 {/* --- COLONNA DESTRA (Stripe Elements) --- */}
@@ -140,7 +148,7 @@ const PaymentPage = () => {
                                 clearCart={clearCart}
                                 cart={cart}
                                 formData={formData}
-                                snapShotCart={snapShotCart}
+                            
                             />
                         </Elements>
                     ) : (

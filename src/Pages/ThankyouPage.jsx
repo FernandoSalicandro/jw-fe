@@ -1,10 +1,23 @@
-import { useLocation } from "react-router-dom";
-
-
+import { useContext, useEffect } from 'react';
+import { ProductContext } from '../Context/ProductContext.jsx';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useCart } from '../Context/CartContext.jsx';
 
 export default function ThankYouPage() {
-const location = useLocation()
-const{snapShotCart, customer} = location.state || {};
+  const { requestProducts } = useContext(ProductContext);
+  const { clearCart } = useCart();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const { snapShotCart, customer } = location.state || {};
+
+  useEffect(() => {
+    clearCart();
+    localStorage.removeItem("cart");
+    localStorage.removeItem("orderData");
+    requestProducts();
+  }, []);
+
 
 console.log(snapShotCart)
 console.log(customer)
@@ -23,5 +36,10 @@ console.log(customer)
         nome: {customer.firstName}
         </ul>
     </div>
+
+  console.log(snapShotCart, customer); // solo per debug
+
+ 
+
   );
 }
