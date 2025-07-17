@@ -18,18 +18,28 @@ export default function ThankYouPage() {
     requestProducts();
   }, []);
 
-  console.log(snapShotCart, customer); // solo per debug
+
+console.log(snapShotCart)
+console.log(customer)
 
   return (
-    <>
-      <div className="container py-5 text-center" style={{ marginTop: "120px" }}>
-        <h1>Grazie per il tuo ordine!</h1>
-        <p>Riceverai una conferma via email a breve.</p>
-      </div>
+    <div className="container py-5 text-center" style={{ marginTop: "120px" }}>
+      <h1>Grazie per il tuo ordine!</h1>
+      <p>Riceverai una conferma via email a breve.</p>
+      <ul>
+        {snapShotCart.map((item) => (
+          <li>
+            {item.name}
+          </li>
+        ))}
 
-      <button className="btn btn-dark mt-4" onClick={() => navigate('/')}>
-        Torna alla Home
-      </button>
-    </>
+        nome: {customer.firstName}
+        </ul>
+    </div>
+
+  console.log(snapShotCart, customer); // solo per debug
+
+ 
+
   );
 }

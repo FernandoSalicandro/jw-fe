@@ -11,6 +11,35 @@ const StripeForm = ({ clientSecret, navigate, clearCart, cart, formData }) => {
         e.preventDefault();
         setPaying(true);
 
+
+        //--correzione: aggiungo local storage per salvare i dati anche dopo il redirect di stripe diobastianich
+        localStorage.setItem('orderData', JSON.stringify({
+            cart,
+            formData
+        }))
+
+        stripe.confirmPayment({
+            elements,
+            confirmParams: {
+                //qua possiamo modificare a piacimento per rimandare alla pagina che vogliamo, l'ho settata per la thankyou page
+            },
+            redirect: "if_required"
+
+        }).then(result => {
+            if (result.error) {
+                console.log('Errore durante il pagamento:', result.error.message);
+                setPaying(false);
+            } else {
+                console.log('Pagamento avvenuto con successo');
+                //dopo la conferma che non c'è stato intoppo svuotiamo il carrello
+                clearCart();
+                navigate("/thankyou", {
+                    state: {
+                        snapShotCart:snapShotCart,
+                        customer: formData
+                    }
+                });
+
         try {
             // Salva i dati dell'ordine
             localStorage.setItem('orderData', JSON.stringify({
@@ -41,6 +70,7 @@ const StripeForm = ({ clientSecret, navigate, clearCart, cart, formData }) => {
                 
                 // Se il pagamento fallisce, ripristina lo stock
                 // TODO: implementare endpoint di ripristino stock
+
             }
         } catch (err) {
             console.log('Errore generale:', err);

@@ -21,7 +21,13 @@ const PaymentPage = () => {
     const location = useLocation();
     const navigate = useNavigate();
     // per svuotare il carrello post-pagamento
+
+    const { clearCart } = useCart();
+    //Per la foto del carello e del customer
+    const [snapShotCart, setSnapShotCart] = useState([]);
+
     const { clearCart } = useCart(); 
+
 
     // Riceviamo i dati dallo state passato da CheckoutPage
     const { cart, formData, selectedCountry, selectedRegion } = location.state || {};
@@ -35,6 +41,12 @@ const PaymentPage = () => {
             navigate('/checkout');
             return;
         }
+
+
+        
+        const snapshot = cart.map((obj) => ({ ...obj }));
+        setSnapShotCart(snapshot);  // salva la foto nel state
+
 
         // Calcoliamo il totale del carrello (attenzione: usiamo direttamente item.price * item.quantity)
         const amount = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
@@ -93,18 +105,36 @@ const PaymentPage = () => {
                         </li>
                     </ul>
 
-                    <h4>Dati di spedizione</h4>
-                    <ul className="list-group">
-                        <li className="list-group-item border-0">{formData.firstName} {formData.lastName}</li>
-                        <li className="list-group-item border-0">
-                            {formData.address}{formData.apartment && `, ${formData.apartment}`}
-                        </li>
-                        <li className="list-group-item border-0">
-                            {formData.city}, {selectedRegion}, {selectedCountry}
-                        </li>
-                        <li className="list-group-item border-0">{formData.postalCode}</li>
-                        <li className="list-group-item border-0">{formData.email} — {formData.phone}</li>
-                    </ul>
+ ge-payment-graphics
+                    <h4 className='mb-4'>Shipping Details</h4>
+                    <div className='mb-5'>
+                        <p className='fs-5'>Your order will be dispatched to the address provided. We ivite you to verify that all shipping details are correct before proceeding.</p>
+                        <p className='text-secondary text-end fs-6'>– Kindly: JW-LUX Team</p>
+                    </div>
+                    <div className="card">
+                        <div className="card-header mb-3">
+                            Mr/Mrs <strong>{formData.firstName} {formData.lastName}</strong>
+                        </div>
+                        <ul className="list-group list-group-flush">
+                            <li className="list-group-item"><strong>Address:</strong> {formData.address}</li>
+                            <li className="list-group-item"><strong>Apartment:</strong> {formData.apartment !== "" ? formData.apartment : "Non Specified"}</li>
+                            <li className="list-group-item"><strong>City:</strong> {formData.city}</li>
+                            <li className="list-group-item"><strong>Postal Code:</strong> {formData.postalCode}</li>
+                            <li className="list-group-item"><strong>Phone Number:</strong> {formData.phone}</li>
+                            <li className="list-group-item"><strong>E-mail:</strong> {formData.email}</li>
+                        </ul>
+                    </div>
+                    <div className='mt-4'>
+                        <h3>Do you have a Coupon? Please reedem your discount!</h3>
+                        <div className="mb-3">
+                            <label htmlFor="exampleFormControlInput1" className="form-label"></label>
+                            <input type="email" className="form-control" id="" placeholder="Coupon Code" />
+                            <button className='btn btn-outline-primary mt-2'>Redeem</button>
+                        </div>
+                    </div>
+
+                    
+
                 </div>
 
                 {/* --- COLONNA DESTRA (Stripe Elements) --- */}
