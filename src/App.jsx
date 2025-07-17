@@ -13,7 +13,7 @@ import EarringsPage from "./pages/EarringsPage.jsx";
 import BraceletsPage from "./pages/BraceletsPage.jsx";
 import NecklacesPage from "./pages/NecklacesPage.jsx";
 import CheckoutPage from './Pages/CheckoutPage.jsx';
-import ThankYouPage from "./pages/thankyouPage.jsx";
+import ThankYouPage from "./Pages/ThankyouPage.jsx";
 import CartPage from "./pages/CartPage.jsx";
 import AboutUs from './Pages/AboutUs.jsx'
 import WishListPage from "./Pages/WishListPage.jsx";

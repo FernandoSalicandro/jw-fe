@@ -1,23 +1,26 @@
-import {createContext} from 'react';
-import {useState, useEffect} from 'react';
+import { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
 export const ProductContext = createContext();
 
-export const ProductProvider = ({children}) => {
-    const [products, setProducts] = useState([]);
+export function ProductProvider({ children }) {
+  const [products, setProducts] = useState([]);
 
+  // Funzione per ricaricare i prodotti
+  const requestProducts = () => {
+    return axios
+      .get('http://localhost:3000/products')
+      .then((res) => setProducts(res.data))
+      .catch((err) => console.error('Errore nel caricamento prodotti:', err));
+  };
 
-    useEffect(()=>{
+  useEffect(() => {
+    requestProducts();
+  }, []);
 
-        axios.get('http://localhost:3000/products')
-        .then(res => setProducts(res.data))
-        .catch(err => console.log(err))
-    }, [])
-
-    return (
-        <ProductContext.Provider value={{products, setProducts}}>
-            {children}
-        </ProductContext.Provider>
-    )
+  return (
+    <ProductContext.Provider value={{ products, setProducts, requestProducts }}>
+      {children}
+    </ProductContext.Provider>
+  );
 }

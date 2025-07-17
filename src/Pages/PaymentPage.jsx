@@ -1,51 +1,30 @@
-// Import utili da React Router per navigare e leggere lo stato passato dalla pagina precedente
-import { useLocation, useNavigate } from "react-router-dom";
-
-// Stripe tools: Elements è il provider, loadStripe inizializza Stripe la chiave pubblica che abbiamo in env
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
-
-//per svuptare il carrello quando ci pare
-import { useCart } from "../Context/CartContext";
-
-import { useState, useEffect, useRef } from "react";
-
-// il form personalizzato
-import StripeForm from "../components/StripeForm";
-import axios from "axios";
-
-// Inizializziamo Stripe con la  chiave pubblica (devo occultare la chiave)
-const stripePromise = loadStripe("pk_test_51RlUTcQKQGhBKiFRXR1HO0pQhxcVpUcdJ3yrJ1YF0AlFfVfVvqKPJdFEFQTprciFSyyijkKqf6dla1M1sFV9XSfn00E4eEJ8Nn");
-
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import { useCart } from '../Context/CartContext';
+import { useState, useEffect, useRef } from 'react';
+import StripeForm from '../components/StripeForm';
+import axios from 'axios';
+const stripePromise = loadStripe('pk_test_51RlUTcQKQGhBKiFRXR1HO0pQhxcVpUcdJ3yrJ1YF0AlFfVfVvqKPJdFEFQTprciFSyyijkKqf6dla1M1sFV9XSfn00E4eEJ8Nn');
 const PaymentPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  // per svuotare il carrello post-pagamento
   const { clearCart } = useCart();
-
-  // Riceviamo i dati dallo state passato da CheckoutPage
-  const { cart, formData, selectedCountry, selectedRegion } = location.state || {};
-
-  // Qui salveremo il client secret restituito dal backend (serve per Stripe Elements)
+  const [snapShotCart, setSnapShotCart] = useState([]);
   const [clientSecret, setClientSecret] = useState(null);
-
-  const amount = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
-
   const orderCreatedRef = useRef(false);
-
+  const { cart, formData, selectedCountry, selectedRegion } = location.state || {};
+  // :segno_spunta_bianco: Ordine nel database (solo se dati cambiano)
   useEffect(() => {
     if (!cart || !formData || cart.length === 0) {
-      navigate("/checkout");
+      navigate('/checkout');
       return;
     }
-
-    if (orderCreatedRef.current) return; // blocca se già creato
-    orderCreatedRef.current = true; // blocca le future esecuzioni
-
+    if (orderCreatedRef.current) return;
+    orderCreatedRef.current = true;
     const amount = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
-
     axios
-      .post("http://localhost:3000/products/orders", {
+      .post('http://localhost:3000/products/orders', {
         formData,
         cart,
         selectedCountry,
@@ -53,13 +32,11 @@ const PaymentPage = () => {
         subtotal_price: amount,
         discount_value: 0,
         total_price: amount,
-        payment_method: "stripe",
+        payment_method: 'stripe',
       })
       .then((resp) => {
-        setClientSecret(resp.data.clientSecret);
-
         localStorage.setItem(
-          "orderData",
+          'orderData',
           JSON.stringify({
             orderId: resp.data.orderId,
             formData,
@@ -68,15 +45,33 @@ const PaymentPage = () => {
         );
       })
       .catch((err) => {
-        console.error("Errore creazione ordine + pagamento:", err);
+        console.error('Errore creazione ordine:', err);
       });
   }, [cart, formData, selectedCountry, selectedRegion, navigate]);
-
+  // :segno_spunta_bianco: PaymentIntent Stripe (una sola volta, non reinvoca su cambio quantità)
+  useEffect(() => {
+    if (!cart || !formData || cart.length === 0) return;
+    const snapshot = cart.map((obj) => ({ ...obj }));
+    setSnapShotCart(snapshot);
+    const amount = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    axios
+      .post('http://localhost:3000/products/create-payment-intent', {
+        amount,
+        customerEmail: formData.email,
+        items: cart,
+      })
+      .then((resp) => {
+        setClientSecret(resp.data.clientSecret);
+      })
+      .catch((err) => {
+        console.log('Errore durante la creazione del paymentIntent:', err);
+      });
+  }, []);
   return (
-    <div className="container py-5" style={{ marginTop: "100px" }}>
+    <div className="container py-5" style={{ marginTop: '100px' }}>
       <h1 className="mb-4">Conferma e paga</h1>
       <div className="row">
-        {/* --- COLONNA SINISTRA --- */}
+        {/* COLONNA SINISTRA */}
         <div className="col-md-6">
           <h4>Riepilogo Ordine</h4>
           <ul className="list-group mb-4">
@@ -88,11 +83,11 @@ const PaymentPage = () => {
                       src={item.image_url}
                       alt={item.name}
                       style={{
-                        width: "60px",
-                        height: "60px",
-                        marginRight: "10px",
-                        objectFit: "cover",
-                        borderRadius: "6px",
+                        width: '60px',
+                        height: '60px',
+                        marginRight: '10px',
+                        objectFit: 'cover',
+                        borderRadius: '6px',
                       }}
                     />
                     <div className="flex-grow-1">
@@ -106,35 +101,56 @@ const PaymentPage = () => {
               ))}
             <li className="list-group-item d-flex justify-content-between fw-bold border-0">
               <span>Totale</span>
-              <span>{cart && cart.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2)} €</span>
+              <span>
+                {cart &&
+                  cart
+                    .reduce((acc, item) => acc + item.price * item.quantity, 0)
+                    .toFixed(2)}{' '}
+                €
+              </span>
             </li>
           </ul>
-
-          <h4>Dati di spedizione</h4>
-          <ul className="list-group">
-            <li className="list-group-item border-0">
-              {formData.firstName} {formData.lastName}
-            </li>
-            <li className="list-group-item border-0">
-              {formData.address}
-              {formData.apartment && `, ${formData.apartment}`}
-            </li>
-            <li className="list-group-item border-0">
-              {formData.city}, {selectedRegion}, {selectedCountry}
-            </li>
-            <li className="list-group-item border-0">{formData.postalCode}</li>
-            <li className="list-group-item border-0">
-              {formData.email} — {formData.phone}
-            </li>
-          </ul>
+          <h4 className="mb-4">Shipping Details</h4>
+          <div className="mb-5">
+            <p className="fs-5">
+              Your order will be dispatched to the address provided. We invite
+              you to verify that all shipping details are correct before
+              proceeding.
+            </p>
+            <p className="text-secondary text-end fs-6">– Kindly: JW-LUX Team</p>
+          </div>
+          <div className="card">
+            <div className="card-header mb-3">
+              Mr/Mrs <strong>{formData.firstName} {formData.lastName}</strong>
+            </div>
+            <ul className="list-group list-group-flush">
+              <li className="list-group-item"><strong>Address:</strong> {formData.address}</li>
+              <li className="list-group-item"><strong>Apartment:</strong> {formData.apartment !== '' ? formData.apartment : 'Non Specified'}</li>
+              <li className="list-group-item"><strong>City:</strong> {formData.city}</li>
+              <li className="list-group-item"><strong>Postal Code:</strong> {formData.postalCode}</li>
+              <li className="list-group-item"><strong>Phone Number:</strong> {formData.phone}</li>
+              <li className="list-group-item"><strong>E-mail:</strong> {formData.email}</li>
+            </ul>
+          </div>
+          <div className="mt-4">
+            <h3>Do you have a Coupon? Please redeem your discount!</h3>
+            <div className="mb-3">
+              <input type="text" className="form-control" placeholder="Coupon Code" />
+              <button className="btn btn-outline-primary mt-2">Redeem</button>
+            </div>
+          </div>
         </div>
-
-        {/* --- COLONNA DESTRA (Stripe Elements) --- */}
+        {/* COLONNA DESTRA */}
         <div className="col-md-6">
           {clientSecret ? (
-            // Appena abbiamo il clientSecret, Stripe Elements può essere renderizzato
             <Elements stripe={stripePromise} options={{ clientSecret }}>
-              <StripeForm clientSecret={clientSecret} navigate={navigate} clearCart={clearCart} cart={cart} formData={formData} />
+              <StripeForm
+                clientSecret={clientSecret}
+                navigate={navigate}
+                clearCart={clearCart}
+                cart={cart}
+                formData={formData}
+              />
             </Elements>
           ) : (
             <p>Caricamento modulo di pagamento...</p>
@@ -144,5 +160,4 @@ const PaymentPage = () => {
     </div>
   );
 };
-
 export default PaymentPage;
