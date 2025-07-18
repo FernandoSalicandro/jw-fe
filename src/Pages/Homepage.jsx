@@ -12,9 +12,9 @@ export default function HomePage() {
     const [isWorkShop, setIsWorkShop] = useState(false)
 
 
-useEffect(() => {
-    requestProducts();
-}, [])
+    useEffect(() => {
+        requestProducts();
+    }, [])
 
     const handleScroll = (direction) => {
         if (carouselRef.current) {
@@ -63,11 +63,10 @@ useEffect(() => {
                             <div className="col border-0" key={curProduct.id}>
 
                                 <div className="card-body border-0 d-flex flex-column align-items-center gap-2">
-                                    <img
-                                        src={curProduct.image_url}
-                                        alt={curProduct.name}
-                                        className="product-image hover-img"
-                                    />
+                                    <div className={curProduct.is_promo === 1 ? "image-price card-custom overflow border-0 rounded" : "image-price overflow border-0 rounded"}>
+                                        <img onClick={() => navigate(`/productDetails/${product.slug}`)} src={curProduct.image_url} alt={curProduct.name} className="card-img-top  hover-img" />
+                                        {curProduct.is_promo === 1 && <img className="discount-logo" src="img/jw_logo_discount.png" alt="logo-discount" />}
+                                    </div>
                                     <p className='text-center mt-1 mb-2 text-em'>
                                         {curProduct.name}
                                     </p>
@@ -106,7 +105,7 @@ useEffect(() => {
                             </span>
                         </p>
                         <button type="button" className="btn btn-link">We Are JW Lux</button>
-                     <button type="button" className="btn btn-link">We Are JW Lux</button>
+                        <button type="button" className="btn btn-link">We Are JW Lux</button>
 
                     </div>
 

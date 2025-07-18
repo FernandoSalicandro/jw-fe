@@ -768,4 +768,37 @@ header a {
   transition: ease 0.3s;
 }
 
-/* Modifiche Geani per la pagina del pagamento */
+/* Modifiche Geani per il discount */
+.img-discount{
+  position: relative;
+}
+.discount-logo{
+  position: absolute;
+  width: 30%;
+  z-index: 2;
+  bottom:0;
+  right: 0;
+  left: 75%;
+  top:74%;
+}
+
+.overflow{
+  overflow: hidden;
+}
+
+.card-custom {
+  position: relative;
+
+}
+
+.card-custom::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 35%;
+  height: 35%;
+  background: black;
+  clip-path: polygon(100% 100%, 0% 100%, 100% 0%);
+  z-index: 2;
+}
