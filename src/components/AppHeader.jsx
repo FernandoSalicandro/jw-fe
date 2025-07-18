@@ -11,32 +11,49 @@ import CartModal from "../components/CartModal.jsx";
 import WishListModal from "../components/WishListModal.jsx";
 
 const AppHeader = ({ isHomePage }) => {
-  const { scrollY } = useScroll();
-  const controls = useAnimation();
+  // Stati
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const { searchResults, setSearchResults } = useSearch();
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
-  const { isCartOpen, setIsCartOpen } = useCart()
-  const { isWishListOpen, setIsWishListOpen } = useWishList();
+  const [discountCode, setDiscountCode] = useState(null);
 
-
+  // Hooks
+  const { scrollY } = useScroll();
+  const controls = useAnimation();
   const navigate = useNavigate();
-  const { cart, removeFromCart } = useCart();
   const location = useLocation();
 
+  // Context
+  const { searchResults, setSearchResults } = useSearch();
+  const { isCartOpen, setIsCartOpen, cart } = useCart();
+  const { isWishListOpen, setIsWishListOpen } = useWishList();
+
+  // Fetch del codice sconto
+  useEffect(() => {
+    axios.get('http://localhost:3000/products/discount-code')
+      .then(response => {
+        if (response.data.data && response.data.data.length > 0) {
+          setDiscountCode(response.data.data[0]);
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching discount code:', error);
+      });
+  }, []);
+
+  // Gestione apertura/chiusura menu categorie
   useEffect(() => {
     if (isCategoriesOpen) {
       setIsCategoriesOpen(false);
     }
   }, [location]);
 
+  // Gestione ricerca
   useEffect(() => {
     if (searchValue && searchValue.length >= 3) {
-      axios
-        .get(`http://localhost:3000/products?search=${searchValue}`)
+      axios.get(`http://localhost:3000/products?search=${searchValue}`)
         .then((resp) => setSearchResults(resp.data))
         .catch((err) => console.log(err));
     } else {
@@ -44,6 +61,7 @@ const AppHeader = ({ isHomePage }) => {
     }
   }, [searchValue]);
 
+  // Gestione scroll e stili header
   useEffect(() => {
     const handleScroll = (y) => {
       setIsScrolled(y > 50);
@@ -69,6 +87,7 @@ const AppHeader = ({ isHomePage }) => {
     return () => unsubscribe();
   }, [scrollY, controls, isHomePage]);
 
+  // Handlers
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
     document.body.style.overflow = !isMenuOpen ? "hidden" : "auto";
@@ -79,24 +98,38 @@ const AppHeader = ({ isHomePage }) => {
     document.body.style.overflow = "auto";
   };
 
+  // Classi dinamiche
   const textClass = isMenuOpen ? "text-white" : isScrolled ? "text-black" : "text-white";
-  const brandTextClass = isMenuOpen ? (isHomePage ? "text-white" : "text-black") : isScrolled ? "text-black" : "text-white";
-
-  const MotionLink = motion(Link);
+  const brandTextClass = isMenuOpen
+    ? (isHomePage ? "text-white" : "text-black")
+    : isScrolled ? "text-black" : "text-white";
 
   return (
     <>
-      <motion.header className="header" animate={controls} initial={isHomePage ? { backgroundColor: "transparent" } : { backgroundColor: "#000000" }}>
+      <motion.header
+        className="header"
+        animate={controls}
+        initial={isHomePage ? { backgroundColor: "transparent" } : { backgroundColor: "#000000" }}
+      >
         <div className="nav-bar d-flex justify-content-between align-items-center p-3">
           {/* Hamburger Menu */}
-          <button className={`hamburger-menu d-lg-none ${isMenuOpen ? "active" : ""} ${isScrolled ? "scrolled" : ""}`} onClick={toggleMenu} aria-label="Toggle navigation menu">
+          <button
+            className={`hamburger-menu d-lg-none ${isMenuOpen ? "active" : ""} ${isScrolled ? "scrolled" : ""}`}
+            onClick={toggleMenu}
+            aria-label="Toggle navigation menu"
+          >
             <span></span>
             <span></span>
             <span></span>
           </button>
 
           {/* Navigation Links */}
-          <motion.div className={`left-col ${isMenuOpen ? "show" : ""}`} initial={false} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, ease: "easeInOut" }}>
+          <motion.div
+            className={`left-col ${isMenuOpen ? "show" : ""}`}
+            initial={false}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+          >
             <NavLink to="/" className={`nav-link ${textClass}`} onClick={closeMenu}>
               Home
             </NavLink>
@@ -112,7 +145,11 @@ const AppHeader = ({ isHomePage }) => {
           </motion.div>
 
           {/* Brand Logo */}
-          <motion.div className="brand-col" animate={{ scale: isMenuOpen ? 0.95 : 1 }} transition={{ duration: 0.3, ease: "easeOut" }}>
+          <motion.div
+            className="brand-col"
+            animate={{ scale: isMenuOpen ? 0.95 : 1 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+          >
             <p className={`text-center m-0 ${brandTextClass}`}>
               JW{" "}
               <span>
@@ -124,64 +161,124 @@ const AppHeader = ({ isHomePage }) => {
 
           {/* Action Icons */}
           <div className="right-col d-flex justify-content-end gap-3">
-            <motion.p className={`m-0 ${textClass}`} whileHover={{ scale: 1.1 }} transition={{ duration: 0.2 }}>
-              <i type="button" onClick={() => setIsSearchOpen(!isSearchOpen)} className="fa-solid fa-magnifying-glass" aria-label="Search"></i>
+            <motion.p
+              className={`m-0 ${textClass}`}
+              whileHover={{ scale: 1.1 }}
+              transition={{ duration: 0.2 }}
+            >
+              <i
+                type="button"
+                onClick={() => setIsSearchOpen(!isSearchOpen)}
+                className="fa-solid fa-magnifying-glass"
+                aria-label="Search"
+              />
             </motion.p>
-            <motion.p className={`m-0 ${textClass}`} whileHover={{ scale: 1.1 }} transition={{ duration: 0.2 }}>
-              <i type="button" className="fa-regular fa-heart" onClick={() => setIsWishListOpen(!isWishListOpen)} aria-label="Wish list"></i>
+            <motion.p
+              className={`m-0 ${textClass}`}
+              whileHover={{ scale: 1.1 }}
+              transition={{ duration: 0.2 }}
+            >
+              <i
+                type="button"
+                className="fa-regular fa-heart"
+                onClick={() => setIsWishListOpen(!isWishListOpen)}
+                aria-label="Wish list"
+              />
             </motion.p>
-            <motion.p className={`m-0 ${textClass}`} whileHover={{ scale: 1.1 }} transition={{ duration: 0.2 }}>
-              <i role="button" onClick={() => setIsCartOpen(!isCartOpen)} className="fa-solid fa-bag-shopping" aria-label="Shopping cart"></i>
+            <motion.p
+              className={`m-0 ${textClass}`}
+              whileHover={{ scale: 1.1 }}
+              transition={{ duration: 0.2 }}
+            >
+              <i
+                role="button"
+                onClick={() => setIsCartOpen(!isCartOpen)}
+                className="fa-solid fa-bag-shopping"
+                aria-label="Shopping cart"
+              />
             </motion.p>
           </div>
         </div>
 
-        {/* Search Bar */}
-        <AnimatePresence>
-          {isSearchOpen && (
-            <>
-              {isSearchOpen && (
-                <motion.div
-                  initial={{ y: -42, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: -32, opacity: 0 }}
-                  transition={{ ease: "easeOut", duration: 0.5 }}
-                  className="nav-search-cont container-fluid bg-white text-black py-3 d-flex justify-content-center align-items-center gap-1"
-                >
-                  <i className="fa-solid fa-magnifying-glass"></i>
+        {/* Search Bar and Discount Banner */}
+        <AnimatePresence mode="wait">
+          {isSearchOpen ? (
+            // Search Bar
+            <motion.div
+              key="search"
+              initial={{ y: -42, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -32, opacity: 0 }}
+              transition={{ ease: "easeOut", duration: 0.5 }}
+            >
+              <>
+                <div className="nav-search-cont container-fluid bg-white text-black py-3 d-flex justify-content-center align-items-center gap-1">
+                  <i className="fa-solid fa-magnifying-glass" />
                   <div className="nav-search container-fluid form d-flex gap-1">
-                    <input type="text" placeholder="Search..." className="form-control p-3" value={searchValue} onChange={(e) => setSearchValue(e.target.value)} />
-                    <i role="button" onClick={() => setIsSearchOpen(false)} className="fa-solid fa-xmark" aria-label="Close search"></i>
+                    <input
+                      type="text"
+                      placeholder="Search..."
+                      className="form-control p-3"
+                      value={searchValue}
+                      onChange={(e) => setSearchValue(e.target.value)}
+                    />
+                    <i
+                      role="button"
+                      onClick={() => setIsSearchOpen(false)}
+                      className="fa-solid fa-xmark"
+                      aria-label="Close search"
+                    />
                   </div>
-                </motion.div>
-              )}
+                </div>
 
-              {searchResults.length > 0 && (
-                <motion.div
-                  className="bg-white pb-2 border overflow-hidden"
-                  initial={{ y: -32, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: -100, opacity: 0 }}
-                  transition={{ ease: easeInOut, duration: 0.5 }}
-                >
-
-                  <div className='d-flex justify-content-between align-items-center p-2'>
-                    <p className='text-black mx-5 m-0'>Results</p>
-                    <button
-                      className="btn btn-outline border-0 show-details mx-5 m-0"
-                      onClick={() => {
-                        navigate(`/search?query=${searchValue}`);
-                        setIsSearchOpen(false);
-                      }}
-
-                    >Show All</button>
-                  </div>
-                  <div className="search-res-modal">
-                    <ProductsCarousel products={searchResults} onCloseSearch={() => setIsSearchOpen(false)} />
-                  </div>
-                </motion.div>
-              )}
-            </>
+                {searchResults.length > 0 && (
+                  <motion.div
+                    className="bg-white pb-2 border overflow-hidden"
+                    initial={{ y: -32, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -100, opacity: 0 }}
+                    transition={{ ease: easeInOut, duration: 0.5 }}
+                  >
+                    <div className='d-flex justify-content-between align-items-center p-2'>
+                      <p className='text-black mx-5 m-0'>Results</p>
+                      <button
+                        className="btn btn-outline border-0 show-details mx-5 m-0"
+                        onClick={() => {
+                          navigate(`/search?query=${searchValue}`);
+                          setIsSearchOpen(false);
+                        }}
+                      >
+                        Show All
+                      </button>
+                    </div>
+                    <div className="search-res-modal">
+                      <ProductsCarousel
+                        products={searchResults}
+                        onCloseSearch={() => setIsSearchOpen(false)}
+                      />
+                    </div>
+                  </motion.div>
+                )}
+              </>
+            </motion.div>
+          ) : (
+            // Discount Banner
+            discountCode && (
+              <motion.div
+                key="banner"
+                initial={{ y: -42, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -32, opacity: 0 }}
+                transition={{ ease: "easeOut", duration: 0.5 }}
+                className="code-banner section-separator bg-dark my-0"
+              >
+                <p className="text-center text-white m-0 py-2">
+                  Speciale codice sconto {discountCode.code} - {discountCode.value}% di sconto!
+                  Valido dal {new Date(discountCode.start_date).toLocaleDateString()}
+                  al {new Date(discountCode.end_date).toLocaleDateString()}
+                </p>
+              </motion.div>
+            )
           )}
         </AnimatePresence>
 
@@ -196,7 +293,11 @@ const AppHeader = ({ isHomePage }) => {
               transition={{ ease: easeInOut, duration: 0.5 }}
             >
               <div className="d-flex justify-content-end p-2">
-                <button className="btn-close" onClick={() => setIsCategoriesOpen(false)} aria-label="Close categories menu"></button>
+                <button
+                  className="btn-close"
+                  onClick={() => setIsCategoriesOpen(false)}
+                  aria-label="Close categories menu"
+                />
               </div>
               <ul>
                 <li>
@@ -223,11 +324,12 @@ const AppHeader = ({ isHomePage }) => {
             </motion.div>
           )}
         </AnimatePresence>
+
+
       </motion.header>
 
-      {/* Cart Modal */}
+      {/* Modals */}
       <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
-      {/* WishList Modal */}
       <WishListModal isOpen={isWishListOpen} onClose={() => setIsWishListOpen(false)} />
     </>
   );

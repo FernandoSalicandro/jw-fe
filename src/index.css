@@ -13,6 +13,16 @@ CSS
 
 }
 
+/* Code banner - Fernando*/
+.code-banner {
+   display: grid;
+  place-content: center;
+}
+.code-banner p {
+ 
+  margin: 0;
+  padding: 0;
+}
 /*common transitions - Fernando*/
 .header,
 .header .nav-link,
