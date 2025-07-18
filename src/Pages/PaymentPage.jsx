@@ -12,8 +12,11 @@ const PaymentPage = () => {
     const { clearCart } = useCart();
     const [snapShotCart, setSnapShotCart] = useState([]);
     const [clientSecret, setClientSecret] = useState(null);
+    const [redeemCode, setRedeemCode] = useState('');
     const orderCreatedRef = useRef(false);
     const { cart, formData, selectedCountry, selectedRegion } = location.state || {};
+
+
     // :segno_spunta_bianco: Ordine nel database (solo se dati cambiano)
     useEffect(() => {
         if (!cart || !formData || cart.length === 0) {
@@ -107,8 +110,12 @@ const PaymentPage = () => {
                         <h3>Do you have a Coupon? Please reedem your discount!</h3>
                         <div className="mb-3">
                             <label htmlFor="exampleFormControlInput1" className="form-label"></label>
-                            <input type="email" className="form-control" id="" placeholder="Coupon Code" />
-                            <button className='btn border-black show-details mt-2'>Redeem</button>
+                            <input 
+                            value={redeemCode}
+                            onChange={(e) => setRedeemCode(e.target.value)}
+                            type="email" className="form-control" id="" placeholder="Coupon Code" />
+                            <button 
+                            className='btn border-black show-details mt-2'>Redeem</button>
                         </div>
                     </div>
                     <h4 className='mb-4'>Shipping Details</h4>
@@ -130,22 +137,22 @@ const PaymentPage = () => {
                         </ul>
                     </div>
                 </div>
-                 {/* COLONNA DESTRA */}
-            <div className="col-md-6">
-                {clientSecret ? (
-                    <Elements stripe={stripePromise} options={{ clientSecret }}>
-                        <StripeForm
-                            clientSecret={clientSecret}
-                            navigate={navigate}
-                            clearCart={clearCart}
-                            cart={cart}
-                            formData={formData}
-                        />
-                    </Elements>
-                ) : (
-                    <p>Caricamento modulo di pagamento...</p>
-                )}
-            </div>
+                {/* COLONNA DESTRA */}
+                <div className="col-md-6">
+                    {clientSecret ? (
+                        <Elements stripe={stripePromise} options={{ clientSecret }}>
+                            <StripeForm
+                                clientSecret={clientSecret}
+                                navigate={navigate}
+                                clearCart={clearCart}
+                                cart={cart}
+                                formData={formData}
+                            />
+                        </Elements>
+                    ) : (
+                        <p>Caricamento modulo di pagamento...</p>
+                    )}
+                </div>
             </div>
         </div>
 
