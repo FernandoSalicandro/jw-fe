@@ -19,12 +19,12 @@ const AppHeader = ({ isHomePage }) => {
   const [searchValue, setSearchValue] = useState("");
   const { searchResults, setSearchResults } = useSearch();
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
-  const { isCartOpen, setIsCartOpen } = useCart()
+  const { isCartOpen, setIsCartOpen } = useCart();
   const { isWishListOpen, setIsWishListOpen } = useWishList();
-
 
   const navigate = useNavigate();
   const { cart, removeFromCart } = useCart();
+  const { wishList } = useWishList();
   const location = useLocation();
 
   useEffect(() => {
@@ -128,10 +128,16 @@ const AppHeader = ({ isHomePage }) => {
               <i type="button" onClick={() => setIsSearchOpen(!isSearchOpen)} className="fa-solid fa-magnifying-glass" aria-label="Search"></i>
             </motion.p>
             <motion.p className={`m-0 ${textClass}`} whileHover={{ scale: 1.1 }} transition={{ duration: 0.2 }}>
-              <i type="button" className="fa-regular fa-heart" onClick={() => setIsWishListOpen(!isWishListOpen)} aria-label="Wish list"></i>
+              <div className="position-relative">
+                <i type="button" className="fa-regular fa-heart" onClick={() => setIsWishListOpen(!isWishListOpen)} aria-label="Wish list"></i>
+                {wishList.length > 0 && <span className="icon-badge"></span>}
+              </div>
             </motion.p>
             <motion.p className={`m-0 ${textClass}`} whileHover={{ scale: 1.1 }} transition={{ duration: 0.2 }}>
-              <i role="button" onClick={() => setIsCartOpen(!isCartOpen)} className="fa-solid fa-bag-shopping" aria-label="Shopping cart"></i>
+              <div className="position-relative">
+                <i role="button" onClick={() => setIsCartOpen(!isCartOpen)} className="fa-solid fa-bag-shopping" aria-label="Shopping cart"></i>
+                {cart.length > 0 && <span className="icon-badge"></span>}
+              </div>
             </motion.p>
           </div>
         </div>
@@ -164,17 +170,17 @@ const AppHeader = ({ isHomePage }) => {
                   exit={{ y: -100, opacity: 0 }}
                   transition={{ ease: easeInOut, duration: 0.5 }}
                 >
-
-                  <div className='d-flex justify-content-between align-items-center p-2'>
-                    <p className='text-black mx-5 m-0'>Results</p>
+                  <div className="d-flex justify-content-between align-items-center p-2">
+                    <p className="text-black mx-5 m-0">Results</p>
                     <button
                       className="btn btn-outline border-0 show-details mx-5 m-0"
                       onClick={() => {
                         navigate(`/search?query=${searchValue}`);
                         setIsSearchOpen(false);
                       }}
-
-                    >Show All</button>
+                    >
+                      Show All
+                    </button>
                   </div>
                   <div className="search-res-modal">
                     <ProductsCarousel products={searchResults} onCloseSearch={() => setIsSearchOpen(false)} />
