@@ -10,7 +10,6 @@ CSS
   --nav-search-height: 100px;
   --section-separator-height-m: 50px;
   --section-separator-height-l: 80px;
-
 }
 
 /* Code banner - Fernando*/
@@ -142,8 +141,6 @@ main {
   opacity: 0.8;
 }
 
-
-
 /* Hamburger Menu - Fernando */
 .hamburger-menu {
   display: none;
@@ -200,7 +197,6 @@ main {
     height: 100px;
   }
 }
-
 
 .nav-search input {
   background: none;
@@ -273,6 +269,15 @@ header a {
   padding: 1rem;
 }
 
+.icon-badge {
+  position: absolute;
+  top: 8px;
+  right: -4px;
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
+}
 
 /* Hero Section - Fernando*/
 .hero-section img {
@@ -341,8 +346,6 @@ header a {
 .brand-story-img img {
   max-width: 100%;
 }
-
-
 
 .show-details {
   background: linear-gradient(to right, black 100%, black 100%);
@@ -428,8 +431,6 @@ header a {
   }
 }
 
-
-
 /* Footer - Federica */
 .footer {
   background-color: black;
@@ -485,7 +486,7 @@ header a {
 .black-div {
   height: 120px;
   width: 100%;
-  background-color: #060605
+  background-color: #060605;
 }
 .main-page {
   margin-top: var(--header-height);
@@ -702,8 +703,6 @@ header a {
   color: white;
   text-align: center;
   font-size: 2rem;
-
-
 }
 
 /* LOADER SCREEN */
@@ -714,7 +713,7 @@ header a {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-family: 'Helvetica Neue', sans-serif;
+  font-family: "Helvetica Neue", sans-serif;
 }
 
 .logo-pulse {
@@ -752,9 +751,8 @@ header a {
 }
 
 .page-main {
-  margin-top: var(--header-height)
+  margin-top: var(--header-height);
 }
-
 
 /*Search Page */
 
@@ -767,7 +765,6 @@ header a {
   border-bottom: 1px solid lightgrey;
 }
 
-
 .hover-img {
   transition: transform 0.3s ease-in-out;
   cursor: pointer;
@@ -779,30 +776,29 @@ header a {
 }
 
 /* Modifiche Geani per il discount */
-.img-discount{
+.img-discount {
   position: relative;
 }
-.discount-logo{
+.discount-logo {
   position: absolute;
   width: 30%;
   z-index: 2;
-  bottom:0;
+  bottom: 0;
   right: 0;
   left: 75%;
-  top:74%;
+  top: 74%;
 }
 
-.overflow{
+.overflow {
   overflow: hidden;
 }
 
 .card-custom {
   position: relative;
-
 }
 
 .card-custom::before {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   right: 0;

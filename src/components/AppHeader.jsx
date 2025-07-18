@@ -1,4 +1,4 @@
-import { NavLink, Link, useNavigate, useLocation } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { motion, useScroll, useAnimation, easeInOut, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -11,7 +11,6 @@ import CartModal from "../components/CartModal.jsx";
 import WishListModal from "../components/WishListModal.jsx";
 
 const AppHeader = ({ isHomePage }) => {
-  // Stati
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -19,67 +18,55 @@ const AppHeader = ({ isHomePage }) => {
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [discountCode, setDiscountCode] = useState(null);
 
-  // Hooks
   const { scrollY } = useScroll();
   const controls = useAnimation();
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Context
   const { searchResults, setSearchResults } = useSearch();
   const { isCartOpen, setIsCartOpen, cart } = useCart();
-  const { isWishListOpen, setIsWishListOpen } = useWishList();
+  const { isWishListOpen, setIsWishListOpen, wishList } = useWishList();
 
-  // Fetch del codice sconto
   useEffect(() => {
     axios.get('http://localhost:3000/products/discount-code')
       .then(response => {
-        if (response.data.data && response.data.data.length > 0) {
+        if (response.data.data?.length > 0) {
           setDiscountCode(response.data.data[0]);
         }
       })
-      .catch(error => {
-        console.error('Error fetching discount code:', error);
-      });
+      .catch(error => console.error('Error fetching discount code:', error));
   }, []);
 
-  // Gestione apertura/chiusura menu categorie
   useEffect(() => {
     if (isCategoriesOpen) {
       setIsCategoriesOpen(false);
     }
   }, [location]);
 
-  // Gestione ricerca
   useEffect(() => {
     if (searchValue && searchValue.length >= 3) {
       axios.get(`http://localhost:3000/products?search=${searchValue}`)
-        .then((resp) => setSearchResults(resp.data))
-        .catch((err) => console.log(err));
+        .then(resp => setSearchResults(resp.data))
+        .catch(err => console.log(err));
     } else {
       setSearchResults([]);
     }
   }, [searchValue]);
 
-  // Gestione scroll e stili header
   useEffect(() => {
     const handleScroll = (y) => {
       setIsScrolled(y > 50);
       const baseStyle = { transition: { duration: 0.4 } };
 
-      if (isHomePage) {
-        controls.start({
-          backgroundColor: y > 50 ? "#ffffff" : "transparent",
-          borderBottom: y > 50 ? "1px solid #cccccc" : "1px solid #ffffff",
-          ...baseStyle,
-        });
-      } else {
-        controls.start({
-          backgroundColor: y > 50 ? "#ffffff" : "#000000",
-          borderBottom: "1px solid #ffffff",
-          ...baseStyle,
-        });
-      }
+      controls.start({
+        backgroundColor: isHomePage
+          ? (y > 50 ? "#ffffff" : "transparent")
+          : (y > 50 ? "#ffffff" : "#000000"),
+        borderBottom: isHomePage
+          ? (y > 50 ? "1px solid #cccccc" : "1px solid #ffffff")
+          : "1px solid #ffffff",
+        ...baseStyle,
+      });
     };
 
     const unsubscribe = scrollY.on("change", handleScroll);
@@ -87,9 +74,8 @@ const AppHeader = ({ isHomePage }) => {
     return () => unsubscribe();
   }, [scrollY, controls, isHomePage]);
 
-  // Handlers
   const toggleMenu = () => {
-    setIsMenuOpen((prev) => !prev);
+    setIsMenuOpen(prev => !prev);
     document.body.style.overflow = !isMenuOpen ? "hidden" : "auto";
   };
 
@@ -98,7 +84,6 @@ const AppHeader = ({ isHomePage }) => {
     document.body.style.overflow = "auto";
   };
 
-  // Classi dinamiche
   const textClass = isMenuOpen ? "text-white" : isScrolled ? "text-black" : "text-white";
   const brandTextClass = isMenuOpen
     ? (isHomePage ? "text-white" : "text-black")
@@ -112,98 +97,58 @@ const AppHeader = ({ isHomePage }) => {
         initial={isHomePage ? { backgroundColor: "transparent" } : { backgroundColor: "#000000" }}
       >
         <div className="nav-bar d-flex justify-content-between align-items-center p-3">
-          {/* Hamburger Menu */}
           <button
             className={`hamburger-menu d-lg-none ${isMenuOpen ? "active" : ""} ${isScrolled ? "scrolled" : ""}`}
             onClick={toggleMenu}
             aria-label="Toggle navigation menu"
           >
-            <span></span>
-            <span></span>
-            <span></span>
+            <span></span><span></span><span></span>
           </button>
 
-          {/* Navigation Links */}
           <motion.div
             className={`left-col ${isMenuOpen ? "show" : ""}`}
             initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
-            <NavLink to="/" className={`nav-link ${textClass}`} onClick={closeMenu}>
-              Home
-            </NavLink>
+            <NavLink to="/" className={`nav-link ${textClass}`} onClick={closeMenu}>Home</NavLink>
             <button
               className={`border-0 btn btn-outline ${isScrolled ? "show-details" : "show-details-white"} ${textClass} fs-5`}
-              onClick={() => {
-                setIsCategoriesOpen(!isCategoriesOpen);
-                closeMenu();
-              }}
+              onClick={() => { setIsCategoriesOpen(!isCategoriesOpen); closeMenu(); }}
             >
               Categories
             </button>
           </motion.div>
 
-          {/* Brand Logo */}
-          <motion.div
-            className="brand-col"
-            animate={{ scale: isMenuOpen ? 0.95 : 1 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-          >
+          <motion.div className="brand-col" animate={{ scale: isMenuOpen ? 0.95 : 1 }} transition={{ duration: 0.3, ease: "easeOut" }}>
             <p className={`text-center m-0 ${brandTextClass}`}>
-              JW{" "}
-              <span>
-                <img src="/img/jw_logo.png" alt="JW LUX Logo" />
-              </span>{" "}
-              LUX
+              JW <span><img src="/img/jw_logo.png" alt="JW LUX Logo" /></span> LUX
             </p>
           </motion.div>
 
-          {/* Action Icons */}
           <div className="right-col d-flex justify-content-end gap-3">
-            <motion.p
-              className={`m-0 ${textClass}`}
-              whileHover={{ scale: 1.1 }}
-              transition={{ duration: 0.2 }}
-            >
-              <i
-                type="button"
-                onClick={() => setIsSearchOpen(!isSearchOpen)}
-                className="fa-solid fa-magnifying-glass"
-                aria-label="Search"
-              />
+            <motion.p className={`m-0 ${textClass}`} whileHover={{ scale: 1.1 }} transition={{ duration: 0.2 }}>
+              <i type="button" onClick={() => setIsSearchOpen(!isSearchOpen)} className="fa-solid fa-magnifying-glass" aria-label="Search" />
             </motion.p>
-            <motion.p
-              className={`m-0 ${textClass}`}
-              whileHover={{ scale: 1.1 }}
-              transition={{ duration: 0.2 }}
-            >
-              <i
-                type="button"
-                className="fa-regular fa-heart"
-                onClick={() => setIsWishListOpen(!isWishListOpen)}
-                aria-label="Wish list"
-              />
+
+            <motion.p className={`m-0 ${textClass}`} whileHover={{ scale: 1.1 }} transition={{ duration: 0.2 }}>
+              <div className="position-relative">
+                <i type="button" className="fa-regular fa-heart" onClick={() => setIsWishListOpen(!isWishListOpen)} aria-label="Wish list" />
+                {wishList.length > 0 && <span className="icon-badge"></span>}
+              </div>
             </motion.p>
-            <motion.p
-              className={`m-0 ${textClass}`}
-              whileHover={{ scale: 1.1 }}
-              transition={{ duration: 0.2 }}
-            >
-              <i
-                role="button"
-                onClick={() => setIsCartOpen(!isCartOpen)}
-                className="fa-solid fa-bag-shopping"
-                aria-label="Shopping cart"
-              />
+
+            <motion.p className={`m-0 ${textClass}`} whileHover={{ scale: 1.1 }} transition={{ duration: 0.2 }}>
+              <div className="position-relative">
+                <i role="button" onClick={() => setIsCartOpen(!isCartOpen)} className="fa-solid fa-bag-shopping" aria-label="Shopping cart" />
+                {cart.length > 0 && <span className="icon-badge"></span>}
+              </div>
             </motion.p>
           </div>
         </div>
 
-        {/* Search Bar and Discount Banner */}
         <AnimatePresence mode="wait">
           {isSearchOpen ? (
-            // Search Bar
             <motion.div
               key="search"
               initial={{ y: -42, opacity: 0 }}
@@ -252,17 +197,13 @@ const AppHeader = ({ isHomePage }) => {
                       </button>
                     </div>
                     <div className="search-res-modal">
-                      <ProductsCarousel
-                        products={searchResults}
-                        onCloseSearch={() => setIsSearchOpen(false)}
-                      />
+                      <ProductsCarousel products={searchResults} onCloseSearch={() => setIsSearchOpen(false)} />
                     </div>
                   </motion.div>
                 )}
               </>
             </motion.div>
           ) : (
-            // Discount Banner
             discountCode && (
               <motion.div
                 key="banner"
@@ -282,7 +223,6 @@ const AppHeader = ({ isHomePage }) => {
           )}
         </AnimatePresence>
 
-        {/* Categories Modal */}
         <AnimatePresence>
           {isCategoriesOpen && (
             <motion.div
@@ -293,42 +233,19 @@ const AppHeader = ({ isHomePage }) => {
               transition={{ ease: easeInOut, duration: 0.5 }}
             >
               <div className="d-flex justify-content-end p-2">
-                <button
-                  className="btn-close"
-                  onClick={() => setIsCategoriesOpen(false)}
-                  aria-label="Close categories menu"
-                />
+                <button className="btn-close" onClick={() => setIsCategoriesOpen(false)} aria-label="Close categories menu" />
               </div>
               <ul>
-                <li>
-                  <MotionLinkUnderline onClick={() => setIsCategoriesOpen(false)} to="/rings">
-                    Rings
-                  </MotionLinkUnderline>
-                </li>
-                <li>
-                  <MotionLinkUnderline onClick={() => setIsCategoriesOpen(false)} to="/earrings">
-                    Earrings
-                  </MotionLinkUnderline>
-                </li>
-                <li>
-                  <MotionLinkUnderline onClick={() => setIsCategoriesOpen(false)} to="/bracelets">
-                    Bracelets
-                  </MotionLinkUnderline>
-                </li>
-                <li>
-                  <MotionLinkUnderline onClick={() => setIsCategoriesOpen(false)} to="/necklaces">
-                    Necklaces
-                  </MotionLinkUnderline>
-                </li>
+                <li><MotionLinkUnderline onClick={() => setIsCategoriesOpen(false)} to="/rings">Rings</MotionLinkUnderline></li>
+                <li><MotionLinkUnderline onClick={() => setIsCategoriesOpen(false)} to="/earrings">Earrings</MotionLinkUnderline></li>
+                <li><MotionLinkUnderline onClick={() => setIsCategoriesOpen(false)} to="/bracelets">Bracelets</MotionLinkUnderline></li>
+                <li><MotionLinkUnderline onClick={() => setIsCategoriesOpen(false)} to="/necklaces">Necklaces</MotionLinkUnderline></li>
               </ul>
             </motion.div>
           )}
         </AnimatePresence>
-
-
       </motion.header>
 
-      {/* Modals */}
       <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
       <WishListModal isOpen={isWishListOpen} onClose={() => setIsWishListOpen(false)} />
     </>

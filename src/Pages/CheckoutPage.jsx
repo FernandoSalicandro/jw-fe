@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import countryRegionData from "../data/countryRegionData.js";
 
 const CheckoutPage = () => {
-  const { cart } = useCart();
+  const { cart, setCart, removeFromCart } = useCart();
   const navigate = useNavigate();
 
   const [selectedCountry, setSelectedCountry] = useState("");
@@ -12,6 +12,32 @@ const CheckoutPage = () => {
 
   const countries = countryRegionData.map((c) => c.countryName);
   const regions = countryRegionData.find((c) => c.countryName === selectedCountry)?.regions.map((r) => r.name) || [];
+
+  const increaseQuantity = (id) => {
+    setCart((prevCart) =>
+      prevCart.map((item) =>
+        item.id === id
+          ? {
+              ...item,
+              quantity: item.quantity < item.stock_quantity ? item.quantity + 1 : item.quantity,
+            }
+          : item
+      )
+    );
+  };
+
+  const decreaseQuantity = (id) => {
+    setCart((prevCart) =>
+      prevCart.map((item) =>
+        item.id === id
+          ? {
+              ...item,
+              quantity: Math.max(item.quantity - 1, 1),
+            }
+          : item
+      )
+    );
+  };
 
   //qua tengo tutti i dati che l'utente inserisce nel form
   const [formData, setFormData] = useState({
@@ -87,7 +113,18 @@ const CheckoutPage = () => {
                   />
                   <div className="flex-grow-1">
                     <p className="m-0 fw-bold">{item.name}</p>
-                    <small>Quantity: {item.quantity}</small>
+                    <div className="d-flex align-items-center gap-2">
+                      <button className="btn btn-outline-secondary btn-sm" onClick={() => decreaseQuantity(item.id)} disabled={item.quantity === 1}>
+                        -
+                      </button>
+                      <span>{item.quantity}</span>
+                      <button className="btn btn-outline-secondary btn-sm" onClick={() => increaseQuantity(item.id)} disabled={item.quantity >= item.stock_quantity}>
+                        +
+                      </button>
+                      <div className="d-flex justify-content-between align-items-center">
+                        <button className="btn-close" aria-label="Remove" onClick={() => removeFromCart(item.id)}></button>
+                      </div>
+                    </div>
                   </div>
                   <div>
                     <span>{(item.price * item.quantity).toFixed(2)} €</span>
@@ -157,7 +194,7 @@ const CheckoutPage = () => {
             <div className="row g-3 mb-3">
               <div className="col-md-4">
                 <label className="form-label">City</label>
-                <input type="text" name="city" className="form-control" placeholder="Enter a city" required onChange={handleChange}/>
+                <input type="text" name="city" className="form-control" placeholder="Enter a city" required onChange={handleChange} />
               </div>
               <div className="col-md-4">
                 <label className="form-label">Postal code (optional)</label>
