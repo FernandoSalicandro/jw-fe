@@ -1,11 +1,18 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "../Context/CartContext";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const CartModal = ({ isOpen, onClose }) => {
   const { cart, removeFromCart, setCart, setIsCartOpen } = useCart();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (isOpen) {
+      setIsCartOpen(false);
+    }
+  }, [location]);
 
   const increaseQuantity = (id) => {
     setCart((prevCart) =>
@@ -49,7 +56,7 @@ const CartModal = ({ isOpen, onClose }) => {
 
           {cart.length > 0 ? (
             <ul className="mt-3 list-unstyled d-flex flex-column">
-              {cart.map((item) => (
+              {[...cart].reverse().map((item) => (
                 <li key={item.id} className="mb-3 border-bottom pb-">
                   <div class="card mb-3 rounded">
                     <div class="row g-0">
