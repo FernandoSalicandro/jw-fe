@@ -39,6 +39,7 @@ const PaymentPage = () => {
                     'orderData',
                     JSON.stringify({
                         orderId: resp.data.orderId,
+                        paymentIntentId: resp.data.paymentIntentId,
                         formData,
                         cart,
                     })
