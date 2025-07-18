@@ -1,8 +1,18 @@
+import {useSearchParams} from 'react-router-dom';
 import { useSearch } from "../Context/SearchContext";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import axios from 'axios';
 
 export default function SearchPage() {
-  const { searchResults } = useSearch();
+  const { searchResults, setSearchResults } = useSearch();
+  const [searchParams] = useSearchParams();
+  const query = searchParams.get('query')
+
+  useEffect(() => {
+    if(query){
+      axios.get(`http://localhost:3000/products?search=${query}`).then(resp => setSearchResults(resp.data)).catch(error => console.log(error))
+    }
+  }, [query,setSearchResults])
 
   const [priceFilterIsOn, setPriceFilterIsOn] = useState(false);
   const [inPromoFilterIsOn, setInPromoFilterIsOn] = useState(false);
