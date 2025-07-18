@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 
 export default function WishListPage() {
   const { products } = useContext(ProductContext);
-  const { wishList } = useWishList();
+  const { wishList, removeFromWishList, clearWishList } = useWishList();
   const navigate = useNavigate();
   const [relatedProducts, setRelatedProducts] = useState([]);
 
@@ -41,10 +41,14 @@ export default function WishListPage() {
       });
   }, [wishList]);
 
-  return (
+  return wishList.length === 0 ? (
+    <div className="container py-5" style={{marginTop: "100px"}}>
+      <p className="text-center fs-4">Your wishlist is empty.</p>
+    </div>
+  ) : (
     <>
       <main className="main-page">
-        <div className="container section-separator p-2 mb-3">
+        <div className="container section-separator p-2 mb-5">
           <h1>Your Desires...</h1>
         </div>
         <div className="container">
@@ -67,11 +71,19 @@ export default function WishListPage() {
                         ) : (
                           <p className="card-text prezzo">{curWish.price} €</p>
                         )}
+                        <button className="btn btn-sm btn-outline show-details mt-2 mb-3" onClick={() => removeFromWishList(curWish.id)} style={{ border: "1px solid black" }}>
+                          Remove
+                        </button>
                       </div>
                     </div>
                   </div>
                 </>
               ))}
+          </div>
+          <div className="text-end mt-2 mb-4">
+            <button className="btn btn-outline text-black show-details me-2" onClick={clearWishList} style={{ border: "1px solid black" }}>
+              Clear Whishlist
+            </button>
           </div>
 
           {relatedProducts.length > 0 && (
