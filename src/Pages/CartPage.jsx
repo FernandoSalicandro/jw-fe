@@ -32,7 +32,7 @@ export default function CartPage() {
                       <h5 className="card-title">{item.name}</h5>
                       <p className="card-text">Quantity: {item.quantity}</p>
                       <p className="card-text">Price: {((item.is_promo === 1 ? item.discount_price : item.price) * item.quantity).toFixed(2)} €</p>
-                      <button className="btn btn-sm btn-outline-danger mt-2" onClick={() => removeFromCart(item.id)}>
+                      <button className="btn btn-sm btn-outline show-details mt-2" onClick={() => removeFromCart(item.id)} style={{ border: "1px solid black" }}>
                         Remove
                       </button>
                     </div>
