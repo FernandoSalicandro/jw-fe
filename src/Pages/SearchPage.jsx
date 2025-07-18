@@ -10,7 +10,9 @@ export default function SearchPage() {
 
   useEffect(() => {
     if (query) {
-      axios.get(`http://localhost:3000/products?search=${query}`).then(resp => setSearchResults(resp.data)).catch(error => console.log(error))
+      axios.get(`http://localhost:3000/products?search=${query}`)
+        .then(resp => setSearchResults(resp.data))
+        .catch(error => console.log(error))
     }
   }, [query, setSearchResults])
 
@@ -81,11 +83,17 @@ export default function SearchPage() {
           </button>
         </div>
       </div>
-      {/* Resto del codice... */}
+
       <div>
         <div className="container mt-5">
           <div className="mb-5">
             <h2>Your Search Results...</h2>
+            <p className="text-secondary small">
+              {filteredResults.length === searchResults.length 
+                ? `${searchResults.length} items found`
+                : `${filteredResults.length} of ${searchResults.length} items shown`
+              }
+            </p>
           </div>
           <div className="row">
             {filteredResults.map((product) => (
