@@ -5,6 +5,7 @@ import { ProductContext } from "../Context/ProductContext.jsx";
 import { useCart } from "../Context/CartContext.jsx";
 import { useWishList } from "../Context/WishListContext.jsx";
 import Loader from "../components/Loader.jsx";
+import AiAssistantProva from '../Pages/AiAssistantProva.jsx';
 
 export default function ProductPage() {
     const urlApi = "http://localhost:3000/products";
@@ -125,6 +126,7 @@ export default function ProductPage() {
 
     return (
         <>
+            <AiAssistantProva />
             {gioiello ? (
                 <main className="main">
                     <div className="container">
