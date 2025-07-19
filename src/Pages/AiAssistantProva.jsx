@@ -1,38 +1,101 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import axios from 'axios';
 
-function AiAssistant() {
+function AiAssistant({ productInfo }) {
   const [question, setQuestion] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [chatMessages, setChatMessages] = useState([]);
+  const messagesContainerRef = useRef(null);
+
+  const promptContext = `
+  Product: ${productInfo.name}
+  STATO PREZZO: ${productInfo.is_promo ? ' PRODOTTO IN PROMOZIONE ' : 'Prezzo Standard'}
+
+  PREZZI:
+  ${productInfo.is_promo ?
+      `- Prezzo Originale: ${productInfo.price}€
+     - Prezzo Attuale SCONTATO: ${productInfo.discount_price}€
+      ATTENZIONE: ${productInfo.discount_price}€ è il PREZZO SCONTATO ATTUALE`
+      :
+      `Prezzo Standard: ${productInfo.price}€ (non in promozione)`
+    }
+
+  Description: ${productInfo.description}
+  Category: ${productInfo.category}
+  Stock Quantity: ${productInfo.stockQuantity}
+
+  ISTRUZIONI PREZZI:
+  - Questo prodotto ${productInfo.is_promo ? 'È IN PROMOZIONE' : 'non è in promozione'}
+  - Prezzo originale: ${productInfo.price}€
+  - ${productInfo.is_promo ? `Prezzo SCONTATO ATTUALE: ${productInfo.discount_price}€` : ''}
+  - ${productInfo.is_promo ? 'RICORDA: il prezzo più basso è quello SCONTATO' : ''}
+`;
+
+  const [chatMessages, setChatMessages] = useState([
+    {
+      type: 'system',
+      role: 'system',
+      content: promptContext
+    },
+    {
+      type: 'bot',
+      content: 'Ciao, sono il tuo personal shopper. Come posso aiutarti?'
+    }
+  ]);
+
+  const scrollToBottom = () => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [chatMessages]);
+
+  useEffect(() => {
+    setChatMessages([
+      {
+        type: 'system',
+        role: 'system',
+        content: promptContext
+      },
+      {
+        type: 'bot',
+        content: 'Ciao, sono il tuo personal shopper. Come posso aiutarti?'
+      }
+    ]);
+  }, [productInfo, promptContext]);
 
   const handleQuestionSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // qui salvi la conversazione da mandare in backend come contesto per la risposta successiva - è dove andranno le domande sul gioiello in questione
-    //bisogna preparare già una primo contesto sul prodotto visualizzato, in modo che chat abbia già il contesto prima ancora che gli venga posta la domanda
     const conversation = {
       question,
       history: chatMessages.map(msg => ({
-        role: msg.type === 'user' ? 'user' : 'assistant',
+        role: msg.type === 'system' ? 'system' : msg.type === 'user' ? 'user' : 'assistant',
         content: msg.content
       }))
     };
 
-    // aggiungiamo il messaggio dell'utente alla chat
     setChatMessages(chat => [...chat, { type: 'user', content: question }]);
 
     axios.post('http://localhost:3000/products/bot', conversation)
       .then(response => {
-        const botResponse = response.data.answers[0].answer;
+        let botResponse = response.data.answers[0].answer;
+        try {
+          const jsonResponse = JSON.parse(botResponse);
+          botResponse = jsonResponse.answer || botResponse;
+        } catch (e) {
+          // Se non è JSON, usiamo la risposta così com'è
+        }
         setChatMessages(prev => [...prev, { type: 'bot', content: botResponse }]);
       })
       .catch(error => {
         console.error('Errore:', error);
-        setChatMessages(prev => [...prev, { 
-          type: 'bot', 
+        setChatMessages(prev => [...prev, {
+          type: 'bot',
           content: 'Mi dispiace, si è verificato un errore nella comunicazione.'
         }]);
       })
@@ -57,19 +120,22 @@ function AiAssistant() {
             </button>
           </div>
 
-          <div className="chat-messages">
-            {/* Messaggio di benvenuto iniziale */}
-            {chatMessages.length === 0 && (
-              <div className="message bot">
-                Benvenuto. Sono il tuo Personal Shopper. Come posso aiutarti?
-              </div>
-            )}
-            
-            {chatMessages.map((msg, index) => (
+          <div 
+            className="chat-messages" 
+            ref={messagesContainerRef}
+            style={{
+              maxHeight: '400px',  
+              overflowY: 'auto',   
+              padding: '1rem',
+              scrollBehavior: 'smooth'
+            }}
+          >
+            {chatMessages.slice(1).map((msg, index) => (
               <div key={index} className={`message ${msg.type}`}>
                 {msg.content}
               </div>
             ))}
+
             {isLoading && (
               <div className="message bot">
                 <div className="typing-indicator">
@@ -101,7 +167,7 @@ function AiAssistant() {
         </div>
       )}
     </>
-  )
+  );
 }
 
-export default AiAssistant
+export default AiAssistant;

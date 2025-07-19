@@ -842,7 +842,7 @@ header a {
   bottom: 0px;
   right: 10px;
   width: 350px;
-  height: 400px;
+  height: 500px;
   background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
@@ -878,6 +878,7 @@ header a {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  scroll-behavior: smooth;
 }
 
 .message {
