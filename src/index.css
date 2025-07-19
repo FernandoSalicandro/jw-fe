@@ -7,9 +7,11 @@ CSS
 
 :root {
   --header-height: 120px;
+  --code-banner-height: 50px;
   --nav-search-height: 100px;
   --section-separator-height-m: 50px;
   --section-separator-height-l: 80px;
+  --page-main-margin-top: calc(var(--header-height) + var(--code-banner-height));
 }
 
 /* Code banner - Fernando*/
@@ -751,7 +753,7 @@ header a {
 }
 
 .page-main {
-  margin-top: var(--header-height);
+  margin-top: var(--page-main-margin-top);
 }
 
 /*Search Page */
