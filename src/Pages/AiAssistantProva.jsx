@@ -11,7 +11,8 @@ function AiAssistant() {
     e.preventDefault();
     setIsLoading(true);
 
-    // Crea l'oggetto conversazione che include la cronologia
+    // qui salvi la conversazione da mandare in backend come contesto per la risposta successiva - è dove andranno le domande sul gioiello in questione
+    //bisogna preparare già una primo contesto sul prodotto visualizzato, in modo che chat abbia già il contesto prima ancora che gli venga posta la domanda
     const conversation = {
       question,
       history: chatMessages.map(msg => ({
@@ -20,8 +21,8 @@ function AiAssistant() {
       }))
     };
 
-    // Aggiungi il messaggio dell'utente alla chat
-    setChatMessages(prev => [...prev, { type: 'user', content: question }]);
+    // aggiungiamo il messaggio dell'utente alla chat
+    setChatMessages(chat => [...chat, { type: 'user', content: question }]);
 
     axios.post('http://localhost:3000/products/bot', conversation)
       .then(response => {
@@ -60,7 +61,7 @@ function AiAssistant() {
             {/* Messaggio di benvenuto iniziale */}
             {chatMessages.length === 0 && (
               <div className="message bot">
-                Ciao! Sono il tuo assistente JW. Come posso aiutarti?
+                Benvenuto. Sono il tuo Personal Shopper. Come posso aiutarti?
               </div>
             )}
             
