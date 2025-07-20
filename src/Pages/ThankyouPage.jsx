@@ -29,7 +29,7 @@ export default function ThankYouPage() {
 
   return (
     <div className="container py-5" style={{ marginTop: "120px" }}>
-      <div className=' w-50 '>
+      <div className=' text-center'>
         <h1> Dear, {customer.firstName} {customer.lastName} thank you for your order!</h1>
         <p className='text-secondary fs-6 text-end'>-Team JW-LUX</p>
       </div>
@@ -38,27 +38,7 @@ export default function ThankYouPage() {
       </p>
 
       <div>
-        <h2>A Recap of Your Order</h2>
-      </div>
-
-      {snapShotCart.map((item) => (
-        <div class="card mb-3">
-          <div class="row g-0">
-            <div class="col-md-4">
-              <img src={item.image_url} class="img-fluid w-50 mx-auto d-block rounded-start" alt="..." />
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <h5 class="card-title">{item.name}</h5>
-                <p class="card-text">{item.description}</p>
-                <p class="card-text"><small class="text-body-secondary">Quantity: {item.quantity}</small></p>
-              </div>
-            </div>
-          </div>
-        </div>
-      ))}
-      <div>
-        <h4 className='mt-5'>Will be packaged and dispatched with care at</h4>
+        <h4 className='mt-4'>Will be packaged and dispatched with care at</h4>
         <ul className="list-group list-group-flush W-50 mx-auto">
           <li className="list-group-item"><strong>Address:</strong> {customer.address}</li>
           <li className="list-group-item"><strong>Apartment:</strong> {customer.apartment !== "" ? customer.apartment : "Non Specified"}</li>
@@ -75,3 +55,5 @@ export default function ThankYouPage() {
 
   );
 }
+
+

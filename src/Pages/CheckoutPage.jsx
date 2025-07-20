@@ -9,6 +9,7 @@ const CheckoutPage = () => {
 
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedRegion, setSelectedRegion] = useState("");
+  const [showSummary, setShowSummary] = useState(false);
 
   const countries = countryRegionData.map((c) => c.countryName);
   const regions = countryRegionData.find((c) => c.countryName === selectedCountry)?.regions.map((r) => r.name) || [];
@@ -93,51 +94,59 @@ const CheckoutPage = () => {
       ) : (
         <>
           {/* riepilogo ordine */}
-          <div className="mb-4 mt-4">
-            <h4>Order Summary</h4>
+          <div className="d-flex justify-content-between align-items-center mb-3 mt-4">
+            <h4 className="m-0">Order Summary</h4>
+            <button className="btn btn-sm" onClick={() => setShowSummary((prev) => !prev)} aria-expanded={showSummary} aria-controls="orderSummary">
+              {showSummary ? "Hide ▲" : "Show ▼"}
+            </button>
           </div>
-          <ul className="list-group">
-            {cart.map((item) => (
-              <li key={item.id} className="list-group-item border-0">
-                <div className="d-flex align-items-center">
-                  <img
-                    src={item.image_url}
-                    alt={item.name}
-                    style={{
-                      width: "60px",
-                      height: "60px",
-                      objectFit: "cover",
-                      marginRight: "10px",
-                      borderRadius: "6px",
-                    }}
-                  />
-                  <div className="flex-grow-1">
-                    <p className="m-0 fw-bold">{item.name}</p>
-                    <div className="d-flex align-items-center gap-2">
-                      <button className="btn btn-outline-secondary btn-sm" onClick={() => decreaseQuantity(item.id)} disabled={item.quantity === 1}>
-                        -
-                      </button>
-                      <span>{item.quantity}</span>
-                      <button className="btn btn-outline-secondary btn-sm" onClick={() => increaseQuantity(item.id)} disabled={item.quantity >= item.stock_quantity}>
-                        +
-                      </button>
-                      <div className="d-flex justify-content-between align-items-center">
-                        <button className="btn-close" aria-label="Remove" onClick={() => removeFromCart(item.id)}></button>
+
+          {showSummary && (
+            <div id="orderSummary">
+              <ul className="list-group mb-4">
+                {cart.map((item) => (
+                  <li key={item.id} className="list-group-item border-0">
+                    <div className="d-flex align-items-center">
+                      <img
+                        src={item.image_url}
+                        alt={item.name}
+                        style={{
+                          width: "60px",
+                          height: "60px",
+                          objectFit: "cover",
+                          marginRight: "10px",
+                          borderRadius: "6px",
+                        }}
+                      />
+                      <div className="flex-grow-1">
+                        <p className="m-0 fw-bold">{item.name}</p>
+                        <div className="d-flex align-items-center gap-2">
+                          <button className="btn btn-outline-secondary btn-sm" onClick={() => decreaseQuantity(item.id)} disabled={item.quantity === 1}>
+                            -
+                          </button>
+                          <span>{item.quantity}</span>
+                          <button className="btn btn-outline-secondary btn-sm" onClick={() => increaseQuantity(item.id)} disabled={item.quantity >= item.stock_quantity}>
+                            +
+                          </button>
+                          <div className="d-flex justify-content-between align-items-center">
+                            <button className="btn-close" aria-label="Remove" onClick={() => removeFromCart(item.id)}></button>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <span>{(item.price * item.quantity).toFixed(2)} €</span>
                       </div>
                     </div>
-                  </div>
-                  <div>
-                    <span>{(item.price * item.quantity).toFixed(2)} €</span>
-                  </div>
-                </div>
-              </li>
-            ))}
-            <hr />
-            <li className="list-group-item d-flex justify-content-between fw-bold border-0">
-              <span>Subtotal</span>
-              <span>{cart.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2)} €</span>
-            </li>
-          </ul>
+                  </li>
+                ))}
+                <hr />
+                <li className="list-group-item d-flex justify-content-between fw-bold border-0">
+                  <span>Subtotal</span>
+                  <span>{cart.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2)} €</span>
+                </li>
+              </ul>
+            </div>
+          )}
 
           {/* form per i dati del cliente */}
           <form onSubmit={handleSubmit}>
