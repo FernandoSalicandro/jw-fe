@@ -1,13 +1,24 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useContext } from 'react'
+import { ProductContext } from '../Context/ProductContext.jsx';
+import { useLocation, Link } from 'react-router-dom';
 import axios from 'axios';
 
 function AiAssistant({ productInfo }) {
+  const location = useLocation();
+  const isProductPage = location.pathname.startsWith('/productDetails');
+  const { products: AllProducts } = useContext(ProductContext);
+  const relatedProducts = AllProducts
+    .filter(product => product.id !== productInfo.id)
+    .map(product => `- ${product.name} (${product.category}): ${product.description}`)
+    .join('\n');
   const [question, setQuestion] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const messagesContainerRef = useRef(null);
 
-  const promptContext = `
+
+  const promptContext = isProductPage && productInfo ? `
+  SEZIONE PRODOTTO VISUALIZZATO:
   Product: ${productInfo.name}
   STATO PREZZO: ${productInfo.is_promo ? ' PRODOTTO IN PROMOZIONE ' : 'Prezzo Standard'}
 
@@ -29,7 +40,10 @@ function AiAssistant({ productInfo }) {
   - Prezzo originale: ${productInfo.price}€
   - ${productInfo.is_promo ? `Prezzo SCONTATO ATTUALE: ${productInfo.discount_price}€` : ''}
   - ${productInfo.is_promo ? 'RICORDA: il prezzo più basso è quello SCONTATO' : ''}
-`;
+
+  SEZIONE PRODOTTI CORRELATI PER ABBINAMENTI E CONSIGLI : 
+  ${relatedProducts}
+` : `Hai bisogno di aiuto ? posso consigliarti prodotti e abbinamenti, dimmi pure cosa cerchi`
 
   const [chatMessages, setChatMessages] = useState([
     {
@@ -120,21 +134,62 @@ function AiAssistant({ productInfo }) {
             </button>
           </div>
 
-          <div 
-            className="chat-messages" 
+          <div
+            className="chat-messages"
             ref={messagesContainerRef}
             style={{
-              maxHeight: '400px',  
-              overflowY: 'auto',   
+              maxHeight: '400px',
+              overflowY: 'auto',
               padding: '1rem',
               scrollBehavior: 'smooth'
             }}
           >
-            {chatMessages.slice(1).map((msg, index) => (
-              <div key={index} className={`message ${msg.type}`}>
-                {msg.content}
-              </div>
-            ))}
+            {chatMessages.slice(1).map((msg, index) => {
+              if (msg.type === 'bot') {
+                const lines = msg.content.split('\n');
+                const recommendationLine = lines.find(line => line.startsWith('PRODOTTO_RACCOMANDATO:'));
+                const visibleText = lines.filter(line => !line.startsWith('PRODOTTO_RACCOMANDATO:')).join('\n');
+
+                let recommendedProduct = null;
+                if (recommendationLine) {
+                  const [slug, name, category] = recommendationLine.replace('PRODOTTO_RACCOMANDATO:', '').trim().split('|');
+                  recommendedProduct = AllProducts.find(p => p.slug === slug);
+                }
+
+                return (
+                  <div key={index} className="message bot">
+                    <p>{visibleText}</p>
+                    {recommendedProduct && (
+                      <div className="product-recommendation">
+                        <img
+                          src={recommendedProduct.image_url}
+                          alt={recommendedProduct.name}
+                          style={{ width: '100px', borderRadius: '8px', marginTop: '8px' }}
+                        />
+                        <Link
+                          to={`/productDetails/${recommendedProduct.slug}`}
+                          style={{ fontWeight: 'bold', margin: '4px 0', display: 'block', textDecoration: 'none', color: '#333' }}
+                        >
+                          {recommendedProduct.name}
+                        </Link>
+
+                        <p style={{ margin: 0 }}>{recommendedProduct.is_promo
+                          ? `Prezzo scontato: ${recommendedProduct.discount_price}€ (originale: ${recommendedProduct.price}€)`
+                          : `Prezzo: ${recommendedProduct.price}€`
+                        }</p>
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
+              return (
+                <div key={index} className={`message ${msg.type}`}>
+                  {msg.content}
+                </div>
+              );
+            })}
+
 
             {isLoading && (
               <div className="message bot">
