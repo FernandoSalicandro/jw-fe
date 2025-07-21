@@ -920,7 +920,7 @@ header a {
   bottom: 0px;
   right: 10px;
   width: 350px;
-  height: 400px;
+  height: calc(100vh - var(--header-height) - var(--code-banner-height) - 20px);
   background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
@@ -933,7 +933,8 @@ header a {
 .chat-header {
   background-color: #000000;
   color: white;
-  padding: 15px;
+  padding-left: 10px;
+  padding-top: 5px;
   border-radius: 10px 10px 0 0;
   display: flex;
   justify-content: space-between;
