@@ -40,9 +40,9 @@ export default function ThankYouPage() {
       <div>
         <h2>You will recive:</h2>
       </div>
+      <ol class="list-group list-group-numbered">
+        {snapShotCart.map((item) => (
 
-      {snapShotCart.map((item) => (
-        <ol class="list-group list-group-numbered">
           <li class="list-group-item d-flex justify-content-between align-items-start">
             <div class="ms-2 me-auto">
               <div class="fw-bold">{item.name}</div>
@@ -50,8 +50,9 @@ export default function ThankYouPage() {
             </div>
             <span class="badge text-bg-dark rounded-pill">Quantity: {item.quantity}</span>
           </li>
-        </ol>
-      ))}
+
+        ))}
+      </ol>
       <div>
         <h4 className='mt-5'>Will be packaged and dispatched with care at</h4>
         <ul className="list-group list-group-flush W-50 mx-auto">
