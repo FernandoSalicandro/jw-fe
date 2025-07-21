@@ -214,9 +214,9 @@ const AppHeader = ({ isHomePage }) => {
                 className="code-banner section-separator bg-dark my-0"
               >
                 <p className="text-center text-white m-0 py-2">
-                  Speciale codice sconto {discountCode.code} - {discountCode.value}% di sconto!
-                  Valido dal {new Date(discountCode.start_date).toLocaleDateString()}
-                  al {new Date(discountCode.end_date).toLocaleDateString()}
+                  Special Code {discountCode.code} - {discountCode.value}% discount!
+                  Valid from {new Date(discountCode.start_date).toLocaleDateString()}
+                  to {new Date(discountCode.end_date).toLocaleDateString()}
                 </p>
               </motion.div>
             )
