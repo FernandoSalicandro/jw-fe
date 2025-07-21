@@ -1,6 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { ProductContext } from "../Context/ProductContext.jsx";
 import { useNavigate } from "react-router-dom";
+import AiAssistantProva from "./AiAssistantProva.jsx";
+
+
 export default function RingPage() {
+  const { products: AllProducts } = useContext(ProductContext);
   const [rings, setRings] = useState([]);
   const navigate = useNavigate();
   useEffect(() => {
@@ -12,6 +17,7 @@ export default function RingPage() {
 
   return (
     <>
+    <AiAssistantProva />
     <div className="black-div"></div>
       <div className="hero-section">
         <img src="./img/hero-rings.png" />
