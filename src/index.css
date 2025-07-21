@@ -695,7 +695,8 @@ header a {
   }
 
   .brand-col {
-    margin-left: -30px; /* Compensiamo lo spazio per centrare meglio il brand */
+    margin-left: 0; /* Compensiamo lo spazio per centrare meglio il brand */
+    
   }
 
   .brand-col p {
