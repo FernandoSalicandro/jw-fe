@@ -1,7 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { ProductContext } from "../Context/ProductContext";
+import AiAssistantProva from "./AiAssistantProva.jsx";
 
 const BraceletsPage = () => {
+
+  const { products: AllProducts } = useContext(ProductContext);
   const [bracelets, setBracelets] = useState([]);
   const navigate = useNavigate();
 
@@ -14,6 +18,7 @@ const BraceletsPage = () => {
 
   return (
     <main>
+      <AiAssistantProva />
       <div className="black-div"></div>
       <div className="hero-section">
         <img src="/img/hero-bracelets.png" alt="" />

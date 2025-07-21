@@ -1,6 +1,7 @@
 import { useContext, useRef, useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ProductContext } from '../Context/ProductContext.jsx';
+import AiAssistantProva from "../Pages/AiAssistantProva.jsx";
 import { motion } from 'framer-motion';
 import Quotes from '../components/Quotes.jsx';
 
@@ -47,6 +48,7 @@ export default function HomePage() {
     return (
         <>
             <main>
+                <AiAssistantProva/>
                 <div className="black-div-home"></div>
                 <div className="hero-section">
                     <img src="./img/hero-homepage.png" alt="" />

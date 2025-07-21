@@ -7,10 +7,14 @@ function AiAssistant({ productInfo }) {
   const location = useLocation();
   const isProductPage = location.pathname.startsWith('/productDetails');
   const { products: AllProducts } = useContext(ProductContext);
-  const relatedProducts = AllProducts
+  // In AiAssistantProva.jsx, modifica la riga relatedProducts:
+  const relatedProducts = productInfo ? AllProducts
     .filter(product => product.id !== productInfo.id)
     .map(product => `- ${product.name} (${product.category}): ${product.description}`)
-    .join('\n');
+    .join('\n')
+    : AllProducts
+      .map(product => `- ${product.name} (${product.category}): ${product.description}`)
+      .join('\n');
   const [question, setQuestion] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -43,7 +47,19 @@ function AiAssistant({ productInfo }) {
 
   SEZIONE PRODOTTI CORRELATI PER ABBINAMENTI E CONSIGLI : 
   ${relatedProducts}
-` : `Hai bisogno di aiuto ? posso consigliarti prodotti e abbinamenti, dimmi pure cosa cerchi`
+` : `
+  Benvenuto! Sono l'assistente di JW LUX, specializzato in gioielli di lusso.
+  Posso aiutarti a:
+  - Trovare il gioiello perfetto per te o per un regalo
+  - Consigliarti sugli abbinamenti
+  - Fornirti informazioni sui nostri prodotti
+  - Rispondere a domande su prezzi e disponibilità
+
+  Ecco alcuni dei nostri prodotti disponibili:
+  ${relatedProducts}
+
+  Come posso esserti d'aiuto oggi?
+`;
 
   const [chatMessages, setChatMessages] = useState([
     {
@@ -147,38 +163,43 @@ function AiAssistant({ productInfo }) {
             {chatMessages.slice(1).map((msg, index) => {
               if (msg.type === 'bot') {
                 const lines = msg.content.split('\n');
-                const recommendationLine = lines.find(line => line.startsWith('PRODOTTO_RACCOMANDATO:'));
+                const recommendationLines = lines.filter(line => line.startsWith('PRODOTTO_RACCOMANDATO:'));
                 const visibleText = lines.filter(line => !line.startsWith('PRODOTTO_RACCOMANDATO:')).join('\n');
 
-                let recommendedProduct = null;
-                if (recommendationLine) {
-                  const [slug, name, category] = recommendationLine.replace('PRODOTTO_RACCOMANDATO:', '').trim().split('|');
-                  recommendedProduct = AllProducts.find(p => p.slug === slug);
-                }
+                const recommendedProducts = recommendationLines.map(line => {
+                  const [slug, name, category, image_url] = line.replace('PRODOTTO_RACCOMANDATO:', '').trim().split('|');
+                  return AllProducts.find(p => p.slug === slug);
+                }).filter(Boolean);
+
 
                 return (
                   <div key={index} className="message bot">
                     <p>{visibleText}</p>
-                    {recommendedProduct && (
-                      <div className="product-recommendation">
-                        <img
-                          src={recommendedProduct.image_url}
-                          alt={recommendedProduct.name}
-                          style={{ width: '100px', borderRadius: '8px', marginTop: '8px' }}
-                        />
-                        <Link
-                          to={`/productDetails/${recommendedProduct.slug}`}
-                          style={{ fontWeight: 'bold', margin: '4px 0', display: 'block', textDecoration: 'none', color: '#333' }}
-                        >
-                          {recommendedProduct.name}
-                        </Link>
-
-                        <p style={{ margin: 0 }}>{recommendedProduct.is_promo
-                          ? `Prezzo scontato: ${recommendedProduct.discount_price}€ (originale: ${recommendedProduct.price}€)`
-                          : `Prezzo: ${recommendedProduct.price}€`
-                        }</p>
+                    {recommendedProducts.length > 0 && (
+                      <div className="product-recommendations">
+                        {recommendedProducts.map((product, i) => (
+                          <div key={i} className="product-recommendation" style={{ marginBottom: '12px' }}>
+                            <img
+                              src={product.image_url}
+                              alt={product.name}
+                              style={{ width: '100px', borderRadius: '8px', marginTop: '8px' }}
+                            />
+                            <Link
+                              to={`/productDetails/${product.slug}`}
+                              style={{ fontWeight: 'bold', margin: '4px 0', display: 'block', textDecoration: 'none', color: '#333' }}
+                            >
+                              {product.name}
+                            </Link>
+                            <p style={{ margin: 0 }}>
+                              {product.is_promo
+                                ? `Prezzo scontato: ${product.discount_price}€ (originale: ${product.price}€)`
+                                : `Prezzo: ${product.price}€`}
+                            </p>
+                          </div>
+                        ))}
                       </div>
                     )}
+
                   </div>
                 );
               }

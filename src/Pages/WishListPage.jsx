@@ -3,9 +3,11 @@ import axios from "axios";
 import { useWishList } from "../Context/WishListContext.jsx";
 import { ProductContext } from "../Context/ProductContext.jsx";
 import { useNavigate } from "react-router-dom";
+import AiAssistantProva from "./AiAssistantProva.jsx";
 import { motion } from "framer-motion";
 
 export default function WishListPage() {
+  const { products: AllProducts } = useContext(ProductContext);
   const { products } = useContext(ProductContext);
   const { wishList, removeFromWishList, clearWishList } = useWishList();
   const navigate = useNavigate();
@@ -47,6 +49,7 @@ export default function WishListPage() {
     </div>
   ) : (
     <>
+      <AiAssistantProva />
       <main className="page-main">
         <div className="container section-separator p-2 mb-5">
           <h1>Your Desires...</h1>

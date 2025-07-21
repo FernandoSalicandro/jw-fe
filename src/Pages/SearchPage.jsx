@@ -1,9 +1,13 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSearch } from "../Context/SearchContext";
-import { useState, useMemo, useEffect } from "react";
-import axios from "axios";
+import { useState, useMemo, useEffect, useContext } from "react";
+import { ProductContext } from "../Context/ProductContext.jsx";
+import AiAssistantProva from './AiAssistantProva';
+import axios from 'axios';
+
 
 export default function SearchPage() {
+  const { products: AllProducts } = useContext(ProductContext);
   const { searchResults, setSearchResults } = useSearch();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -61,7 +65,9 @@ export default function SearchPage() {
 
   return (
     <>
-      <div className="nav-bar search-page-filter border-top-0 d-flex align-items-center gap-4" style={{ marginTop: "170px" }}>
+    <AiAssistantProva />
+      <div className="nav-bar search-page-filter border-top-0 d-flex align-items-center gap-4" style={{marginTop: "170px"}}>
+
         {/* Sezione Sort By */}
         <div className="d-flex align-items-center gap-2">
           <button className="btn btn-outline border-0" disabled>
