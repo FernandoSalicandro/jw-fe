@@ -12,6 +12,7 @@ export default function RingPage() {
 
   return (
     <>
+    <div className="black-div"></div>
       <div className="hero-section">
         <img src="./img/hero-rings.png" />
       </div>

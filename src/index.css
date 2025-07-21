@@ -486,6 +486,12 @@ header a {
 /* Utility Classes */
 
 .black-div {
+  height: 90px;
+  width: 100%;
+  background-color: #060605;
+}
+
+.black-div-home{
   height: 120px;
   width: 100%;
   background-color: #060605;
@@ -671,20 +677,80 @@ header a {
     gap: 0.8rem;
   }
 }
-
 @media (max-width: 576px) {
+  .nav-bar {
+    padding: 0 1rem !important;
+  }
+
+  .hamburger-menu {
+    margin-left: 0; /* Rimuoviamo il margin left */
+    width: 30px;
+    height: 20px; /* Aggiungiamo height per mantenere le proporzioni */
+  }
+
+  .hamburger-menu span {
+    width: 30px;
+    margin-left: 0; /* Rimuoviamo il margin delle linee */
+  }
+
+  .brand-col {
+    margin-left: -30px; /* Compensiamo lo spazio per centrare meglio il brand */
+  }
+
   .brand-col p {
     font-size: 1.5rem;
+    letter-spacing: 0.3rem; /* Riduciamo lo spacing delle lettere */
   }
 
   .brand-col img {
     width: 40px;
   }
 
+  .hamburger-menu.active span:first-child {
+    transform: translateY(6px) rotate(45deg);
+  }
+
+  .hamburger-menu.active span:last-child {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+
+  .right-col {
+    gap: 0.5rem;
+    margin-right: -10px; /* Compensiamo lo spazio a destra */
+  }
+
   .right-col p {
-    font-size: 1.2rem;
+    font-size: 1rem;
+  }
+
+  /* Aggiungiamo stili per il code banner */
+  .code-banner p {
+    font-size: 0.75rem;
+    padding: 0.5rem;
+    line-height: 1.2;
+    white-space: normal;
   }
 }
+
+@media (max-width: 390px) {
+  .brand-col p {
+    font-size: 1.3rem;
+    letter-spacing: 0.2rem;
+  }
+
+  .brand-col img {
+    width: 35px;
+  }
+
+  .right-col {
+    gap: 0.3rem;
+  }
+
+  .right-col p {
+    font-size: 0.9rem;
+  }
+}
+
 /* Ring Page Styles */
 
 .heroRing-img {

@@ -14,6 +14,7 @@ const BraceletsPage = () => {
 
   return (
     <main>
+      <div className="black-div"></div>
       <div className="hero-section">
         <img src="/img/hero-bracelets.png" alt="" />
       </div>

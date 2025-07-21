@@ -47,7 +47,7 @@ export default function HomePage() {
     return (
         <>
             <main>
-                <div className="black-div"></div>
+                <div className="black-div-home"></div>
                 <div className="hero-section">
                     <img src="./img/hero-homepage.png" alt="" />
                 </div>
