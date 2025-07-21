@@ -38,25 +38,21 @@ export default function ThankYouPage() {
       </p>
 
       <div>
-        <h2>A Recap of Your Order</h2>
+        <h2>You will recive:</h2>
       </div>
+      <ol class="list-group list-group-numbered">
+        {snapShotCart.map((item) => (
 
-      {snapShotCart.map((item) => (
-        <div class="card mb-3">
-          <div class="row g-0">
-            <div class="col-md-4">
-              <img src={item.image_url} class="img-fluid w-50 mx-auto d-block rounded-start" alt="..." />
+          <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+              <div class="fw-bold">{item.name}</div>
+              {item.description}
             </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <h5 class="card-title">{item.name}</h5>
-                <p class="card-text">{item.description}</p>
-                <p class="card-text"><small class="text-body-secondary">Quantity: {item.quantity}</small></p>
-              </div>
-            </div>
-          </div>
-        </div>
-      ))}
+            <span class="badge text-bg-dark rounded-pill">Quantity: {item.quantity}</span>
+          </li>
+
+        ))}
+      </ol>
       <div>
         <h4 className='mt-5'>Will be packaged and dispatched with care at</h4>
         <ul className="list-group list-group-flush W-50 mx-auto">
@@ -68,8 +64,8 @@ export default function ThankYouPage() {
         <p className='h5 mt-3'>In case we need to reach you, we will use the phone number provided: <strong>{customer.phone}</strong></p>
       </div>
       <div className='mt-5'>
-       <Quotes text={`We deeply appreciate your choice to shop with JW-LUX. Our team sends its most sincere regards.`} author={"JW LUX"} />
-       <button className='btn show-details border-black d-block mx-auto' onClick={handleClick}>Keep Exploring</button>
+        <Quotes text={`We deeply appreciate your choice to shop with JW-LUX. Our team sends its most sincere regards.`} author={"JW LUX"} />
+        <button className='btn show-details border-black d-block mx-auto' onClick={handleClick}>Keep Exploring</button>
       </div>
     </div>
 
