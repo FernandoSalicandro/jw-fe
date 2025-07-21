@@ -54,24 +54,48 @@ const PaymentPage = () => {
     // Gestione del codice sconto
 
 
-    useEffect(() => {  // in use effect controlliamo se abbiamo già un codice sconto inserito, in tal caso usa quei valori, altrimenti proccedi 
+    useEffect(() => {
         const storedDiscount = localStorage.getItem("sconto");
         if (storedDiscount && cart && cart.length > 0) {
             const parsed = JSON.parse(storedDiscount);
-            const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
-            const expectedAmount = subtotal - parsed.amount;
 
-            setDiscountAmount(parsed.amount);
-            setDiscountApplied(true);
-            setDiscountMessage(`Code ${parsed.code} already Redeemed!`);
-            setCurrentDiscount({ code: parsed.code, value: parsed.value });
-
-            axios.post('http://localhost:3000/products/create-payment-intent', {
-                amount: expectedAmount,
-                customerEmail: formData.email,
-                items: cart,
-                originalPaymentIntentId
+            // Verifica che il codice sia ancora valido
+            axios.post('http://localhost:3000/products/verify-discount', {
+                code: parsed.code,
+                currentDate: new Date().toISOString().slice(0, 19).replace('T', ' ')
             })
+                .then(response => {
+                    if (response.data.valid) {
+                        const discount = response.data.discount;
+                        const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+                        const discountValue = (subtotal * discount.value) / 100;
+
+                        setDiscountAmount(discountValue);
+                        setDiscountApplied(true);
+                        setDiscountMessage(`Code ${discount.code} already Redeemed!`);
+                        setCurrentDiscount({ code: discount.code, value: discount.value });
+
+                        // Aggiorna il localStorage con i nuovi valori
+                        localStorage.setItem("sconto", JSON.stringify({
+                            code: discount.code,
+                            value: discount.value,
+                            amount: discountValue
+                        }));
+
+                        return axios.post('http://localhost:3000/products/create-payment-intent', {
+                            amount: subtotal - discountValue,
+                            customerEmail: formData.email,
+                            items: cart,
+                            originalPaymentIntentId
+                        });
+                    } else {
+                        // Se il codice non è più valido, rimuovi dal localStorage
+                        localStorage.removeItem("sconto");
+                        setDiscountApplied(false);
+                        setDiscountAmount(0);
+                        setCurrentDiscount(null);
+                    }
+                })
                 .then(resp => {
                     if (resp) {
                         setClientSecret(resp.data.clientSecret);
@@ -79,7 +103,11 @@ const PaymentPage = () => {
                     }
                 })
                 .catch(error => {
-                    console.error("Errore nel re-creare payment intent con sconto:", error);
+                    console.error("Errore nella verifica del codice sconto:", error);
+                    localStorage.removeItem("sconto");
+                    setDiscountApplied(false);
+                    setDiscountAmount(0);
+                    setCurrentDiscount(null);
                 });
         }
     }, [cart]);
