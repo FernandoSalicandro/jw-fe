@@ -29,9 +29,9 @@ const AppHeader = ({ isHomePage }) => {
 
 
   //nascondere il banner solo in alcune pagine 
-  const hidenBannerOn = "/thankyou"
+  const hidenBannerOn = ["/thankyou"]
 
-  const showBanner = location.pathname !== hidenBannerOn
+  const showBanner = !hidenBannerOn.includes(location.pathname);
 
   useEffect(() => {
     axios.get('http://localhost:3000/products/discount-code')
