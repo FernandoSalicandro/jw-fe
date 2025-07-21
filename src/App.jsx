@@ -18,6 +18,7 @@ import CartPage from "./pages/CartPage.jsx";
 import AboutUs from './Pages/AboutUs.jsx'
 import WishListPage from "./Pages/WishListPage.jsx";
 import PaymentPage from './Pages/PaymentPage.jsx';
+import PageNotFound from "./Pages/PageNotFound.jsx";
 
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
             <Route path='/wishlist' element={<WishListPage />}/>
             <Route path='/cart' element={<CartPage />}/>
             <Route path='/payment' element={<PaymentPage />} />
+            <Route path='/*' element={<PageNotFound />} />
           </Route>
         </Routes>
       </BrowserRouter>
