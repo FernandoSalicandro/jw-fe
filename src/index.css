@@ -16,11 +16,10 @@ CSS
 
 /* Code banner - Fernando*/
 .code-banner {
-   display: grid;
+  display: grid;
   place-content: center;
 }
 .code-banner p {
- 
   margin: 0;
   padding: 0;
 }
@@ -491,7 +490,7 @@ header a {
   background-color: #060605;
 }
 
-.black-div-home{
+.black-div-home {
   height: 120px;
   width: 100%;
   background-color: #060605;
@@ -686,7 +685,6 @@ header a {
   }
 }
 @media (max-width: 576px) {
-
   .nav-bar {
     padding: 0 1rem !important;
   }
@@ -704,7 +702,6 @@ header a {
 
   .brand-col {
     margin-left: 0; /* Compensiamo lo spazio per centrare meglio il brand */
-    
   }
 
   .brand-col p {
@@ -901,9 +898,9 @@ header a {
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  border: 2px solid #D4AF37;
+  border: 2px solid #d4af37;
   background-color: #000000;
-  color: #D4AF37;
+  color: #d4af37;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -930,7 +927,7 @@ header a {
   display: flex;
   flex-direction: column;
   z-index: 1000;
-  border: 1px solid #D4AF37;
+  border: 1px solid #d4af37;
 }
 
 .chat-header {
@@ -941,13 +938,13 @@ header a {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #D4AF37;
+  border-bottom: 1px solid #d4af37;
 }
 
 .close-btn {
   background: none;
   border: none;
-  color: #D4AF37;
+  color: #d4af37;
   font-size: 24px;
   cursor: pointer;
 }
@@ -973,19 +970,19 @@ header a {
   background-color: #000000;
   color: #ffffff;
   align-self: flex-end;
-  border: 1px solid #D4AF37;
+  border: 1px solid #d4af37;
 }
 
 .message.bot {
   background-color: #f0f0f0;
   color: #000000;
   align-self: flex-start;
-  border: 1px solid #D4AF37;
+  border: 1px solid #d4af37;
 }
 
 .chat-input-container {
   padding: 15px;
-  border-top: 1px solid #D4AF37;
+  border-top: 1px solid #d4af37;
   display: flex;
   gap: 10px;
 }
@@ -993,14 +990,14 @@ header a {
 .chat-input {
   flex-grow: 1;
   padding: 10px;
-  border: 1px solid #D4AF37;
+  border: 1px solid #d4af37;
   border-radius: 20px;
   outline: none;
 }
 
 .send-button {
   background-color: #000000;
-  color: #D4AF37;
+  color: #d4af37;
   border: none;
   border-radius: 50%;
   width: 40px;
@@ -1025,7 +1022,7 @@ header a {
 .typing-indicator span {
   width: 8px;
   height: 8px;
-  background-color: #D4AF37;
+  background-color: #d4af37;
   border-radius: 50%;
   animation: typing 1s infinite ease-in-out;
 }
@@ -1039,6 +1036,35 @@ header a {
 }
 
 @keyframes typing {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.btn-hold-wrapper {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.btn-hold-wrapper .btn-close {
+  position: relative;
+  z-index: 2;
+}
+
+.hold-progress-ring {
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.btn-close:focus:not(:focus-visible) {
+  outline: none;
+  box-shadow: none;
 }

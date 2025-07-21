@@ -10,6 +10,8 @@ const CheckoutPage = () => {
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedRegion, setSelectedRegion] = useState("");
   const [showSummary, setShowSummary] = useState(false);
+  const [pressingItemId, setPressingItemId] = useState(null);
+  const [progress, setProgress] = useState(0);
 
   const countries = countryRegionData.map((c) => c.countryName);
   const regions = countryRegionData.find((c) => c.countryName === selectedCountry)?.regions.map((r) => r.name) || [];
@@ -54,6 +56,32 @@ const CheckoutPage = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const handleLongPressCancel = () => {
+    clearInterval(window.longPressInterval);
+    setPressingItemId(null);
+    setProgress(0);
+  };
+
+  const handleLongPressStart = (id) => {
+    setPressingItemId(id);
+    setProgress(0);
+
+    let currentProgress = 0;
+    const interval = setInterval(() => {
+      currentProgress += 10;
+      setProgress(currentProgress);
+
+      if (currentProgress >= 100) {
+        clearInterval(interval);
+        removeFromCart(id);
+        setPressingItemId(null);
+        setProgress(0);
+      }
+    }, 60); // 30ms * 10 step = 300ms totale
+
+    // salva l'intervallo per poterlo cancellare se rilascia prima
+    window.longPressInterval = interval;
+  };
   //funzione per aggiornare formData man mano che l'utente digita
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -128,8 +156,33 @@ const CheckoutPage = () => {
                           <button className="btn btn-outline-secondary btn-sm" onClick={() => increaseQuantity(item.id)} disabled={item.quantity >= item.stock_quantity}>
                             +
                           </button>
-                          <div className="d-flex justify-content-between align-items-center">
-                            <button className="btn-close" aria-label="Remove" onClick={() => removeFromCart(item.id)}></button>
+                          <div
+                            className="btn-hold-wrapper position-relative"
+                            onMouseDown={() => handleLongPressStart(item.id)}
+                            onMouseUp={handleLongPressCancel}
+                            onMouseLeave={handleLongPressCancel}
+                            onTouchStart={() => handleLongPressStart(item.id)} // mobile
+                            onTouchEnd={handleLongPressCancel}
+                          >
+                            <button className="btn-close" aria-label="Remove"></button>
+                            {pressingItemId === item.id && (
+                              <svg className="hold-progress-ring border-0" width="32" height="32">
+                                <circle
+                                  className="progress-ring__circle"
+                                  stroke="black"
+                                  strokeWidth="2"
+                                  fill="transparent"
+                                  r="15"
+                                  cx="16"
+                                  cy="16"
+                                  style={{
+                                    strokeDasharray: 2 * Math.PI * 15,
+                                    strokeDashoffset: ((100 - progress) / 100) * 2 * Math.PI * 15,
+                                    transition: "stroke-dashoffset 0.1s linear",
+                                  }}
+                                />
+                              </svg>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -207,7 +260,7 @@ const CheckoutPage = () => {
               </div>
               <div className="col-md-4">
                 <label className="form-label">Postal code (optional)</label>
-                <input type="text" name="postalCode" className="form-control" placeholder="Postal code" onChange={handleChange}/>
+                <input type="text" name="postalCode" className="form-control" placeholder="Postal code" onChange={handleChange} />
               </div>
               <div className="col-md-4">
                 <label className="form-label">Select Region/Province</label>
