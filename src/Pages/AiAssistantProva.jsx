@@ -7,10 +7,14 @@ function AiAssistant({ productInfo }) {
   const location = useLocation();
   const isProductPage = location.pathname.startsWith('/productDetails');
   const { products: AllProducts } = useContext(ProductContext);
-  const relatedProducts = AllProducts
+  // In AiAssistantProva.jsx, modifica la riga relatedProducts:
+  const relatedProducts = productInfo ? AllProducts
     .filter(product => product.id !== productInfo.id)
     .map(product => `- ${product.name} (${product.category}): ${product.description}`)
-    .join('\n');
+    .join('\n')
+    : AllProducts
+      .map(product => `- ${product.name} (${product.category}): ${product.description}`)
+      .join('\n');
   const [question, setQuestion] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -43,7 +47,19 @@ function AiAssistant({ productInfo }) {
 
   SEZIONE PRODOTTI CORRELATI PER ABBINAMENTI E CONSIGLI : 
   ${relatedProducts}
-` : `Hai bisogno di aiuto ? posso consigliarti prodotti e abbinamenti, dimmi pure cosa cerchi`
+` : `
+  Benvenuto! Sono l'assistente di JW LUX, specializzato in gioielli di lusso.
+  Posso aiutarti a:
+  - Trovare il gioiello perfetto per te o per un regalo
+  - Consigliarti sugli abbinamenti
+  - Fornirti informazioni sui nostri prodotti
+  - Rispondere a domande su prezzi e disponibilità
+
+  Ecco alcuni dei nostri prodotti disponibili:
+  ${relatedProducts}
+
+  Come posso esserti d'aiuto oggi?
+`;
 
   const [chatMessages, setChatMessages] = useState([
     {
