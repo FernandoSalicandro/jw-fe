@@ -1,4 +1,4 @@
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useSearch } from "../Context/SearchContext";
 import { useState, useMemo, useEffect } from "react";
 import axios from 'axios';
@@ -6,6 +6,7 @@ import axios from 'axios';
 export default function SearchPage() {
   const { searchResults, setSearchResults } = useSearch();
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate()
   const query = searchParams.get('query')
 
   useEffect(() => {
@@ -42,7 +43,7 @@ export default function SearchPage() {
 
   return (
     <>
-      <div className="nav-bar search-page-filter border-top-0 page-main d-flex align-items-center gap-4">
+      <div className="nav-bar search-page-filter border-top-0 d-flex align-items-center gap-4" style={{marginTop: "170px"}}>
         {/* Sezione Sort By */}
         <div className="d-flex align-items-center gap-2">
           <button className="btn btn-outline border-0" disabled>
@@ -99,7 +100,7 @@ export default function SearchPage() {
             {filteredResults.map((product) => (
               <div key={product.id} className="col-md-4 mb-4">
                 <div className="card border-0">
-                  <img src={product.image_url} className="card-img-top hover-img" alt={product.name} />
+                  <img onClick={() => navigate(`/productDetails/${product.slug}`)} src={product.image_url} alt={product.name} className="card-img-top hover-img"/>
                   <div className="card-body">
                     <h5 className="card-title">{product.name}</h5>
                     <p className="card-text">{product.price} €</p>

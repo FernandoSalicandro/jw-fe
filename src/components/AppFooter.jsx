@@ -43,9 +43,6 @@ const AppFooter = () => {
                 <div className="footer-column">
                     <h4>Sign Up</h4>
                     <p>Discover in advance the new arrivals from our extraordinary workshop, special events, and other news from the world of JW LUX.</p>
-                    <NavLink to="/subscribe">
-                        <button className="bg-white btn btn-outline border-0 text-black show-details">Subscribe</button>
-                    </NavLink>
                 </div>
             </div>
         </footer>
