@@ -151,7 +151,7 @@ function AiAssistant({ productInfo }) {
                 const visibleText = lines.filter(line => !line.startsWith('PRODOTTO_RACCOMANDATO:')).join('\n');
 
                 const recommendedProducts = recommendationLines.map(line => {
-                  const [slug, name, category,] = line.replace('PRODOTTO_RACCOMANDATO:', '').trim().split('|');
+                  const [slug, name, category, image_url] = line.replace('PRODOTTO_RACCOMANDATO:', '').trim().split('|');
                   return AllProducts.find(p => p.slug === slug);
                 }).filter(Boolean);
 
