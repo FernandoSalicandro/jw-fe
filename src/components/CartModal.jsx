@@ -50,7 +50,7 @@ const CartModal = ({ isOpen, onClose }) => {
       {isOpen && (
         <motion.div className="cart-modal" initial={{ x: 300, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: 300, opacity: 0 }} transition={{ ease: "easeInOut", duration: 0.5 }}>
           <div className="d-flex justify-content-between align-items-start">
-            <p className="m-0">Il tuo carrello è qui!</p>
+            <p className="m-0">Here’s your cart!</p>
             <button onClick={onClose} className="btn-close ms-3" aria-label="Chiudi carrello"></button>
           </div>
 
@@ -84,7 +84,7 @@ const CartModal = ({ isOpen, onClose }) => {
                             </span>
                           </p>
                           <button className="btn btn-outline-danger w-100" onClick={() => removeFromCart(item.id)}>
-                            Rimuovi
+                            Remove
                           </button>
                         </div>
                       </div>
@@ -94,7 +94,7 @@ const CartModal = ({ isOpen, onClose }) => {
               ))}
             </ul>
           ) : (
-            <p className="mt-3">Il carrello è vuoto.</p>
+            <p className="mt-3">Your cart is currently empty.</p>
           )}
 
           {cart.length > 0 && (
@@ -113,7 +113,7 @@ const CartModal = ({ isOpen, onClose }) => {
                 }}
                 style={{ border: "1px solid black" }}
               >
-                Vai al Checkout
+                Go to Checkout
               </button>
             </>
           )}

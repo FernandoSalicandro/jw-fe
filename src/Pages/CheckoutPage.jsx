@@ -134,7 +134,7 @@ const CheckoutPage = () => {
                         </div>
                       </div>
                       <div>
-                        <span>{(item.price * item.quantity).toFixed(2)} €</span>
+                        <span>{((item.is_promo === 1 && parseFloat(item.discount_price) > 0 ? item.discount_price : item.price) * item.quantity).toFixed(2)} €</span>
                       </div>
                     </div>
                   </li>
@@ -142,7 +142,7 @@ const CheckoutPage = () => {
                 <hr />
                 <li className="list-group-item d-flex justify-content-between fw-bold border-0">
                   <span>Subtotal</span>
-                  <span>{cart.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2)} €</span>
+                  <span>{cart.reduce((acc, item) => acc + (item.is_promo === 1 && parseFloat(item.discount_price) > 0 ? item.discount_price : item.price) * item.quantity, 0).toFixed(2)} €</span>
                 </li>
               </ul>
             </div>
