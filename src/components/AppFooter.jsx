@@ -6,7 +6,7 @@ const AppFooter = () => {
                 <div className="footer-column">
                     <h4>JW LUX</h4>
                     <p>Please call or email for any information or to make an appointment at one of our boutiques.</p>
-                    <p>+1 (212) 421 3030</p>
+                    <p>+39 051 1234567</p>
                     <div className="footer-social">
                         <NavLink to="#"><i className="fab fa-facebook-f"></i></NavLink>
                         <NavLink to="#"><i className="fab fa-instagram"></i></NavLink>
@@ -27,8 +27,8 @@ const AppFooter = () => {
                     <h4>CLIENT SERVICES</h4>
                     <ul>
                         <li><NavLink to="/about-us">About Us</NavLink></li>
-                        <li><NavLink to="/CustomerService">Customer Service</NavLink></li>
-                        <li><NavLink to="/Shippingandreturns">Shipping and Returns</NavLink></li>
+                        <li><NavLink to="/customer-service">Customer Service</NavLink></li>
+                        <li><NavLink to="/shipping-and-returns">Shipping and Returns</NavLink></li>
                     </ul>
                 </div>
 
@@ -36,7 +36,6 @@ const AppFooter = () => {
                     <h4>CONTACT</h4>
                     <ul>
                         <li><NavLink to="/contact">Contact Us</NavLink></li>
-                        <li><NavLink to="/book-appointment">Book an Appointment</NavLink></li>
                         <li><NavLink to="/careers">Careers</NavLink></li>
                     </ul>
                 </div>
