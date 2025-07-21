@@ -18,7 +18,7 @@ const AppFooter = () => {
                     <ul>
                         <li><NavLink to="/earrings">Earrings</NavLink></li>
                         <li><NavLink to="/bracelets">Bracelets</NavLink></li>
-                        <li><NavLink to="/necklace">Necklaces</NavLink></li>
+                        <li><NavLink to="/necklaces">Necklaces</NavLink></li>
                         <li><NavLink to="/rings">Rings</NavLink></li>
                     </ul>
                 </div>
