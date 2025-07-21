@@ -220,9 +220,9 @@ const AppHeader = ({ isHomePage }) => {
                 className="code-banner section-separator bg-dark my-0"
               >
                 <p className="text-center text-white m-0 py-2">
-                  Special Code {discountCode.code} - {discountCode.value}% discount!
+                  Special Code {discountCode.code} - {discountCode.value}% OFF!
                   Valid from {new Date(discountCode.start_date).toLocaleDateString()}
-                  to {new Date(discountCode.end_date).toLocaleDateString()}
+                  to {new Date(discountCode.end_date).toLocaleDateString()} - Enjoy Our Free Shipping On All Orders
                 </p>
               </motion.div>
             )
