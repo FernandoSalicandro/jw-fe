@@ -61,11 +61,30 @@ const CartModal = ({ isOpen, onClose }) => {
                   <div class="card mb-3 rounded">
                     <div class="row g-0">
                       <div class="col-md-4">
-                        <img src={item.image_url} class="img-fluid rounded" alt={item.name} />
+                        <img
+                          src={item.image_url}
+                          className="img-fluid rounded"
+                          alt={item.name}
+                          style={{ cursor: "pointer" }}
+                          onClick={() => {
+                            onClose();
+                            navigate(`/productDetails/${item.slug}`);
+                          }}
+                        />
                       </div>
                       <div class="col-md-8">
                         <div class="card-body">
-                          <h5 class="card-title h6">{item.name}</h5>
+                          <h5
+                            className="card-title h6"
+                            style={{ cursor: "pointer" }}
+                            onClick={() => {
+                              onClose();
+                              navigate(`/productDetails/${item.slug}`);
+                            }}
+                          >
+                            {item.name}
+                          </h5>
+
                           <p className="card-text">
                             {" "}
                             <small>Price: {item.is_promo === 1 ? item.discount_price : item.price} €</small>
