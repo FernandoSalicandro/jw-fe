@@ -86,7 +86,7 @@ const CheckoutPage = () => {
 
   return (
     <div className="container py-5" style={{ marginTop: "100px" }}>
-      <h1 className="mb-4">Checkout</h1>
+      <h1 className="mb-4 mt-5">Checkout</h1>
 
       {cart.length === 0 ? (
         //se l'utente arriva qua senza nulla, gli diciamo gentilmente di tornare a comprare roba lol

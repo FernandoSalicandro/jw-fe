@@ -27,6 +27,12 @@ const AppHeader = ({ isHomePage }) => {
   const { isCartOpen, setIsCartOpen, cart } = useCart();
   const { isWishListOpen, setIsWishListOpen, wishList } = useWishList();
 
+
+  //nascondere il banner solo in alcune pagine 
+  const hidenBannerOn = "/thankyou"
+
+  const showBanner = location.pathname !== hidenBannerOn
+
   useEffect(() => {
     axios.get('http://localhost:3000/products/discount-code')
       .then(response => {
@@ -204,7 +210,7 @@ const AppHeader = ({ isHomePage }) => {
               </>
             </motion.div>
           ) : (
-            discountCode && (
+            discountCode  && showBanner && (
               <motion.div
                 key="banner"
                 initial={{ y: -42, opacity: 0 }}
