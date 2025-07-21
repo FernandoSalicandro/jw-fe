@@ -21,10 +21,12 @@ const StripeForm = ({
     const snapShotCart = cart.map(item => ({ ...item }));
 
     try {
+      // Scala lo stock
       await axios.post("http://localhost:3000/products/scale-stock", {
         items: cart,
       });
 
+      // Conferma il pagamento con Stripe
       const result = await stripe.confirmPayment({
         elements,
         redirect: "if_required",
@@ -46,6 +48,16 @@ const StripeForm = ({
         payment_intent_id: paymentIntentId,
         original_payment_intent_id: originalPaymentIntentId,
         status: "succeeded"
+      });
+
+      // Invia le email di conferma
+      await axios.post("http://localhost:3000/products/send-order-emails", {
+        orderDetails: {
+          cart: snapShotCart,
+          customer: formData,
+          paymentIntentId,
+          totalAmount: cart.reduce((acc, item) => acc + (item.price * item.quantity), 0).toFixed(2)
+        }
       });
 
       clearCart();
