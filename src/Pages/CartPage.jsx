@@ -11,13 +11,13 @@ export default function CartPage() {
   };
 
   return (
-    <main className="main-page">
+    <main className="page-main">
       <div className="container section-separator p-2">
         <h1>Your Cart</h1>
       </div>
 
       {cart.length === 0 ? (
-        <div className="container py-5">
+        <div className="container d-flex justify-content-center align-items-center py-5">
           <p>Your cart is empty.</p>
         </div>
       ) : (

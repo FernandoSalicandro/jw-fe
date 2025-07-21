@@ -754,6 +754,7 @@ header a {
 
 .page-main {
   margin-top: var(--page-main-margin-top);
+  min-height: calc(100vh - var(--header-height) - var(--code-banner-height));
 }
 
 /*Search Page */

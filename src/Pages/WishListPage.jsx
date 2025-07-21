@@ -42,12 +42,12 @@ export default function WishListPage() {
   }, [wishList]);
 
   return wishList.length === 0 ? (
-    <div className="container py-5" style={{marginTop: "100px"}}>
+    <div className="page-main container d-flex align-items-center justify-content-center py-5" >
       <p className="text-center fs-4">Your wishlist is empty.</p>
     </div>
   ) : (
     <>
-      <main className="main-page">
+      <main className="page-main">
         <div className="container section-separator p-2 mb-5">
           <h1>Your Desires...</h1>
         </div>
