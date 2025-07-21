@@ -662,6 +662,10 @@ header a {
   .brand-col img {
     width: 60px;
   }
+
+  .prezzo {
+    display: none;
+  }
 }
 
 @media (max-width: 768px) {
@@ -675,6 +679,10 @@ header a {
 
   .right-col {
     gap: 0.8rem;
+  }
+
+  .prezzo {
+    display: none;
   }
 }
 @media (max-width: 576px) {
@@ -731,6 +739,10 @@ header a {
     padding: 0.5rem;
     line-height: 1.2;
     white-space: normal;
+  }
+
+  .prezzo {
+    display: none;
   }
 }
 
