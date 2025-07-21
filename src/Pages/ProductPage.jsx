@@ -158,6 +158,7 @@ export default function ProductPage() {
                   <div className="price-box">
                     <p className={gioiello.is_promo === 1 ? "no-promo" : "promo"}>Price: {gioiello.price} €</p>
                     {gioiello.is_promo === 1 && <p className="promo">Discount Price: {gioiello.discount_price} €</p>}
+                    <p className="text-muted small">{isOutOfStock ? "This item is currently out of stock." : `In stock: ${gioiello.stock_quantity} item(s)`}</p>
                   </div>
 
                   {/* Pulsanti azione */}
