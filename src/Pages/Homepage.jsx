@@ -109,7 +109,7 @@ export default function HomePage() {
 
                 <div className="brand-multi-sub mx-5 my-5">
                     <h2 className='text-center'>The World Of JW LUX</h2>
-                    <div className='container d-flex gap-3 justify-content-center my-5'>
+                    <div className='container d-flex gap-3 justify-content-center my-4'>
                         <p
                             onClick={() => setActiveSection('workshop')}
                             className={`position-relative text-decoration-none ${activeSection === 'workshop' ? 'fw-bold' : ''}`}
@@ -159,31 +159,13 @@ export default function HomePage() {
 
                     <div className="container">
                         <div className="row row-cols-2 d-flex text-center brand-story-img">
-                            <div className="col p-0">
+                            <div className="col p-0 ">
                                 <img src={sectionContent[activeSection].image} alt="" />
                             </div>
-                            <div className="col p-0 text-center px-3">
+                            <div className="col p-0 text-center px-3 d-flex flex-column justify-content-center align-items-center">
                                 <h3>{sectionContent[activeSection].title}</h3>
                                 <p>{sectionContent[activeSection].text}</p>
                             </div>
-                        </div>
-                    </div>
-                    <div className="row row-cols-2 d-flex text-center brand-story-img mt-5">
-                        <div className="col p-0 d-flex flex-column justify-content-center align-items-center px-4">
-                            <h3>Book an appointment with us</h3>
-                            <p className="mb-4">
-                                Experience the epitome of luxury with a personalized consultation in our boutique.
-                                Our expert team is ready to guide you through our exclusive collections.
-                            </p>
-                            <button
-                                onClick={() => navigate('/contact')}
-                                className="btn btn-dark px-4 py-2"
-                            >
-                                Contact Us
-                            </button>
-                        </div>
-                        <div className="col p-0">
-                            <img src="img/brand-story-img.png" alt="Boutique interior" />
                         </div>
                     </div>
                 </div>
