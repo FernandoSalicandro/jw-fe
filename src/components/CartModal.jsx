@@ -119,7 +119,7 @@ const CartModal = ({ isOpen, onClose }) => {
           {cart.length > 0 && (
             <>
               <div className="d-flex justify-content-between align-items-center">
-                <p className="fw-bold">Totale: {cart.reduce((sum, item) => sum + (item.is_promo === 1 ? item.discount_price : item.price) * item.quantity, 0).toFixed(2)} €</p>
+                <p className="fw-bold">Total: {cart.reduce((sum, item) => sum + (item.is_promo === 1 ? item.discount_price : item.price) * item.quantity, 0).toFixed(2)} €</p>
                 <p onClick={handleViewCard} style={{ cursor: "pointer" }}>
                   View All
                 </p>
