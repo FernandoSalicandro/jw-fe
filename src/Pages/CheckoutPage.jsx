@@ -207,7 +207,7 @@ const CheckoutPage = () => {
               </div>
               <div className="col-md-4">
                 <label className="form-label">Postal code (optional)</label>
-                <input type="text" name="postalCode" className="form-control" placeholder="Postal code" />
+                <input type="text" name="postalCode" className="form-control" placeholder="Postal code" onChange={handleChange}/>
               </div>
               <div className="col-md-4">
                 <label className="form-label">Select Region/Province</label>
