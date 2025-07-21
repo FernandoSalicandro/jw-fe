@@ -472,6 +472,11 @@ header a {
   font-size: small;
 }
 
+.p-font {
+  font-family: "Dancing Script", cursive;
+  font-size: 1.2rem;
+}
+
 .footer-column p {
   font-family: "Dancing Script", cursive;
 }

@@ -12,14 +12,17 @@ import { useEffect, useState } from "react";
 import EarringsPage from "./pages/EarringsPage.jsx";
 import BraceletsPage from "./pages/BraceletsPage.jsx";
 import NecklacesPage from "./pages/NecklacesPage.jsx";
-import CheckoutPage from './Pages/CheckoutPage.jsx';
+import CheckoutPage from "./Pages/CheckoutPage.jsx";
 import ThankYouPage from "./Pages/ThankyouPage.jsx";
 import CartPage from "./pages/CartPage.jsx";
-import AboutUs from './Pages/AboutUs.jsx'
+import AboutUs from "./Pages/AboutUs.jsx";
 import WishListPage from "./Pages/WishListPage.jsx";
-import PaymentPage from './Pages/PaymentPage.jsx';
+import PaymentPage from "./Pages/PaymentPage.jsx";
 import PageNotFound from "./Pages/PageNotFound.jsx";
-
+import CustomerService from "./pages/CustomerService.jsx";
+import ShippingAndReturns from "./pages/ShippingAndReturns.jsx";
+import ContactUs from "./pages/ContactUs.jsx";
+import Careers from "./pages/Careers.jsx";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -46,14 +49,18 @@ function App() {
             <Route path="/earrings" element={<EarringsPage />} />
             <Route path="/bracelets" element={<BraceletsPage />} />
             <Route path="/necklaces" element={<NecklacesPage />} />
+            <Route path="/customer-service" element={<CustomerService />} />
+            <Route path="/contact" element={<ContactUs />} />
+            <Route path="/careers" element={<Careers />} />
+            <Route path="/shipping-and-returns" element={<ShippingAndReturns />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/thankyou" element={<ThankYouPage />} />
-            <Route path='/about-us' element={<AboutUs />}/>
-            <Route path='/wishlist' element={<WishListPage />}/>
-            <Route path='/cart' element={<CartPage />}/>
-            <Route path='/payment' element={<PaymentPage />} />
-            <Route path='/*' element={<PageNotFound />} />
+            <Route path="/about-us" element={<AboutUs />} />
+            <Route path="/wishlist" element={<WishListPage />} />
+            <Route path="/cart" element={<CartPage />} />
+            <Route path="/payment" element={<PaymentPage />} />
+            <Route path="/*" element={<PageNotFound />} />
           </Route>
         </Routes>
       </BrowserRouter>
