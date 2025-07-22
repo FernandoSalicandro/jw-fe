@@ -114,7 +114,7 @@ export default function HomePage() {
                     <div className='container d-flex gap-3 justify-content-center my-4'>
                         <p
                             onClick={() => setActiveSection('workshop')}
-                            className={`position-relative text-decoration-none ${activeSection === 'workshop' ? 'fw-bold' : ''}`}
+                            className={`brand-story-link position-relative text-decoration-none ${activeSection === 'workshop' ? 'fw-bold' : ''}`}
                             style={{ cursor: 'pointer' }}
                         >
                             Our WorkShop
@@ -129,7 +129,7 @@ export default function HomePage() {
                         </p>
                         <p
                             onClick={() => setActiveSection('about')}
-                            className={`position-relative text-decoration-none ${activeSection === 'about' ? 'fw-bold' : ''}`}
+                            className={`brand-story-link position-relative text-decoration-none ${activeSection === 'about' ? 'fw-bold' : ''}`}
                             style={{ cursor: 'pointer' }}
                         >
                             We Are JW LUX
@@ -144,7 +144,7 @@ export default function HomePage() {
                         </p>
                         <p
                             onClick={() => setActiveSection('boutique')}
-                            className={`position-relative text-decoration-none ${activeSection === 'boutique' ? 'fw-bold' : ''}`}
+                            className={`brand-story-link position-relative text-decoration-none ${activeSection === 'boutique' ? 'fw-bold' : ''}`}
                             style={{ cursor: 'pointer' }}
                         >
                             Our Boutique
@@ -160,7 +160,7 @@ export default function HomePage() {
                     </div>
 
                     <div className="container">
-                        <div className="row row-cols-2 d-flex text-center brand-story-img">
+                        <div className="row  row-cols-1 row-cols-md-2 d-flex text-center brand-story-img">
                             <div className="col p-0 ">
                                 <img src={sectionContent[activeSection].image} alt="" />
                             </div>

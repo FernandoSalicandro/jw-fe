@@ -688,6 +688,7 @@ header a {
   .prezzo {
     display: none;
   }
+
 }
 @media (max-width: 576px) {
   .nav-bar {
@@ -745,6 +746,16 @@ header a {
 
   .prezzo {
     display: none;
+  }
+
+  
+  .brand-story-img h3 {
+    margin-top : 1rem;
+
+  }
+
+  .brand-story-link {
+    font-size: 0.6rem;
   }
 }
 
