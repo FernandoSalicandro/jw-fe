@@ -88,9 +88,22 @@ const CheckoutPage = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  //validazione della mail
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   //quando l'utente clicca su "Proceed to Payment" lo portiamo alla pagina vera del pagamento, passando i dati
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Validazione email
+    if (!isValidEmail(formData.email)) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+
     setIsLoading(true);
 
     const fullFormData = {
@@ -99,11 +112,9 @@ const CheckoutPage = () => {
       province: selectedRegion,
     };
 
-    // ✅ Salvo i dati nel localStorage
     localStorage.setItem("formData", JSON.stringify(fullFormData));
     localStorage.setItem("cart", JSON.stringify(cart));
 
-    // Navigo alla pagina pagamento con i dati nello state (opzionale)
     navigate("/payment", {
       state: {
         formData: fullFormData,
@@ -259,7 +270,7 @@ const CheckoutPage = () => {
                 <input type="text" name="city" className="form-control" placeholder="Enter a city" required onChange={handleChange} />
               </div>
               <div className="col-md-4">
-                <label className="form-label">Postal code (optional)</label>
+                <label className="form-label">Postal code</label>
                 <input type="text" name="postalCode" className="form-control" placeholder="Postal code" onChange={handleChange} />
               </div>
               <div className="col-md-4">

@@ -109,7 +109,7 @@ export default function HomePage() {
 
                 <div className="section-separator"></div>
 
-                <div className="brand-multi-sub mx-5 my-5">
+                <div className="brand-multi-sub mx-5 my-4">
                     <h2 className='text-center'>The World Of JW LUX</h2>
                     <div className='container d-flex gap-3 justify-content-center my-4'>
                         <p
