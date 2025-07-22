@@ -2,7 +2,7 @@ import { useContext, useRef, useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ProductContext } from '../Context/ProductContext.jsx';
 import AiAssistantProva from "../Pages/AiAssistantProva.jsx";
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Quotes from '../components/Quotes.jsx';
 
 export default function HomePage() {
@@ -48,7 +48,7 @@ export default function HomePage() {
     return (
         <>
             <main>
-                <AiAssistantProva/>
+                <AiAssistantProva />
                 <div className="black-div-home"></div>
                 <div className="hero-section">
                     <img src="./img/hero-homepage.png" alt="" />
@@ -162,11 +162,21 @@ export default function HomePage() {
                     <div className="container">
                         <div className="row  row-cols-1 row-cols-md-2 d-flex text-center brand-story-img">
                             <div className="col p-0 ">
-                                <img src={sectionContent[activeSection].image} alt="" />
+                                <motion.img
+                                    key={activeSection}
+                                    initial={{ x: -100, opacity: 0 }}
+                                    animate={{ x: 0, opacity: 1 }}
+                                    transition={{ duration: 0.8, ease: "easeInOut" }}
+                                    src={sectionContent[activeSection].image} alt="" />
                             </div>
                             <div className="col p-0 text-center px-3 d-flex flex-column justify-content-center align-items-center">
-                                <h3>{sectionContent[activeSection].title}</h3>
-                                <p>{sectionContent[activeSection].text}</p>
+                                <AnimatePresence mode='wait'>
+                                    <motion.h3 key={activeSection} initial={{ x: 100, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.8, ease: "easeInOut" }} exit={{ x: -100, opacity: 0 }}>{sectionContent[activeSection].title}</motion.h3>
+                                </AnimatePresence>
+                                <AnimatePresence mode='wait'>
+                                    <motion.p key={activeSection} initial={{ x: 100, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.8, ease: "easeInOut" }} exit={{ x: -100, opacity: 0 }}>{sectionContent[activeSection].text}</motion.p>
+                                </AnimatePresence>
+
                             </div>
                         </div>
                     </div>
