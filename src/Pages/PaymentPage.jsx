@@ -80,6 +80,9 @@ const PaymentPage = () => {
     });
   }, [cart]);
 
+
+  
+
   const handleRedeemCode = () => {
     axios.post('http://localhost:3000/products/verify-discount', {
       code: redeemCode,
