@@ -7,13 +7,13 @@ export default function ShippingAndReturns() {
         Shipping & Returns
       </h1>
       <img
+        className="d-none d-lg-block"
         src="./img/jw_logo.png"
         alt="JW Logo"
         style={{
           position: "absolute",
           top: 0,
           right: "30px",
-          height: "50px",
           zIndex: 10,
           opacity: 0.9,
           marginTop: "200px",
@@ -32,10 +32,10 @@ export default function ShippingAndReturns() {
             <strong>Italy:</strong> Free Express Shipping (1–2 business days)
           </li>
           <li>
-            <strong>Europe:</strong> €15 Flat Rate (2–4 business days)
+            <strong>Europe:</strong> Free Express Shipping (2–4 business days)
           </li>
           <li>
-            <strong>International:</strong> €25 Flat Rate (3–6 business days)
+            <strong>International:</strong> Free Express Shipping (3–6 business days)
           </li>
         </ul>
         <p>Orders are typically processed within 24 hours. Once dispatched, you will receive an email with your tracking number.</p>
