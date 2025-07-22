@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCart } from "../Context/CartContext";
 import { useNavigate } from "react-router-dom";
 import countryRegionData from "../data/countryRegionData.js";
@@ -13,6 +13,11 @@ const CheckoutPage = () => {
   const [pressingItemId, setPressingItemId] = useState(null);
   const [progress, setProgress] = useState(0);
 
+  useEffect(() => {
+    localStorage.removeItem("sconto");
+  }, []);
+
+
   const countries = countryRegionData.map((c) => c.countryName);
   const regions = countryRegionData.find((c) => c.countryName === selectedCountry)?.regions.map((r) => r.name) || [];
 
@@ -21,9 +26,9 @@ const CheckoutPage = () => {
       prevCart.map((item) =>
         item.id === id
           ? {
-              ...item,
-              quantity: item.quantity < item.stock_quantity ? item.quantity + 1 : item.quantity,
-            }
+            ...item,
+            quantity: item.quantity < item.stock_quantity ? item.quantity + 1 : item.quantity,
+          }
           : item
       )
     );
@@ -34,9 +39,9 @@ const CheckoutPage = () => {
       prevCart.map((item) =>
         item.id === id
           ? {
-              ...item,
-              quantity: Math.max(item.quantity - 1, 1),
-            }
+            ...item,
+            quantity: Math.max(item.quantity - 1, 1),
+          }
           : item
       )
     );
