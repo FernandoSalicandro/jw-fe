@@ -133,23 +133,23 @@ const AppHeader = ({ isHomePage }) => {
           </motion.div>
 
           <div className="right-col d-flex justify-content-end gap-3">
-            <motion.p className={`m-0 ${textClass}`} whileHover={{ scale: 1.1 }} transition={{ duration: 0.2 }}>
+            <motion.div className={`m-0 ${textClass}`} whileHover={{ scale: 1.1 }} transition={{ duration: 0.2 }}>
               <i type="button" onClick={() => setIsSearchOpen(!isSearchOpen)} className="fa-solid fa-magnifying-glass" aria-label="Search" />
-            </motion.p>
+            </motion.div>
 
-            <motion.p className={`m-0 ${textClass}`} whileHover={{ scale: 1.1 }} transition={{ duration: 0.2 }}>
+            <motion.div className={`m-0 ${textClass}`} whileHover={{ scale: 1.1 }} transition={{ duration: 0.2 }}>
               <div className="position-relative">
                 <i type="button" className="fa-regular fa-heart" onClick={() => setIsWishListOpen(!isWishListOpen)} aria-label="Wish list" />
                 {wishList.length > 0 && <span className="icon-badge"></span>}
               </div>
-            </motion.p>
+            </motion.div>
 
-            <motion.p className={`m-0 ${textClass}`} whileHover={{ scale: 1.1 }} transition={{ duration: 0.2 }}>
+            <motion.div className={`m-0 ${textClass}`} whileHover={{ scale: 1.1 }} transition={{ duration: 0.2 }}>
               <div className="position-relative">
                 <i role="button" onClick={() => setIsCartOpen(!isCartOpen)} className="fa-solid fa-bag-shopping" aria-label="Shopping cart" />
                 {cart.length > 0 && <span className="icon-badge"></span>}
               </div>
-            </motion.p>
+            </motion.div>
           </div>
         </div>
 
