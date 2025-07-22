@@ -8,13 +8,13 @@ export default function CustomerService() {
         Customer Service
       </h1>
       <img
+        className="d-none d-lg-block"
         src="./img/jw_logo.png"
         alt="JW Logo"
         style={{
           position: "absolute",
           top: 0,
           right: "30px",
-          height: "50px",
           zIndex: 10,
           opacity: 0.9,
           marginTop: "200px",
@@ -63,10 +63,10 @@ export default function CustomerService() {
                   <strong>Italy:</strong> Free Express Shipping (1–2 working days)
                 </li>
                 <li>
-                  <strong>Europe:</strong> €15 Flat Rate (2–4 working days)
+                  <strong>Europe:</strong> Free Express Shipping (2–4 working days)
                 </li>
                 <li>
-                  <strong>International:</strong> €25 Flat Rate (3–6 working days)
+                  <strong>International:</strong> Free Express Shipping (3–6 working days)
                 </li>
               </ul>
               <p>You will receive a confirmation email with your tracking number as soon as your order is dispatched.</p>

@@ -7,13 +7,13 @@ export default function Careers() {
         Careers at JW Lux
       </h1>
       <img
+        className="d-none d-lg-block"
         src="./img/jw_logo.png"
         alt="JW Logo"
         style={{
           position: "absolute",
           top: 0,
           right: "30px",
-          height: "50px",
           zIndex: 10,
           opacity: 0.9,
           marginTop: "200px",
