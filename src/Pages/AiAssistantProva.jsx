@@ -95,7 +95,7 @@ function AiAssistant({ productInfo }) {
         content: 'Ciao, sono il tuo personal shopper. Come posso aiutarti?'
       }
     ]);
-  }, [productInfo, promptContext]);
+  }, [productInfo, promptContext, location.pathname]);
 
   const handleQuestionSubmit = (e) => {
     e.preventDefault();
