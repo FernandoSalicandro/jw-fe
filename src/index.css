@@ -757,6 +757,11 @@ header a {
   .brand-story-link {
     font-size: 0.6rem;
   }
+
+  .hero-section video {
+    /* margin-top: 50px; */
+    height: 300px;
+  }
 }
 
 @media (max-width: 390px) {
