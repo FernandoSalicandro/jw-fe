@@ -17,6 +17,7 @@ const AppHeader = ({ isHomePage }) => {
   const [searchValue, setSearchValue] = useState("");
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [discountCode, setDiscountCode] = useState(null);
+  const [showScrollBanner, setShowScrollBanner] = useState(false);
 
   const { scrollY } = useScroll();
   const controls = useAnimation();
@@ -30,6 +31,21 @@ const AppHeader = ({ isHomePage }) => {
 
   //nascondere il banner solo in alcune pagine 
   const hidenBannerOn = ["/thankyou"]
+
+  useEffect(() => {
+    if (!isHomePage) return;
+
+    const handleScroll = () => {
+      setShowScrollBanner(window.scrollY > 200);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [isHomePage]);
+
 
   const showBanner = !hidenBannerOn.includes(location.pathname);
 
@@ -210,22 +226,42 @@ const AppHeader = ({ isHomePage }) => {
               </>
             </motion.div>
           ) : (
-            discountCode  && showBanner && (
-              <motion.div
-                key="banner"
-                initial={{ y: -42, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -32, opacity: 0 }}
-                transition={{ ease: "easeOut", duration: 0.5 }}
-                className="code-banner section-separator bg-dark my-0"
-              >
-                <p className="text-center text-white m-0 py-2">
-                  Special Code {discountCode.code} - {discountCode.value}% OFF!
-                  Valid from {new Date(discountCode.start_date).toLocaleDateString()}
-                  to {new Date(discountCode.end_date).toLocaleDateString()} - Enjoy Our Free Shipping On All Orders
-                </p>
-              </motion.div>
+            discountCode && showBanner && (
+              isHomePage ? (
+                showScrollBanner && (
+                  <motion.div
+                    key="banner"
+                    initial={{ y: -30, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -30, opacity: 0 }}
+                    transition={{ ease: "easeInOut", duration: 0.5 }}
+                    className="code-banner section-separator bg-dark my-0"
+                  >
+                    <p className="text-center text-white m-0 py-2">
+                      Special Code {discountCode.code} - {discountCode.value}% OFF!
+                      Valid from {new Date(discountCode.start_date).toLocaleDateString()}
+                      to {new Date(discountCode.end_date).toLocaleDateString()} – Enjoy Our Free Shipping On All Orders
+                    </p>
+                  </motion.div>
+                )
+              ) : (
+                <motion.div
+                  key="banner"
+                  initial={{ y: -42, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -32, opacity: 0 }}
+                  transition={{ ease: "easeOut", duration: 0.5 }}
+                  className="code-banner section-separator bg-dark my-0"
+                >
+                  <p className="text-center text-white m-0 py-2">
+                    Special Code {discountCode.code} - {discountCode.value}% OFF!
+                    Valid from {new Date(discountCode.start_date).toLocaleDateString()}
+                    to {new Date(discountCode.end_date).toLocaleDateString()} – Enjoy Our Free Shipping On All Orders
+                  </p>
+                </motion.div>
+              )
             )
+
           )}
         </AnimatePresence>
 

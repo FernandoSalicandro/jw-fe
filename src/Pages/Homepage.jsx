@@ -49,9 +49,9 @@ export default function HomePage() {
         <>
             <main>
                 <AiAssistantProva />
-                <div className="black-div-home"></div>
+                {/* <div className="black-div-home"></div> */}
                 <div className="hero-section">
-                    <video src="./img/video-hero.mp4" alt="" autoPlay loop muted className='w-100' />
+                    <video src="./img/video-hero.mp4" alt="" autoPlay loop muted className='w-100'  />
                 </div>
 
                 <h2 className="text-center my-5">JW FOR ...</h2>
