@@ -157,17 +157,17 @@ export default function HomePage() {
                                 }}>
                             </span>
                         </p>
-                    </div>
-
-                    <div className="container">
-                        <div className="row  row-cols-1 row-cols-md-2 d-flex text-center brand-story-img">
-                            <div className="col p-0 ">
+                    </div>                    <div className="container">
+                        <div className="row  row-cols-1 row-cols-md-2 d-flex text-center brand-story-img" style={{ minHeight: '500px' }}>
+                            <div className="col p-0 d-flex align-items-center justify-content-center">
                                 <motion.img
                                     key={activeSection}
                                     initial={{ x: -100, opacity: 0 }}
                                     animate={{ x: 0, opacity: 1 }}
                                     transition={{ duration: 0.8, ease: "easeInOut" }}
-                                    src={sectionContent[activeSection].image} alt="" />
+                                    src={sectionContent[activeSection].image} 
+                                    alt="" 
+                                    style={{ width: '100%', height: 'auto', objectFit: 'cover', maxHeight: '500px' }} />
                             </div>
                             <div className="col p-0 text-center px-3 d-flex flex-column justify-content-center align-items-center">
                                 <AnimatePresence mode='wait'>
